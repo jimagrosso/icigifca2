@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ICIGIFCA - Instituto líder en formación de ginecología regenerativa. 27 años transformando la medicina íntima en Latinoamérica.">
+    <title>ICIGIFCA - Instituto de Ginecología Regenerativa</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        /* Previous styles remain the same - adding new sections */
+        
+        /* ========================================
+           RESET & VARIABLES
+        ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #D4A574;
+            --gold-gradient: linear-gradient(135deg, #D4A574 0%, #E6C896 100%);
+            --rose: #E8B4B8;
+            --rose-light: #F5D5D8;
+            --charcoal: #2C2C2C;
+            --gray: #666666;
+            --ivory: #FDFDF5;
+            --white: #FFFFFF;
+            
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 32px;
+            --space-lg: 64px;
+            --space-xl: 128px;
+            
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, sans-serif;
+            
+            --shadow-sm: 0 2px 10px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.12);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--charcoal);
+            background: var(--ivory);
+            line-height: 1.6;
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        .section {
+            padding: var(--space-xl) 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .section-label {
+            display: inline-block;
+            color: var(--gold);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: var(--space-sm);
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--charcoal);
+            margin-bottom: var(--space-md);
+            font-family: var(--font-serif);
+        }
+
+        /* ========================================
+           VIDEO TESTIMONIALS SECTION
+        ======================================== */
+        .video-testimonials {
+            background: white;
+            padding: var(--space-xl) 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-testimonials::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(212, 165, 116, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(232, 180, 184, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-lg);
+        }
+
+        .video-container {
+            position: relative;
+            background: var(--ivory);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+
+        .video-container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 70px rgba(0,0,0,0.15);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-info {
+            padding: var(--space-md);
+            background: white;
+        }
+
+        .video-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--charcoal);
+            margin-bottom: var(--space-xs);
+        }
+
+        .video-description {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .video-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--gold);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 10;
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+
+        /* ========================================
+           INSTAGRAM STORIES CAROUSEL
+        ======================================== */
+        .stories-section {
+            background: linear-gradient(135deg, var(--ivory) 0%, white 100%);
+            padding: var(--space-xl) 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stories-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .stories-wrapper {
+            display: flex;
+            gap: var(--space-md);
+            padding: var(--space-md) 0;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .stories-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .story-card {
+            flex: 0 0 280px;
+            height: 500px;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: var(--transition);
+            cursor: pointer;
+            background: var(--charcoal);
+        }
+
+        .story-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .story-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .story-card:hover .story-image {
+            transform: scale(1.1);
+            filter: brightness(0.8);
+        }
+
+        .story-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: var(--space-md);
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+            color: white;
+            transform: translateY(100px);
+            transition: var(--transition);
+        }
+
+        .story-card:hover .story-overlay {
+            transform: translateY(0);
+        }
+
+        .story-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+
+        .story-text {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        /* Story Navigation Buttons */
+        .story-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--gold);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            transition: var(--transition);
+        }
+
+        .story-nav:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .story-nav.prev {
+            left: 20px;
+        }
+
+        .story-nav.next {
+            right: 20px;
+        }
+
+        /* Story Indicators */
+        .story-indicators {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-xs);
+            margin-top: var(--space-md);
+        }
+
+        .indicator {
+            width: 40px;
+            height: 4px;
+            background: rgba(212, 165, 116, 0.3);
+            border-radius: 2px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .indicator.active {
+            background: var(--gold);
+            transform: scaleX(1.5);
+        }
+
+        /* ========================================
+           GALLERY LIGHTBOX
+        ======================================== */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90vh;
+            position: relative;
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .lightbox-image {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 36px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .lightbox-close:hover {
+            transform: rotate(90deg);
+        }
+
+        /* ========================================
+           COMBINED TESTIMONIALS DESIGN
+        ======================================== */
+        .testimonials-complete {
+            background: white;
+            padding: var(--space-xl) 0;
+        }
+
+        .testimonials-header {
+            text-align: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .testimonial-subtitle {
+            font-size: 18px;
+            color: var(--gray);
+            margin-top: var(--space-sm);
+        }
+
+        /* ========================================
+           RESPONSIVE UPDATES
+        ======================================== */
+        @media (max-width: 1024px) {
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .story-card {
+                flex: 0 0 240px;
+                height: 420px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .video-grid {
+                gap: var(--space-md);
+            }
+            
+            .video-container {
+                margin: 0;
+            }
+            
+            .story-nav {
+                display: none;
+            }
+            
+            .story-card {
+                flex: 0 0 200px;
+                height: 350px;
+            }
+        }
+
+        /* Simple header for demo */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 20px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: var(--font-serif);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">ICIGIFCA</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Video Testimonials Section -->
+    <section class="video-testimonials section" id="video-testimonials">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Testimonios en Video</span>
+                <h2 class="section-title">Experiencias Reales de Nuestros Egresados</h2>
+                <p class="testimonial-subtitle">
+                    Conoce de primera mano cómo el ICIGIFCA ha transformado las carreras de médicos en toda Latinoamérica
+                </p>
+            </div>
+            
+            <div class="video-grid">
+                <!-- Video 1 -->
+                <div class="video-container" data-aos="fade-up" data-aos-delay="100">
+                    <div class="video-badge">Testimonio Destacado</div>
+                    <div class="video-wrapper">
+                        <iframe 
+                            src="https://www.youtube.com/embed/iIwus5sBjAQ" 
+                            title="Testimonio ICIGIFCA - Transformación Profesional"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Transformación Profesional Completa</h3>
+                        <p class="video-description">
+                            Descubre cómo nuestro diplomado ha revolucionado la práctica médica de ginecólogos, 
+                            llevándolos al siguiente nivel en medicina regenerativa.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Video 2 -->
+                <div class="video-container" data-aos="fade-up" data-aos-delay="200">
+                    <div class="video-badge">Caso de Éxito</div>
+                    <div class="video-wrapper">
+                        <iframe 
+                            src="https://www.youtube.com/embed/nIJQ7x4YSl4" 
+                            title="Testimonio ICIGIFCA - Éxito en la Práctica"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Del Aprendizaje a la Práctica Exitosa</h3>
+                        <p class="video-description">
+                            La experiencia hands-on y el acompañamiento personalizado marcan la diferencia 
+                            en la formación de especialistas en ginecología regenerativa.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instagram Stories Style Carousel -->
+    <section class="stories-section" id="gallery">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Galería</span>
+                <h2 class="section-title">Nuestros Médicos en Acción</h2>
+                <p class="testimonial-subtitle">
+                    Momentos capturados durante nuestras sesiones de formación y práctica hands-on
+                </p>
+            </div>
+        </div>
+        
+        <div class="stories-container">
+            <button class="story-nav prev" onclick="scrollStories('prev')">←</button>
+            <button class="story-nav next" onclick="scrollStories('next')">→</button>
+            
+            <div class="stories-wrapper" id="storiesWrapper">
+                <!-- Story 1 -->
+                <div class="story-card" data-aos="fade-up" data-aos-delay="100" onclick="openLightbox(0)">
+                    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251866/PXL_20250724_155241641.PORTRAIT_txoou7.jpg" 
+                         alt="Médicos ICIGIFCA en formación" 
+                         class="story-image">
+                    <div class="story-overlay">
+                        <h3 class="story-title">Formación Práctica</h3>
+                        <p class="story-text">Hands-on con supervisión directa de expertos</p>
+                    </div>
+                </div>
+                
+                <!-- Story 2 -->
+                <div class="story-card" data-aos="fade-up" data-aos-delay="200" onclick="openLightbox(1)">
+                    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251854/PXL_20250724_153618504.PORTRAIT_zsdeem.jpg" 
+                         alt="Práctica clínica ICIGIFCA" 
+                         class="story-image">
+                    <div class="story-overlay">
+                        <h3 class="story-title">Tecnología Avanzada</h3>
+                        <p class="story-text">Equipos de última generación en ginecología</p>
+                    </div>
+                </div>
+                
+                <!-- Story 3 (Duplicate for demo - you can change this) -->
+                <div class="story-card" data-aos="fade-up" data-aos-delay="300" onclick="openLightbox(2)">
+                    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251854/PXL_20250724_153618504.PORTRAIT_zsdeem.jpg" 
+                         alt="Procedimiento especializado" 
+                         class="story-image">
+                    <div class="story-overlay">
+                        <h3 class="story-title">Procedimientos Especializados</h3>
+                        <p class="story-text">Dominio de técnicas regenerativas</p>
+                    </div>
+                </div>
+                
+                <!-- Story 4 -->
+                <div class="story-card" data-aos="fade-up" data-aos-delay="400" onclick="openLightbox(3)">
+                    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251838/PXL_20250724_155202412.PORTRAIT_ra4nbx.jpg" 
+                         alt="Trabajo en equipo ICIGIFCA" 
+                         class="story-image">
+                    <div class="story-overlay">
+                        <h3 class="story-title">Trabajo Colaborativo</h3>
+                        <p class="story-text">Aprendizaje en grupos reducidos</p>
+                    </div>
+                </div>
+                
+                <!-- Additional duplicate cards for carousel effect -->
+                <div class="story-card" data-aos="fade-up" data-aos-delay="500" onclick="openLightbox(0)">
+                    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251866/PXL_20250724_155241641.PORTRAIT_txoou7.jpg" 
+                         alt="Sesión de entrenamiento" 
+                         class="story-image">
+                    <div class="story-overlay">
+                        <h3 class="story-title">Sesiones Intensivas</h3>
+                        <p class="story-text">25 pacientes por día de práctica</p>
+                    </div>
+                </div>
+                
+                <div class="story-card" data-aos="fade-up" data-aos-delay="600" onclick="openLightbox(1)">
+                    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251854/PXL_20250724_153618504.PORTRAIT_zsdeem.jpg" 
+                         alt="Certificación ICIGIFCA" 
+                         class="story-image">
+                    <div class="story-overlay">
+                        <h3 class="story-title">Certificación Internacional</h3>
+                        <p class="story-text">Aval universitario reconocido</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="story-indicators">
+                <span class="indicator active" onclick="goToStory(0)"></span>
+                <span class="indicator" onclick="goToStory(1)"></span>
+                <span class="indicator" onclick="goToStory(2)"></span>
+                <span class="indicator" onclick="goToStory(3)"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox for Images -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <div class="lightbox-content">
+            <span class="lightbox-close">×</span>
+            <img src="" alt="" class="lightbox-image" id="lightboxImage">
+        </div>
+    </div>
+
+    <!-- AOS Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+        // Stories Carousel Functions
+        const storiesWrapper = document.getElementById('storiesWrapper');
+        const indicators = document.querySelectorAll('.indicator');
+        let currentStory = 0;
+
+        function scrollStories(direction) {
+            const cardWidth = 280 + 32; // card width + gap
+            const currentScroll = storiesWrapper.scrollLeft;
+            
+            if (direction === 'next') {
+                storiesWrapper.scrollLeft = currentScroll + cardWidth;
+                currentStory = Math.min(currentStory + 1, 3);
+            } else {
+                storiesWrapper.scrollLeft = currentScroll - cardWidth;
+                currentStory = Math.max(currentStory - 1, 0);
+            }
+            
+            updateIndicators();
+        }
+
+        function goToStory(index) {
+            const cardWidth = 280 + 32;
+            storiesWrapper.scrollLeft = cardWidth * index;
+            currentStory = index;
+            updateIndicators();
+        }
+
+        function updateIndicators() {
+            indicators.forEach((indicator, index) => {
+                if (index === currentStory) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+        }
+
+        // Auto-scroll stories
+        setInterval(() => {
+            if (currentStory < 3) {
+                scrollStories('next');
+            } else {
+                currentStory = 0;
+                goToStory(0);
+            }
+        }, 5000);
+
+        // Lightbox Functions
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
+        
+        const images = [
+            'https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251866/PXL_20250724_155241641.PORTRAIT_txoou7.jpg',
+            'https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251854/PXL_20250724_153618504.PORTRAIT_zsdeem.jpg',
+            'https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251854/PXL_20250724_153618504.PORTRAIT_zsdeem.jpg',
+            'https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251838/PXL_20250724_155202412.PORTRAIT_ra4nbx.jpg'
+        ];
+
+        function openLightbox(index) {
+            lightboxImage.src = images[index];
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Touch/Swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        storiesWrapper.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+
+        storiesWrapper.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                scrollStories('next');
+            }
+            if (touchEndX > touchStartX + 50) {
+                scrollStories('prev');
+            }
+        }
+
+        // Smooth scroll behavior for the wrapper
+        storiesWrapper.addEventListener('scroll', () => {
+            const scrollPosition = storiesWrapper.scrollLeft;
+            const cardWidth = 280 + 32;
+            const newIndex = Math.round(scrollPosition / cardWidth);
+            
+            if (newIndex !== currentStory) {
+                currentStory = newIndex;
+                updateIndicators();
+            }
+        });
+    </script>
+</body>
+</html>
