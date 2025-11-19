@@ -865,6 +865,54 @@
             box-shadow: 0 15px 50px rgba(0,0,0,0.12);
         }
 
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .view-more-testimonials {
+            text-align: center;
+            margin-top: var(--space-lg);
+        }
+
+        .btn-view-more {
+            display: inline-block;
+            padding: 16px 40px;
+            background: white;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            border-radius: 30px;
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-view-more::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: var(--gold-gradient);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .btn-view-more:hover::before {
+            width: 100%;
+        }
+
+        .btn-view-more:hover {
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 165, 116, 0.3);
+        }
+
         .stats-row {
             display: flex;
             justify-content: space-around;
@@ -938,6 +986,153 @@
 
         @keyframes sweep {
             to { left: 100%; }
+        }
+
+        .btn-cta {
+            display: inline-block;
+            padding: 18px 48px;
+            background: white;
+            color: var(--gold);
+            border-radius: 35px;
+            font-weight: 700;
+            font-size: 16px;
+            transition: var(--transition);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-top: var(--space-md);
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        /* ========================================
+           FOOTER PREMIUM
+        ======================================== */
+        .footer {
+            background: linear-gradient(135deg, var(--charcoal) 0%, #1a1a1a 100%);
+            color: white;
+            padding: var(--space-xl) 0 var(--space-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(212, 165, 116, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(232, 180, 184, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-section h4 {
+            color: var(--gold);
+            margin-bottom: var(--space-md);
+            font-size: 18px;
+        }
+
+        .footer-logo {
+            font-size: 32px;
+            font-weight: 900;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: var(--font-serif);
+            margin-bottom: var(--space-sm);
+        }
+
+        .footer-text {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            margin-bottom: var(--space-sm);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: var(--space-sm);
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: var(--transition);
+            display: inline-block;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .footer-links a::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: var(--transition);
+            color: var(--gold);
+        }
+
+        .footer-links a:hover {
+            color: var(--gold);
+            transform: translateX(10px);
+        }
+
+        .footer-links a:hover::before {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .footer-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212, 165, 116, 0.3), transparent);
+            margin: var(--space-lg) 0;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            border: 1px solid rgba(212, 165, 116, 0.3);
+        }
+
+        .social-icon:hover {
+            background: var(--gold-gradient);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(212, 165, 116, 0.3);
         }
 
         /* ========================================
@@ -1017,6 +1212,10 @@
                 flex-direction: column;
                 gap: var(--space-md);
             }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -1048,7 +1247,7 @@
                     <a href="#instituto" class="nav-link">Instituto</a>
                     <a href="#dra-renaud" class="nav-link">Dra. Ajakaida Renaud</a>
                     <a href="#programas" class="nav-link">Programas</a>
-                    <a href="#testimonios" class="nav-link">Testimonios</a>
+                    <a href="ICIGIFCA_Multimedia_Section_1.html" class="nav-link">Testimonios</a>
                     <a href="#contacto" class="btn-header">Solicitar Información</a>
                 </nav>
             </div>
@@ -1191,9 +1390,7 @@
         <div class="container">
             <div class="section-header" data-aos="fade-up">
                 <span class="section-label">Testimonios</span>
-                <h2 class="section-title">
-                    <a href="ICIGIFCA_Multimedia_Section_1.html">
-                    Resultados que hablan por sí mismos</h2>
+                <h2 class="section-title">Resultados que hablan por sí mismos</h2>
             </div>
             
             <div class="testimonials-grid">
@@ -1223,6 +1420,13 @@
                     <div class="testimonial-author">Dra. Ana Rodríguez</div>
                     <div class="testimonial-location">República Dominicana</div>
                 </div>
+            </div>
+
+            <!-- Botón para ver más testimonios -->
+            <div class="view-more-testimonials" data-aos="fade-up" data-aos-delay="400">
+                <a href="ICIGIFCA_Multimedia_Section_1.html" class="btn-view-more">
+                    Ver Más Testimonios y Multimedia →
+                </a>
             </div>
             
             <div class="stats-row" data-aos="zoom-in">
@@ -1257,6 +1461,67 @@
             </div>
         </div>
     </section>
+
+    <!-- Footer Premium -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <!-- Columna 1: Instituto -->
+                <div class="footer-section">
+                    <div class="footer-logo">ICIGIFCA</div>
+                    <p class="footer-text">
+                        27 años liderando la formación en ginecología regenerativa, funcional y estética en Latinoamérica.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon">📘</a>
+                        <a href="#" class="social-icon">📷</a>
+                        <a href="#" class="social-icon">▶️</a>
+                        <a href="#" class="social-icon">💼</a>
+                    </div>
+                </div>
+
+                <!-- Columna 2: Enlaces Rápidos -->
+                <div class="footer-section">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul class="footer-links">
+                        <li><a href="#instituto">Sobre el Instituto</a></li>
+                        <li><a href="#dra-renaud">Dra. Ajakaida Renaud</a></li>
+                        <li><a href="#programas">Programas Académicos</a></li>
+                        <li><a href="ICIGIFCA_Multimedia_Section_1.html">Testimonios</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna 3: Proyectos Especiales -->
+                <div class="footer-section">
+                    <h4>Nuestros Proyectos</h4>
+                    <ul class="footer-links">
+                        <li><a href="#revista">Revista Latinoamericana</a></li>
+                        <li><a href="#fundaren">Fundaren</a></li>
+                        <li><a href="#">Investigación Científica</a></li>
+                        <li><a href="#">Congresos Internacionales</a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna 4: Contacto -->
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <p class="footer-text">
+                        📍 Bogotá, Colombia<br>
+                        📧 info@icigifca.com<br>
+                        📱 WhatsApp: +57 XXX XXX XXXX<br>
+                        🌐 www.icigifca.com
+                    </p>
+                </div>
+            </div>
+
+            <div class="footer-divider"></div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 ICIGIFCA - Instituto Iberoamericano de Cirugía y Ginecología Regenerativa, Funcional y Estética. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
 
     <!-- Floating Action Button -->
     <a href="#" class="fab" id="fab">↑</a>
