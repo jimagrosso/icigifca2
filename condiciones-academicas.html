@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Condiciones Académicas ICIGIFCA. Requisitos para acceder a las prácticas clínicas presenciales.">
+    <title>Condiciones Académicas - ICIGIFCA</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        /* ========================================
+           RESET & VARIABLES
+        ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #D4A574;
+            --gold-light: #E6C896;
+            --gold-gradient: linear-gradient(135deg, #D4A574 0%, #E6C896 100%);
+            --rose: #E8B4B8;
+            --rose-light: #F5D5D8;
+            --charcoal: #2C2C2C;
+            --gray: #666666;
+            --gray-light: #999999;
+            --ivory: #FDFDF5;
+            --white: #FFFFFF;
+            
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 32px;
+            --space-lg: 64px;
+            --space-xl: 128px;
+            
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, sans-serif;
+            
+            --shadow-sm: 0 2px 10px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.12);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--charcoal);
+            background: var(--ivory);
+            line-height: 1.6;
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        .section {
+            padding: var(--space-xl) 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .section-label {
+            display: inline-block;
+            color: var(--gold);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: var(--space-sm);
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--charcoal);
+            margin-bottom: var(--space-md);
+            font-family: var(--font-serif);
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ========================================
+           HEADER & NAVIGATION
+        ======================================== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: var(--font-serif);
+            text-decoration: none;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--space-sm);
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--charcoal);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--gold);
+            background: rgba(212, 165, 116, 0.1);
+        }
+
+        .nav-cta {
+            background: var(--gold-gradient);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(212, 165, 116, 0.3);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 165, 116, 0.4);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--charcoal);
+            margin: 5px 0;
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        /* ========================================
+           PAGE HERO
+        ======================================== */
+        .page-hero {
+            padding: 180px 0 100px;
+            background: linear-gradient(135deg, var(--charcoal) 0%, #1a1a1a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(212, 165, 116, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(232, 180, 184, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .page-hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-hero-label {
+            display: inline-block;
+            color: var(--gold);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: var(--space-sm);
+        }
+
+        .page-hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-family: var(--font-serif);
+            color: white;
+            margin-bottom: var(--space-md);
+        }
+
+        .page-hero-subtitle {
+            font-size: 18px;
+            color: rgba(255,255,255,0.8);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .breadcrumb {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+        }
+
+        .breadcrumb a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .breadcrumb a:hover {
+            color: var(--gold);
+        }
+
+        .breadcrumb span {
+            color: var(--gold);
+        }
+
+        /* ========================================
+           MAIN CONDITION SECTION
+        ======================================== */
+        .main-condition {
+            background: white;
+            padding: var(--space-xl) 0;
+        }
+
+        .condition-highlight {
+            max-width: 900px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, var(--charcoal) 0%, #3a3a3a 100%);
+            border-radius: 30px;
+            padding: var(--space-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .condition-highlight::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: var(--gold-gradient);
+        }
+
+        .condition-highlight::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(212, 165, 116, 0.1) 0%, transparent 70%);
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .condition-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .condition-icon {
+            width: 100px;
+            height: 100px;
+            background: var(--gold-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            margin: 0 auto var(--space-md);
+            box-shadow: 0 10px 30px rgba(212, 165, 116, 0.3);
+        }
+
+        .condition-percentage {
+            font-size: clamp(4rem, 10vw, 8rem);
+            font-weight: 900;
+            font-family: var(--font-serif);
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: var(--space-sm);
+        }
+
+        .condition-title {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: white;
+            font-family: var(--font-serif);
+            margin-bottom: var(--space-md);
+        }
+
+        .condition-text {
+            font-size: 18px;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.8;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .condition-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            background: rgba(232, 180, 184, 0.2);
+            color: var(--rose-light);
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: var(--space-md);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ========================================
+           REASONS SECTION
+        ======================================== */
+        .reasons-section {
+            background: var(--ivory);
+            padding: var(--space-xl) 0;
+        }
+
+        .reasons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+        }
+
+        .reason-card {
+            background: white;
+            padding: var(--space-lg);
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reason-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gold-gradient);
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .reason-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .reason-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .reason-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--ivory) 0%, white 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin: 0 auto var(--space-md);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .reason-card h3 {
+            font-size: 20px;
+            color: var(--charcoal);
+            margin-bottom: var(--space-sm);
+            font-family: var(--font-serif);
+        }
+
+        .reason-card p {
+            font-size: 15px;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        /* ========================================
+           DETAILS SECTION
+        ======================================== */
+        .details-section {
+            background: white;
+            padding: var(--space-xl) 0;
+        }
+
+        .details-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-lg);
+            align-items: start;
+        }
+
+        .details-text h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-family: var(--font-serif);
+            color: var(--charcoal);
+            margin-bottom: var(--space-md);
+        }
+
+        .details-text p {
+            font-size: 16px;
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: var(--space-md);
+        }
+
+        .details-list {
+            list-style: none;
+        }
+
+        .details-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            padding: var(--space-sm);
+            margin-bottom: var(--space-sm);
+            background: var(--ivory);
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+
+        .details-list li:hover {
+            background: linear-gradient(135deg, var(--ivory) 0%, white 100%);
+            transform: translateX(10px);
+        }
+
+        .details-list li::before {
+            content: '✓';
+            color: white;
+            background: var(--gold-gradient);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .details-list li span {
+            font-size: 15px;
+            color: var(--charcoal);
+        }
+
+        .details-sidebar {
+            background: var(--ivory);
+            border-radius: 20px;
+            padding: var(--space-lg);
+        }
+
+        .sidebar-title {
+            font-size: 20px;
+            font-family: var(--font-serif);
+            color: var(--charcoal);
+            margin-bottom: var(--space-md);
+            padding-bottom: var(--space-sm);
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .sidebar-item {
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .sidebar-item:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-item h4 {
+            font-size: 16px;
+            color: var(--charcoal);
+            margin-bottom: var(--space-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .sidebar-item h4::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+            border-radius: 50%;
+        }
+
+        .sidebar-item p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.7;
+            padding-left: var(--space-sm);
+        }
+
+        /* ========================================
+           FAQ SECTION
+        ======================================== */
+        .faq-section {
+            background: var(--ivory);
+            padding: var(--space-xl) 0;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: var(--space-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .faq-item:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .faq-question {
+            padding: var(--space-md);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 17px;
+            color: var(--charcoal);
+            user-select: none;
+            transition: var(--transition);
+        }
+
+        .faq-question:hover {
+            color: var(--gold);
+        }
+
+        .faq-icon {
+            width: 30px;
+            height: 30px;
+            background: var(--gold-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            transition: var(--transition);
+            flex-shrink: 0;
+            margin-left: var(--space-sm);
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer-content {
+            padding: 0 var(--space-md) var(--space-md) var(--space-md);
+            color: var(--gray);
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .faq-highlight {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* ========================================
+           CONTACT PROMPT SECTION
+        ======================================== */
+        .contact-prompt {
+            background: white;
+            padding: var(--space-xl) 0;
+        }
+
+        .prompt-card {
+            max-width: 800px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, var(--rose-light) 0%, white 100%);
+            border-left: 6px solid var(--gold);
+            border-radius: 0 20px 20px 0;
+            padding: var(--space-lg);
+            text-align: center;
+        }
+
+        .prompt-card h3 {
+            font-size: 24px;
+            font-family: var(--font-serif);
+            color: var(--charcoal);
+            margin-bottom: var(--space-sm);
+        }
+
+        .prompt-card p {
+            font-size: 16px;
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: var(--space-md);
+        }
+
+        .prompt-card .btn {
+            margin-top: var(--space-sm);
+        }
+
+        /* ========================================
+           CTA SECTION
+        ======================================== */
+        .cta-section {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--rose) 100%);
+            padding: var(--space-xl) 0;
+            text-align: center;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            color: white;
+            font-family: var(--font-serif);
+            margin-bottom: var(--space-sm);
+        }
+
+        .cta-subtitle {
+            font-size: 16px;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: var(--space-md);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: var(--space-sm);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--charcoal);
+        }
+
+        .btn-white:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: var(--charcoal);
+        }
+
+        .btn-gold {
+            background: var(--gold-gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(212, 165, 116, 0.3);
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 165, 116, 0.4);
+        }
+
+        /* ========================================
+           FOOTER
+        ======================================== */
+        .footer {
+            background: var(--charcoal);
+            color: white;
+            padding: var(--space-lg) 0 var(--space-md);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: var(--space-lg);
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-brand p {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            line-height: 1.8;
+            margin-top: var(--space-sm);
+        }
+
+        .footer-links h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+            color: var(--gold);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: var(--space-xs);
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            padding-top: var(--space-md);
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            color: rgba(255,255,255,0.5);
+            font-size: 13px;
+        }
+
+        /* ========================================
+           WHATSAPP FLOAT
+        ======================================== */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            transition: var(--transition);
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.5);
+        }
+
+        /* ========================================
+           RESPONSIVE
+        ======================================== */
+        @media (max-width: 1024px) {
+            .reasons-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .details-content {
+                grid-template-columns: 1fr;
+            }
+
+            .details-sidebar {
+                order: -1;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .nav-cta {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav.active .nav-links {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                padding: var(--space-md);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+
+            .page-hero {
+                padding: 140px 0 60px;
+            }
+
+            .condition-highlight {
+                padding: var(--space-md);
+            }
+
+            .reasons-grid {
+                gap: var(--space-sm);
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">ICIGIFCA</a>
+                
+                <nav class="nav" id="mainNav">
+                    <ul class="nav-links">
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="programa.html">Programa</a></li>
+                        <li><a href="practicas-clinicas.html">Prácticas Clínicas</a></li>
+                        <li><a href="sedes.html">Sedes</a></li>
+                        <li><a href="condiciones-academicas.html" class="active">Condiciones</a></li>
+                        <li><a href="index.html#video-testimonials">Testimonios</a></li>
+                        <li><a href="index.html#faq">FAQ</a></li>
+                    </ul>
+                    <a href="index.html#contacto" class="nav-cta">Solicitar Información</a>
+                </nav>
+
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="page-hero-content" data-aos="fade-up">
+                <span class="page-hero-label">Información Importante</span>
+                <h1 class="page-hero-title">Condiciones Académicas</h1>
+                <p class="page-hero-subtitle">
+                    Requisitos y políticas para acceder a las prácticas clínicas presenciales 
+                    del programa ICIGIFCA
+                </p>
+                <div class="breadcrumb">
+                    <a href="index.html">Inicio</a>
+                    <span>→</span>
+                    <span>Condiciones Académicas</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Condition -->
+    <section class="main-condition section">
+        <div class="container">
+            <div class="condition-highlight" data-aos="fade-up">
+                <div class="condition-content">
+                    <div class="condition-icon">📋</div>
+                    <div class="condition-percentage">70%</div>
+                    <h2 class="condition-title">Requisito de Pago para Prácticas Clínicas</h2>
+                    <p class="condition-text">
+                        Para acceder a las prácticas clínicas presenciales, el alumno deberá haber 
+                        cancelado al menos el <strong>70% del valor total del programa</strong>. 
+                        Esta condición es obligatoria y sin excepción, y forma parte de los 
+                        estándares académicos y organizativos de ICIGIFCA.
+                    </p>
+                    <div class="condition-badge">
+                        ⚠️ Condición Obligatoria
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reasons Section -->
+    <section class="reasons-section section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">¿Por qué este requisito?</span>
+                <h2 class="section-title">Garantías del Requisito del 70%</h2>
+                <p class="section-subtitle">
+                    Esta política existe para proteger tanto a los participantes como la 
+                    integridad del programa
+                </p>
+            </div>
+
+            <div class="reasons-grid">
+                <div class="reason-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="reason-icon">📊</div>
+                    <h3>Organización Logística</h3>
+                    <p>
+                        Garantiza la adecuada planificación y coordinación de recursos, 
+                        espacios clínicos, equipos y personal necesario para ofrecer 
+                        una experiencia formativa de calidad.
+                    </p>
+                </div>
+
+                <div class="reason-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="reason-icon">🎓</div>
+                    <h3>Calidad Académica</h3>
+                    <p>
+                        Asegura que cada participante reciba la atención personalizada 
+                        y los recursos académicos necesarios para un entrenamiento 
+                        efectivo y completo.
+                    </p>
+                </div>
+
+                <div class="reason-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="reason-icon">🤝</div>
+                    <h3>Compromisos Institucionales</h3>
+                    <p>
+                        Permite cumplir con los compromisos adquiridos con docentes, 
+                        personal clínico, pacientes e instituciones colaboradoras 
+                        que hacen posible el programa.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Details Section -->
+    <section class="details-section section">
+        <div class="container">
+            <div class="details-content">
+                <div class="details-text" data-aos="fade-right">
+                    <h2>Detalles de la Política</h2>
+                    <p>
+                        ICIGIFCA mantiene este requisito como parte de sus estándares 
+                        académicos y organizativos, garantizando así una experiencia 
+                        formativa de la más alta calidad para todos los participantes.
+                    </p>
+                    <p>
+                        Esta política se aplica de manera uniforme a todos los participantes 
+                        del programa, sin excepciones, asegurando equidad y transparencia 
+                        en el proceso formativo.
+                    </p>
+
+                    <ul class="details-list">
+                        <li>
+                            <span>El porcentaje se calcula sobre el valor total del programa de formación</span>
+                        </li>
+                        <li>
+                            <span>La condición debe cumplirse antes de la fecha asignada para prácticas</span>
+                        </li>
+                        <li>
+                            <span>El cumplimiento se verifica a través del área administrativa</span>
+                        </li>
+                        <li>
+                            <span>La asignación de fechas está sujeta a la verificación del requisito</span>
+                        </li>
+                        <li>
+                            <span>No se admiten excepciones ni casos especiales</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="details-sidebar" data-aos="fade-left">
+                    <h3 class="sidebar-title">Información Adicional</h3>
+
+                    <div class="sidebar-item">
+                        <h4>Verificación del Requisito</h4>
+                        <p>
+                            El área administrativa verifica el cumplimiento del requisito 
+                            antes de confirmar la fecha de prácticas de cada participante.
+                        </p>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <h4>Opciones de Financiamiento</h4>
+                        <p>
+                            Contamos con diversas opciones de financiamiento y planes de 
+                            pago flexibles. Consulta con nuestro equipo para conocer 
+                            las alternativas disponibles.
+                        </p>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <h4>Fechas de Prácticas</h4>
+                        <p>
+                            La asignación de fechas se realiza según disponibilidad y 
+                            cumplimiento del requisito, en coordinación con el equipo 
+                            académico.
+                        </p>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <h4>Dudas y Consultas</h4>
+                        <p>
+                            Para cualquier consulta sobre este requisito, contacta 
+                            directamente con el área administrativa del instituto.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Preguntas Frecuentes</span>
+                <h2 class="section-title">Dudas sobre las Condiciones</h2>
+            </div>
+
+            <div class="faq-container">
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>¿Por qué es obligatorio el 70% para las prácticas?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Esta condición garantiza la <span class="faq-highlight">organización logística adecuada</span>, 
+                            la calidad académica del entrenamiento y el cumplimiento de los compromisos con 
+                            docentes, personal clínico y pacientes. Es una política institucional que 
+                            protege la integridad del programa y asegura que todos los recursos necesarios 
+                            estén disponibles para ofrecer la mejor experiencia formativa.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>¿Existen excepciones a este requisito?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            No. Esta condición es <span class="faq-highlight">obligatoria y sin excepción</span> 
+                            para todos los participantes del programa. Se aplica de manera uniforme para 
+                            garantizar equidad y transparencia en el proceso formativo.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>¿Qué opciones de pago tengo disponibles?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            ICIGIFCA ofrece <span class="faq-highlight">diversas opciones de financiamiento 
+                            y planes de pago flexibles</span> para facilitar el cumplimiento de este requisito. 
+                            También contamos con descuentos por pronto pago y tarifas especiales en determinadas 
+                            circunstancias. Contacta con nuestro equipo administrativo para conocer las 
+                            opciones disponibles.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="400">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>¿Qué pasa si no puedo asistir en la fecha asignada?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Si por alguna razón no puedes asistir en la fecha asignada, debes 
+                            <span class="faq-highlight">coordinar directamente con el área administrativa</span> 
+                            para evaluar la posibilidad de reprogramación según cupos disponibles y cronograma 
+                            académico. La reprogramación está sujeta a disponibilidad y debe solicitarse 
+                            con anticipación.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="500">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>¿Cómo puedo verificar mi estado de pago?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Puedes verificar tu estado de pago contactando al 
+                            <span class="faq-highlight">área administrativa de ICIGIFCA</span> a través de 
+                            los canales oficiales de comunicación. El equipo te proporcionará información 
+                            actualizada sobre tu situación y los pasos a seguir para completar el 
+                            requisito si aún no lo has cumplido.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Prompt -->
+    <section class="contact-prompt section">
+        <div class="container">
+            <div class="prompt-card" data-aos="fade-up">
+                <h3>¿Tienes dudas sobre las condiciones?</h3>
+                <p>
+                    Nuestro equipo administrativo está disponible para resolver cualquier 
+                    consulta relacionada con los requisitos de pago, opciones de financiamiento 
+                    y proceso de inscripción. No dudes en contactarnos.
+                </p>
+                <a href="index.html#contacto" class="btn btn-gold">Contactar Ahora</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content" data-aos="fade-up">
+                <h2 class="cta-title">¿Listo para dar el siguiente paso?</h2>
+                <p class="cta-subtitle">
+                    Conoce más sobre nuestro programa de formación y las prácticas clínicas
+                </p>
+                <div class="cta-buttons">
+                    <a href="index.html#contacto" class="btn btn-white">Solicitar Información</a>
+                    <a href="practicas-clinicas.html" class="btn btn-outline">Ver Prácticas Clínicas</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">ICIGIFCA</a>
+                    <p>
+                        Instituto Iberoamericano de Cirugía y Ginecología Regenerativa, Funcional y Estética. 
+                        27 años formando especialistas en medicina íntima en Latinoamérica.
+                    </p>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Navegación</h4>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="programa.html">Programa</a></li>
+                        <li><a href="practicas-clinicas.html">Prácticas Clínicas</a></li>
+                        <li><a href="sedes.html">Sedes</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Información</h4>
+                    <ul>
+                        <li><a href="condiciones-academicas.html">Condiciones Académicas</a></li>
+                        <li><a href="index.html#video-testimonials">Testimonios</a></li>
+                        <li><a href="index.html#faq">FAQ</a></li>
+                        <li><a href="index.html#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="index.html#certificaciones">Certificaciones</a></li>
+                        <li><a href="index.html#gallery">Galería</a></li>
+                        <li><a href="#">Revista Científica</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 ICIGIFCA. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/XXXXXXXXXXX" class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">
+        💬
+    </a>
+
+    <!-- AOS Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('mainNav');
+            nav.classList.toggle('active');
+        }
+
+        // FAQ Toggle Function
+        function toggleFaq(element) {
+            const faqItem = element.parentElement;
+            const isActive = faqItem.classList.contains('active');
+            
+            // Close all FAQ items
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // If the clicked item wasn't active, open it
+            if (!isActive) {
+                faqItem.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
