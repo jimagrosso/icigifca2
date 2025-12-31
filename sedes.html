@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sedes de Prácticas Clínicas ICIGIFCA. Barquisimeto, República Dominicana, Perú y México.">
+    <title>Sedes de Prácticas - ICIGIFCA</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        /* ========================================
+           RESET & VARIABLES
+        ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #D4A574;
+            --gold-light: #E6C896;
+            --gold-gradient: linear-gradient(135deg, #D4A574 0%, #E6C896 100%);
+            --rose: #E8B4B8;
+            --rose-light: #F5D5D8;
+            --charcoal: #2C2C2C;
+            --gray: #666666;
+            --gray-light: #999999;
+            --ivory: #FDFDF5;
+            --white: #FFFFFF;
+            
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 32px;
+            --space-lg: 64px;
+            --space-xl: 128px;
+            
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, sans-serif;
+            
+            --shadow-sm: 0 2px 10px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.12);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--charcoal);
+            background: var(--ivory);
+            line-height: 1.6;
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        .section {
+            padding: var(--space-xl) 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .section-label {
+            display: inline-block;
+            color: var(--gold);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: var(--space-sm);
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--charcoal);
+            margin-bottom: var(--space-md);
+            font-family: var(--font-serif);
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ========================================
+           HEADER & NAVIGATION
+        ======================================== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: var(--font-serif);
+            text-decoration: none;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--space-sm);
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--charcoal);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--gold);
+            background: rgba(212, 165, 116, 0.1);
+        }
+
+        .nav-cta {
+            background: var(--gold-gradient);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(212, 165, 116, 0.3);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 165, 116, 0.4);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--charcoal);
+            margin: 5px 0;
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        /* ========================================
+           PAGE HERO
+        ======================================== */
+        .page-hero {
+            padding: 180px 0 100px;
+            background: linear-gradient(135deg, var(--charcoal) 0%, #1a1a1a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(212, 165, 116, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(232, 180, 184, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .page-hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-hero-label {
+            display: inline-block;
+            color: var(--gold);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: var(--space-sm);
+        }
+
+        .page-hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-family: var(--font-serif);
+            color: white;
+            margin-bottom: var(--space-md);
+        }
+
+        .page-hero-subtitle {
+            font-size: 18px;
+            color: rgba(255,255,255,0.8);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .breadcrumb {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+        }
+
+        .breadcrumb a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .breadcrumb a:hover {
+            color: var(--gold);
+        }
+
+        .breadcrumb span {
+            color: var(--gold);
+        }
+
+        /* ========================================
+           SEDES INTRO
+        ======================================== */
+        .sedes-intro {
+            background: white;
+            padding: var(--space-xl) 0;
+        }
+
+        .intro-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .intro-content p {
+            font-size: 18px;
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: var(--space-md);
+        }
+
+        .intro-highlights {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-lg);
+            margin-top: var(--space-lg);
+            flex-wrap: wrap;
+        }
+
+        .intro-highlight {
+            text-align: center;
+        }
+
+        .intro-highlight-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--gold-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto var(--space-sm);
+        }
+
+        .intro-highlight h4 {
+            font-size: 18px;
+            color: var(--charcoal);
+            margin-bottom: var(--space-xs);
+        }
+
+        .intro-highlight p {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 0;
+        }
+
+        /* ========================================
+           SEDES GRID
+        ======================================== */
+        .sedes-section {
+            background: var(--ivory);
+            padding: var(--space-xl) 0;
+        }
+
+        .sedes-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-lg);
+        }
+
+        .sede-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .sede-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .sede-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gold-gradient);
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .sede-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .sede-card.principal {
+            grid-column: 1 / -1;
+        }
+
+        .sede-card.principal .sede-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-lg);
+            align-items: center;
+        }
+
+        .sede-header {
+            padding: var(--space-lg);
+            position: relative;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .sede-card.principal .sede-header {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--rose) 100%);
+            min-height: auto;
+            padding: var(--space-lg);
+        }
+
+        .sede-card:not(.principal) .sede-header {
+            background: linear-gradient(135deg, var(--charcoal) 0%, #3a3a3a 100%);
+        }
+
+        .sede-flag {
+            font-size: 64px;
+            margin-bottom: var(--space-sm);
+        }
+
+        .sede-card.principal .sede-flag {
+            font-size: 80px;
+        }
+
+        .sede-country {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            font-family: var(--font-serif);
+            margin-bottom: var(--space-xs);
+        }
+
+        .sede-card.principal .sede-country {
+            font-size: 32px;
+        }
+
+        .sede-city {
+            font-size: 14px;
+            color: rgba(255,255,255,0.9);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sede-badge {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            background: white;
+            color: var(--gold);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sede-body {
+            padding: var(--space-lg);
+        }
+
+        .sede-card.principal .sede-body {
+            padding: var(--space-lg);
+        }
+
+        .sede-description {
+            font-size: 15px;
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: var(--space-md);
+        }
+
+        .sede-features {
+            list-style: none;
+            margin-bottom: var(--space-md);
+        }
+
+        .sede-features li {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 14px;
+            color: var(--charcoal);
+            padding: var(--space-xs) 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .sede-features li:last-child {
+            border-bottom: none;
+        }
+
+        .sede-features li::before {
+            content: '✓';
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .sede-status {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 50px;
+        }
+
+        .sede-status.active {
+            background: rgba(212, 165, 116, 0.15);
+            color: var(--gold);
+        }
+
+        .sede-status.optional {
+            background: rgba(232, 180, 184, 0.2);
+            color: var(--rose);
+        }
+
+        .sede-status::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .sede-status.active::before {
+            background: var(--gold);
+        }
+
+        .sede-status.optional::before {
+            background: var(--rose);
+        }
+
+        /* ========================================
+           COORDINATION INFO
+        ======================================== */
+        .coordination-section {
+            background: white;
+            padding: var(--space-xl) 0;
+        }
+
+        .coordination-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-lg);
+            align-items: center;
+        }
+
+        .coordination-text h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-family: var(--font-serif);
+            color: var(--charcoal);
+            margin-bottom: var(--space-md);
+        }
+
+        .coordination-text p {
+            font-size: 16px;
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: var(--space-md);
+        }
+
+        .coordination-list {
+            list-style: none;
+            margin-top: var(--space-md);
+        }
+
+        .coordination-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            padding: var(--space-sm) 0;
+        }
+
+        .coordination-list li::before {
+            content: '→';
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .coordination-image {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .coordination-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 20px;
+        }
+
+        /* ========================================
+           MAP SECTION
+        ======================================== */
+        .map-section {
+            background: var(--ivory);
+            padding: var(--space-xl) 0;
+        }
+
+        .map-container {
+            background: white;
+            border-radius: 20px;
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .map-visual {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-md);
+            padding: var(--space-lg);
+            background: linear-gradient(135deg, var(--ivory) 0%, white 100%);
+            border-radius: 15px;
+        }
+
+        .map-point {
+            text-align: center;
+            padding: var(--space-md);
+            transition: var(--transition);
+        }
+
+        .map-point:hover {
+            transform: scale(1.05);
+        }
+
+        .map-point-flag {
+            font-size: 48px;
+            margin-bottom: var(--space-sm);
+        }
+
+        .map-point-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--charcoal);
+            margin-bottom: var(--space-xs);
+        }
+
+        .map-point-type {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .map-point.principal .map-point-name {
+            color: var(--gold);
+        }
+
+        .map-legend {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-lg);
+            margin-top: var(--space-md);
+            padding-top: var(--space-md);
+            border-top: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.principal {
+            background: var(--gold);
+        }
+
+        .legend-dot.optional {
+            background: var(--rose);
+        }
+
+        /* ========================================
+           CTA SECTION
+        ======================================== */
+        .cta-section {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--rose) 100%);
+            padding: var(--space-xl) 0;
+            text-align: center;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            color: white;
+            font-family: var(--font-serif);
+            margin-bottom: var(--space-sm);
+        }
+
+        .cta-subtitle {
+            font-size: 16px;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: var(--space-md);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: var(--space-sm);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--charcoal);
+        }
+
+        .btn-white:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: var(--charcoal);
+        }
+
+        /* ========================================
+           FOOTER
+        ======================================== */
+        .footer {
+            background: var(--charcoal);
+            color: white;
+            padding: var(--space-lg) 0 var(--space-md);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: var(--space-lg);
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-brand p {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            line-height: 1.8;
+            margin-top: var(--space-sm);
+        }
+
+        .footer-links h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+            color: var(--gold);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: var(--space-xs);
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            padding-top: var(--space-md);
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            color: rgba(255,255,255,0.5);
+            font-size: 13px;
+        }
+
+        /* ========================================
+           WHATSAPP FLOAT
+        ======================================== */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            transition: var(--transition);
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.5);
+        }
+
+        /* ========================================
+           RESPONSIVE
+        ======================================== */
+        @media (max-width: 1024px) {
+            .sedes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sede-card.principal .sede-content {
+                grid-template-columns: 1fr;
+            }
+
+            .coordination-content {
+                grid-template-columns: 1fr;
+            }
+
+            .coordination-image {
+                order: -1;
+            }
+
+            .map-visual {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .nav-cta {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav.active .nav-links {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                padding: var(--space-md);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+
+            .page-hero {
+                padding: 140px 0 60px;
+            }
+
+            .intro-highlights {
+                flex-direction: column;
+                gap: var(--space-md);
+            }
+
+            .map-visual {
+                grid-template-columns: 1fr 1fr;
+                gap: var(--space-sm);
+            }
+
+            .map-legend {
+                flex-direction: column;
+                align-items: center;
+                gap: var(--space-sm);
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">ICIGIFCA</a>
+                
+                <nav class="nav" id="mainNav">
+                    <ul class="nav-links">
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="programa.html">Programa</a></li>
+                        <li><a href="practicas-clinicas.html">Prácticas Clínicas</a></li>
+                        <li><a href="sedes.html" class="active">Sedes</a></li>
+                        <li><a href="condiciones-academicas.html">Condiciones</a></li>
+                        <li><a href="index.html#video-testimonials">Testimonios</a></li>
+                        <li><a href="index.html#faq">FAQ</a></li>
+                    </ul>
+                    <a href="index.html#contacto" class="nav-cta">Solicitar Información</a>
+                </nav>
+
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="page-hero-content" data-aos="fade-up">
+                <span class="page-hero-label">Sedes de Prácticas</span>
+                <h1 class="page-hero-title">Nuestras Sedes Internacionales</h1>
+                <p class="page-hero-subtitle">
+                    Las prácticas clínicas presenciales se realizan en distintas sedes 
+                    internacionales, permitiendo flexibilidad y alcance regional
+                </p>
+                <div class="breadcrumb">
+                    <a href="index.html">Inicio</a>
+                    <span>→</span>
+                    <span>Sedes</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sedes Intro -->
+    <section class="sedes-intro section">
+        <div class="container">
+            <div class="intro-content" data-aos="fade-up">
+                <p>
+                    ICIGIFCA ofrece sedes de práctica clínica en múltiples países de Latinoamérica, 
+                    permitiendo a los participantes elegir la ubicación más conveniente según su 
+                    disponibilidad y preferencias. Cada sede cuenta con instalaciones de primer nivel, 
+                    equipos certificados y el mismo estándar de calidad académica que caracteriza 
+                    a nuestro instituto.
+                </p>
+                <p>
+                    La asignación de sedes se realiza según disponibilidad, cronograma académico 
+                    y elección del participante, en coordinación con el equipo académico del instituto.
+                </p>
+
+                <div class="intro-highlights">
+                    <div class="intro-highlight" data-aos="fade-up" data-aos-delay="100">
+                        <div class="intro-highlight-icon">🌎</div>
+                        <h4>Alcance Regional</h4>
+                        <p>Presencia en 4 países</p>
+                    </div>
+                    <div class="intro-highlight" data-aos="fade-up" data-aos-delay="200">
+                        <div class="intro-highlight-icon">🏥</div>
+                        <h4>Instalaciones Premium</h4>
+                        <p>Equipos de última generación</p>
+                    </div>
+                    <div class="intro-highlight" data-aos="fade-up" data-aos-delay="300">
+                        <div class="intro-highlight-icon">👨‍⚕️</div>
+                        <h4>Instructores Certificados</h4>
+                        <p>Especialistas internacionales</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sedes Grid -->
+    <section class="sedes-section section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Ubicaciones</span>
+                <h2 class="section-title">Sedes Disponibles</h2>
+                <p class="section-subtitle">
+                    Conoce cada una de nuestras sedes de práctica clínica
+                </p>
+            </div>
+
+            <div class="sedes-grid">
+                <!-- Sede Principal - Venezuela -->
+                <div class="sede-card principal" data-aos="fade-up" data-aos-delay="100">
+                    <div class="sede-content">
+                        <div class="sede-header">
+                            <div class="sede-badge">Sede Principal</div>
+                            <div class="sede-flag">🇻🇪</div>
+                            <h3 class="sede-country">Venezuela</h3>
+                            <p class="sede-city">Barquisimeto, Estado Lara</p>
+                        </div>
+                        <div class="sede-body">
+                            <p class="sede-description">
+                                Nuestra sede principal cuenta con más de 27 años de trayectoria 
+                                formando especialistas en ginecología regenerativa. Ubicada en el 
+                                corazón de Barquisimeto, Estado Lara, ofrece instalaciones de primer 
+                                nivel con tecnología de vanguardia y un equipo docente altamente 
+                                calificado.
+                            </p>
+                            <ul class="sede-features">
+                                <li>Instalaciones propias de última generación</li>
+                                <li>Equipo docente permanente y especializado</li>
+                                <li>Mayor flujo de pacientes para práctica intensiva</li>
+                                <li>Acceso a toda la tecnología del instituto</li>
+                                <li>Soporte logístico completo para participantes</li>
+                            </ul>
+                            <div class="sede-status active">Sede Activa Permanente</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sede República Dominicana -->
+                <div class="sede-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="sede-header">
+                        <div class="sede-flag">🇩🇴</div>
+                        <h3 class="sede-country">República Dominicana</h3>
+                        <p class="sede-city">Santo Domingo</p>
+                    </div>
+                    <div class="sede-body">
+                        <p class="sede-description">
+                            Sede regional que facilita el acceso a participantes del Caribe 
+                            y Centroamérica. Cuenta con instalaciones asociadas de alto nivel 
+                            y el mismo estándar de calidad que nuestra sede principal.
+                        </p>
+                        <ul class="sede-features">
+                            <li>Convenios con clínicas especializadas</li>
+                            <li>Instructores certificados ICIGIFCA</li>
+                            <li>Ideal para participantes del Caribe</li>
+                        </ul>
+                        <div class="sede-status active">Sede Activa</div>
+                    </div>
+                </div>
+
+                <!-- Sede Perú -->
+                <div class="sede-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="sede-header">
+                        <div class="sede-flag">🇵🇪</div>
+                        <h3 class="sede-country">Perú</h3>
+                        <p class="sede-city">Lima</p>
+                    </div>
+                    <div class="sede-body">
+                        <p class="sede-description">
+                            Sede opcional que brinda alternativa para participantes de la 
+                            región andina. Disponible según demanda y programación académica, 
+                            con el respaldo de instituciones médicas locales.
+                        </p>
+                        <ul class="sede-features">
+                            <li>Alianzas con centros médicos reconocidos</li>
+                            <li>Supervisión por especialistas certificados</li>
+                            <li>Opción flexible según demanda</li>
+                        </ul>
+                        <div class="sede-status optional">Sede Opcional</div>
+                    </div>
+                </div>
+
+                <!-- Sede México -->
+                <div class="sede-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="sede-header">
+                        <div class="sede-flag">🇲🇽</div>
+                        <h3 class="sede-country">México</h3>
+                        <p class="sede-city">Ciudad de México</p>
+                    </div>
+                    <div class="sede-body">
+                        <p class="sede-description">
+                            Sede opcional estratégicamente ubicada para participantes de 
+                            México y América del Norte. Disponible según programación especial 
+                            y demanda de participantes de la región.
+                        </p>
+                        <ul class="sede-features">
+                            <li>Acceso a tecnología avanzada</li>
+                            <li>Red de especialistas asociados</li>
+                            <li>Opción flexible según demanda</li>
+                        </ul>
+                        <div class="sede-status optional">Sede Opcional</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coordination Info -->
+    <section class="coordination-section section">
+        <div class="container">
+            <div class="coordination-content">
+                <div class="coordination-text" data-aos="fade-right">
+                    <h2>Coordinación y Asignación de Sedes</h2>
+                    <p>
+                        La asignación de sedes para las prácticas clínicas se realiza de manera 
+                        personalizada, tomando en cuenta las preferencias del participante, 
+                        su ubicación geográfica y la disponibilidad en el cronograma académico.
+                    </p>
+                    <p>
+                        Nuestro equipo de coordinación académica trabaja directamente con cada 
+                        participante para encontrar la mejor opción según sus necesidades y 
+                        garantizar una experiencia formativa de máxima calidad.
+                    </p>
+
+                    <ul class="coordination-list">
+                        <li>Asesoría personalizada para selección de sede</li>
+                        <li>Coordinación de fechas según disponibilidad</li>
+                        <li>Apoyo logístico para participantes internacionales</li>
+                        <li>Flexibilidad en casos especiales previa coordinación</li>
+                    </ul>
+                </div>
+                <div class="coordination-image" data-aos="fade-left">
+                    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763939467/PXL_20250724_142148471.PORTRAIT_avcliw.jpg" 
+                         alt="Equipo ICIGIFCA">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Presencia Regional</span>
+                <h2 class="section-title">Cobertura en Latinoamérica</h2>
+            </div>
+
+            <div class="map-container" data-aos="fade-up">
+                <div class="map-visual">
+                    <div class="map-point principal">
+                        <div class="map-point-flag">🇻🇪</div>
+                        <div class="map-point-name">Venezuela</div>
+                        <div class="map-point-type">Sede Principal</div>
+                    </div>
+                    <div class="map-point">
+                        <div class="map-point-flag">🇩🇴</div>
+                        <div class="map-point-name">Rep. Dominicana</div>
+                        <div class="map-point-type">Sede Activa</div>
+                    </div>
+                    <div class="map-point">
+                        <div class="map-point-flag">🇵🇪</div>
+                        <div class="map-point-name">Perú</div>
+                        <div class="map-point-type">Sede Opcional</div>
+                    </div>
+                    <div class="map-point">
+                        <div class="map-point-flag">🇲🇽</div>
+                        <div class="map-point-name">México</div>
+                        <div class="map-point-type">Sede Opcional</div>
+                    </div>
+                </div>
+
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <div class="legend-dot principal"></div>
+                        <span>Sede Principal / Activa</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot optional"></div>
+                        <span>Sede Opcional (según demanda)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content" data-aos="fade-up">
+                <h2 class="cta-title">¿Quieres saber más sobre nuestras sedes?</h2>
+                <p class="cta-subtitle">
+                    Contáctanos para conocer disponibilidad de fechas y la sede más 
+                    conveniente para tu ubicación
+                </p>
+                <div class="cta-buttons">
+                    <a href="index.html#contacto" class="btn btn-white">Solicitar Información</a>
+                    <a href="practicas-clinicas.html" class="btn btn-outline">Ver Prácticas Clínicas</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">ICIGIFCA</a>
+                    <p>
+                        Instituto Iberoamericano de Cirugía y Ginecología Regenerativa, Funcional y Estética. 
+                        27 años formando especialistas en medicina íntima en Latinoamérica.
+                    </p>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Navegación</h4>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="programa.html">Programa</a></li>
+                        <li><a href="practicas-clinicas.html">Prácticas Clínicas</a></li>
+                        <li><a href="sedes.html">Sedes</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Información</h4>
+                    <ul>
+                        <li><a href="condiciones-academicas.html">Condiciones Académicas</a></li>
+                        <li><a href="index.html#video-testimonials">Testimonios</a></li>
+                        <li><a href="index.html#faq">FAQ</a></li>
+                        <li><a href="index.html#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="index.html#certificaciones">Certificaciones</a></li>
+                        <li><a href="index.html#gallery">Galería</a></li>
+                        <li><a href="#">Revista Científica</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 ICIGIFCA. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/XXXXXXXXXXX" class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">
+        💬
+    </a>
+
+    <!-- AOS Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('mainNav');
+            nav.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
