@@ -14,155 +14,23 @@
     
     <style>
         /* ========================================
-           LOADER PREMIUM
-        ======================================== */
-        .loader-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #FDFDF5 0%, #F5D5D8 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 99999;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-
-        .loader-wrapper.fade-out {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .loader {
-            position: relative;
-            width: 120px;
-            height: 120px;
-        }
-
-        .loader-circle {
-            position: absolute;
-            border: 3px solid transparent;
-            border-top-color: #D4A574;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        .loader-circle:nth-child(1) {
-            width: 120px;
-            height: 120px;
-            animation-duration: 0.8s;
-        }
-
-        .loader-circle:nth-child(2) {
-            width: 100px;
-            height: 100px;
-            top: 10px;
-            left: 10px;
-            animation-duration: 1s;
-            border-top-color: #E8B4B8;
-        }
-
-        .loader-circle:nth-child(3) {
-            width: 80px;
-            height: 80px;
-            top: 20px;
-            left: 20px;
-            animation-duration: 1.2s;
-            border-top-color: #D4A574;
-        }
-
-        .loader-text {
-            position: absolute;
-            top: 150px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            color: #2C2C2C;
-            font-weight: 700;
-            letter-spacing: 2px;
-            animation: pulse 1.5s ease infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
-        }
-
-        /* ========================================
-           CUSTOM CURSOR
-        ======================================== */
-        .cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #D4A574;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9998;
-            transition: all 0.1s ease;
-            transform: translate(-50%, -50%);
-            mix-blend-mode: difference;
-        }
-
-        .cursor-follower {
-            width: 40px;
-            height: 40px;
-            background: rgba(212, 165, 116, 0.1);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9997;
-            transition: all 0.3s ease;
-            transform: translate(-50%, -50%);
-        }
-
-        .cursor.active {
-            transform: translate(-50%, -50%) scale(0.7);
-            background: #D4A574;
-        }
-
-        .cursor-follower.active {
-            transform: translate(-50%, -50%) scale(1.5);
-        }
-
-        /* ========================================
-           SCROLL PROGRESS BAR
-        ======================================== */
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #D4A574 0%, #E8B4B8 100%);
-            z-index: 10000;
-            transition: width 0.1s ease;
-            box-shadow: 0 0 10px rgba(212, 165, 116, 0.5);
-        }
-
-        /* ========================================
            RESET & VARIABLES
         ======================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none;
         }
 
         :root {
             --gold: #D4A574;
+            --gold-light: #E6C896;
             --gold-gradient: linear-gradient(135deg, #D4A574 0%, #E6C896 100%);
             --rose: #E8B4B8;
             --rose-light: #F5D5D8;
             --charcoal: #2C2C2C;
             --gray: #666666;
+            --gray-light: #999999;
             --ivory: #FDFDF5;
             --white: #FFFFFF;
             
@@ -178,13 +46,11 @@
             --shadow-sm: 0 2px 10px rgba(0,0,0,0.05);
             --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
             --shadow-lg: 0 20px 60px rgba(0,0,0,0.12);
-            --shadow-xl: 0 30px 90px rgba(0,0,0,0.15);
             --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         html {
             scroll-behavior: smooth;
-            overflow-x: hidden;
         }
 
         body {
@@ -196,451 +62,15 @@
             overflow-x: hidden;
         }
 
-        /* Selection color */
-        ::selection {
-            background: var(--gold);
-            color: white;
-        }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 var(--space-md);
         }
 
-        h1, h2, h3, h4, h5, h6 {
-            font-family: var(--font-serif);
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: var(--space-sm);
-        }
-
-        h1 { font-size: clamp(2.5rem, 5vw, 4rem); }
-        h2 { font-size: clamp(2rem, 4vw, 3rem); }
-        h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
-        h4 { font-size: clamp(1.2rem, 2vw, 1.5rem); }
-
-        p {
-            margin-bottom: var(--space-sm);
-            color: var(--gray);
-            line-height: 1.8;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-            transition: var(--transition);
-        }
-
         .section {
             padding: var(--space-xl) 0;
             position: relative;
-        }
-
-        /* Text reveal animation */
-        .reveal-text {
-            overflow: hidden;
-            position: relative;
-        }
-
-        .reveal-text span {
-            display: inline-block;
-            animation: revealText 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            animation-delay: var(--delay, 0s);
-            transform: translateY(100%);
-            opacity: 0;
-        }
-
-        @keyframes revealText {
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        /* ========================================
-           HEADER GLASSMORPHISM
-        ======================================== */
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            z-index: 1000;
-            transition: var(--transition);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .header.scrolled {
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: var(--space-sm) 0;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 900;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-family: var(--font-serif);
-            position: relative;
-            animation: logoGlow 3s ease infinite;
-        }
-
-        @keyframes logoGlow {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.2); }
-        }
-
-        .nav {
-            display: flex;
-            gap: var(--space-md);
-            align-items: center;
-        }
-
-        .nav-link {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--charcoal);
-            position: relative;
-            padding: var(--space-xs) 0;
-            overflow: hidden;
-        }
-
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--gold-gradient);
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-        }
-
-        .nav-link:hover::before {
-            transform: translateX(0);
-        }
-
-        .nav-link::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            padding: var(--space-xs) 0;
-            color: var(--gold);
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-            opacity: 0;
-        }
-
-        .nav-link:hover {
-            color: var(--gold);
-        }
-
-        .btn-header {
-            background: var(--gold-gradient);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 600;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(212, 165, 116, 0.3);
-        }
-
-        .btn-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .btn-header:hover::before {
-            left: 100%;
-        }
-
-        .btn-header:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(212, 165, 116, 0.4);
-        }
-
-        /* ========================================
-           HERO PREMIUM EFFECTS
-        ======================================== */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            background: linear-gradient(135deg, var(--ivory) 0%, var(--rose-light) 50%, var(--ivory) 100%);
-            padding-top: 80px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Animated gradient background */
-        .hero::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 20% 80%, transparent 0%, rgba(212, 165, 116, 0.05) 50%, transparent 70%),
-                        radial-gradient(circle at 80% 20%, transparent 0%, rgba(232, 180, 184, 0.05) 50%, transparent 70%),
-                        radial-gradient(circle at 40% 40%, transparent 0%, rgba(212, 165, 116, 0.03) 50%, transparent 70%);
-            animation: gradientShift 20s ease infinite;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(-50px, -50px) rotate(120deg); }
-            66% { transform: translate(50px, -50px) rotate(240deg); }
-        }
-
-        /* Floating particles */
-        .particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--gold);
-            border-radius: 50%;
-            opacity: 0.3;
-            animation: float-up 10s infinite linear;
-        }
-
-        @keyframes float-up {
-            from {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.3;
-            }
-            90% {
-                opacity: 0.3;
-            }
-            to {
-                transform: translateY(-10vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        .hero-content {
-            text-align: center;
-            max-width: 900px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-title {
-            font-size: clamp(3rem, 6vw, 5rem);
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: var(--space-sm);
-            opacity: 0;
-            transform: translateY(30px);
-            animation: heroFadeUp 1s ease forwards;
-            position: relative;
-        }
-
-        /* Glowing effect on title */
-        .hero-title::before {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: blur(20px);
-            opacity: 0.5;
-        }
-
-        @keyframes heroFadeUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1.2rem, 2vw, 1.5rem);
-            color: var(--charcoal);
-            font-weight: 400;
-            margin-bottom: var(--space-md);
-            opacity: 0;
-            animation: heroFadeUp 1s ease 0.2s forwards;
-        }
-
-        .hero-description {
-            font-size: 18px;
-            color: var(--gray);
-            max-width: 600px;
-            margin: 0 auto var(--space-md);
-            opacity: 0;
-            animation: heroFadeUp 1s ease 0.4s forwards;
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: var(--space-sm);
-            justify-content: center;
-            margin-bottom: var(--space-lg);
-            opacity: 0;
-            animation: heroFadeUp 1s ease 0.6s forwards;
-        }
-
-        .btn {
-            padding: 16px 32px;
-            border-radius: 30px;
-            font-weight: 600;
-            transition: var(--transition);
-            cursor: none;
-            border: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary {
-            background: var(--gold-gradient);
-            color: white;
-            box-shadow: 0 4px 20px rgba(212, 165, 116, 0.3);
-        }
-
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
-        }
-
-        .btn-primary:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 40px rgba(212, 165, 116, 0.4);
-        }
-
-        .btn-secondary {
-            background: white;
-            color: var(--gold);
-            border: 2px solid var(--gold);
-            position: relative;
-            z-index: 1;
-        }
-
-        .btn-secondary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 100%;
-            background: var(--gold-gradient);
-            transition: width 0.3s ease;
-            z-index: -1;
-        }
-
-        .btn-secondary:hover::before {
-            width: 100%;
-        }
-
-        .btn-secondary:hover {
-            color: white;
-            transform: translateY(-3px);
-        }
-
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: var(--space-lg);
-            opacity: 0;
-            animation: heroFadeUp 1s ease 0.8s forwards;
-        }
-
-        .stat {
-            text-align: center;
-            position: relative;
-        }
-
-        .stat-number {
-            font-size: 36px;
-            font-weight: 900;
-            color: var(--gold);
-            display: block;
-            position: relative;
-        }
-
-        .stat-number::after {
-            content: attr(data-value);
-            position: absolute;
-            top: 0;
-            left: 0;
-            color: var(--gold);
-            opacity: 0.1;
-            font-size: 48px;
-            transform: translateY(-10px);
-            z-index: -1;
-        }
-
-        .stat-label {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--gray);
-        }
-
-        /* ========================================
-           SECTIONS WITH PARALLAX
-        ======================================== */
-        .section {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .section-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.03;
-            z-index: -1;
         }
 
         .section-header {
@@ -656,368 +86,588 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             margin-bottom: var(--space-sm);
-            position: relative;
-            padding: 0 30px;
         }
-
-        .section-label::before,
-        .section-label::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 20px;
-            height: 1px;
-            background: var(--gold);
-            animation: lineGrow 1s ease forwards;
-        }
-
-        @keyframes lineGrow {
-            from { width: 0; }
-            to { width: 20px; }
-        }
-
-        .section-label::before { left: 0; }
-        .section-label::after { right: 0; }
 
         .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
             color: var(--charcoal);
             margin-bottom: var(--space-md);
-            position: relative;
+            font-family: var(--font-serif);
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
         }
 
         /* ========================================
-           ABOUT SECTION PREMIUM
+           HEADER & NAVIGATION
         ======================================== */
-        .about {
-            background: white;
-            position: relative;
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
         }
 
-        .about::before {
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: var(--font-serif);
+            text-decoration: none;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--space-sm);
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--charcoal);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+            background: rgba(212, 165, 116, 0.1);
+        }
+
+        .nav-cta {
+            background: var(--gold-gradient);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(212, 165, 116, 0.3);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 165, 116, 0.4);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--charcoal);
+            margin: 5px 0;
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        /* ========================================
+           HERO SECTION
+        ======================================== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--ivory) 0%, white 50%, var(--rose-light) 100%);
+            padding-top: 80px;
+            overflow: hidden;
+        }
+
+        .hero::before {
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%;
+            right: 0;
+            width: 60%;
             height: 100%;
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(212, 165, 116, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(232, 180, 184, 0.03) 0%, transparent 50%);
+            background: radial-gradient(circle at 70% 30%, rgba(212, 165, 116, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 30% 80%, rgba(232, 180, 184, 0.15) 0%, transparent 50%);
             pointer-events: none;
         }
 
-        .pillars {
+        .hero-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: var(--space-md);
-            margin-top: var(--space-lg);
-        }
-
-        .pillar {
-            text-align: center;
-            padding: var(--space-md);
-            background: linear-gradient(135deg, var(--ivory) 0%, white 100%);
-            border-radius: 20px;
-            transition: var(--transition);
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-lg);
+            align-items: center;
             position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(212, 165, 116, 0.1);
-        }
-
-        .pillar::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, var(--gold) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .pillar:hover::before {
-            opacity: 0.05;
-        }
-
-        .pillar:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-            border-color: var(--gold);
-        }
-
-        .pillar-icon {
-            font-size: 48px;
-            margin-bottom: var(--space-sm);
-            animation: iconFloat 3s ease infinite;
-            animation-delay: var(--delay);
-        }
-
-        .pillar:nth-child(1) .pillar-icon { --delay: 0s; }
-        .pillar:nth-child(2) .pillar-icon { --delay: 0.5s; }
-        .pillar:nth-child(3) .pillar-icon { --delay: 1s; }
-        .pillar:nth-child(4) .pillar-icon { --delay: 1.5s; }
-
-        @keyframes iconFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        /* ========================================
-           PROGRAMS CARDS 3D
-        ======================================== */
-        .programs {
-            background: white;
-        }
-
-        .programs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: var(--space-md);
-            margin-top: var(--space-lg);
-            perspective: 1000px;
-        }
-
-        .program-card {
-            background: white;
-            border: 1px solid rgba(0,0,0,0.05);
-            border-radius: 20px;
-            padding: var(--space-md);
-            transition: var(--transition);
-            position: relative;
-            transform-style: preserve-3d;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        }
-
-        .program-card:hover {
-            transform: rotateY(5deg) translateZ(20px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-        }
-
-        .program-card.featured {
-            background: var(--gold-gradient);
-            color: white;
-            border: none;
-            box-shadow: 0 15px 40px rgba(212, 165, 116, 0.3);
-        }
-
-        .program-card.featured:hover {
-            transform: rotateY(5deg) translateZ(30px);
-            box-shadow: 0 25px 70px rgba(212, 165, 116, 0.4);
-        }
-
-        .program-badge {
-            position: absolute;
-            top: -10px;
-            right: 20px;
-            background: var(--rose);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            animation: badgePulse 2s ease infinite;
-        }
-
-        @keyframes badgePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        /* ========================================
-           TESTIMONIALS PREMIUM
-        ======================================== */
-        .testimonials {
-            background: linear-gradient(135deg, white 0%, var(--ivory) 100%);
-            position: relative;
-        }
-
-        .testimonial {
-            padding: var(--space-md);
-            background: white;
-            border-radius: 20px;
-            position: relative;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            transition: var(--transition);
-            overflow: hidden;
-        }
-
-        .testimonial::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--gold-gradient);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease;
-        }
-
-        .testimonial:hover::after {
-            transform: scaleX(1);
-        }
-
-        .testimonial:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 50px rgba(0,0,0,0.12);
-        }
-
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: var(--space-md);
-            margin-bottom: var(--space-lg);
-        }
-
-        .view-more-testimonials {
-            text-align: center;
-            margin-top: var(--space-lg);
-        }
-
-        .btn-view-more {
-            display: inline-block;
-            padding: 16px 40px;
-            background: white;
-            color: var(--gold);
-            border: 2px solid var(--gold);
-            border-radius: 30px;
-            font-weight: 600;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
             z-index: 1;
         }
 
-        .btn-view-more::before {
+        .hero-text {
+            max-width: 600px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            background: rgba(212, 165, 116, 0.15);
+            color: var(--gold);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-family: var(--font-serif);
+            color: var(--charcoal);
+            line-height: 1.1;
+            margin-bottom: var(--space-md);
+        }
+
+        .hero-title span {
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 18px;
+            color: var(--gray);
+            margin-bottom: var(--space-md);
+            line-height: 1.8;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-md);
+            padding: var(--space-md) 0;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            font-family: var(--font-serif);
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .hero-stat-label {
+            font-size: 13px;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gold-gradient);
+            color: white;
+            box-shadow: 0 10px 30px rgba(212, 165, 116, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 165, 116, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--charcoal);
+            border: 2px solid var(--charcoal);
+        }
+
+        .btn-secondary:hover {
+            background: var(--charcoal);
+            color: white;
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .hero-image-container {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.15);
+        }
+
+        .hero-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .hero-floating-card {
+            position: absolute;
+            background: white;
+            padding: var(--space-sm) var(--space-md);
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .hero-floating-card.top {
+            top: -20px;
+            right: -20px;
+        }
+
+        .hero-floating-card.bottom {
+            bottom: 30px;
+            left: -30px;
+        }
+
+        .floating-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gold-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .floating-text strong {
+            display: block;
+            font-size: 14px;
+            color: var(--charcoal);
+        }
+
+        .floating-text span {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        /* ========================================
+           PROGRAM SUMMARY SECTION
+        ======================================== */
+        .program-summary {
+            background: white;
+            padding: var(--space-xl) 0;
+        }
+
+        .program-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+
+        .program-card {
+            background: var(--ivory);
+            padding: var(--space-md);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .program-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 0;
-            height: 100%;
-            background: var(--gold-gradient);
-            transition: width 0.3s ease;
-            z-index: -1;
-        }
-
-        .btn-view-more:hover::before {
             width: 100%;
-        }
-
-        .btn-view-more:hover {
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(212, 165, 116, 0.3);
-        }
-
-        .stats-row {
-            display: flex;
-            justify-content: space-around;
-            padding: var(--space-lg);
+            height: 5px;
             background: var(--gold-gradient);
-            border-radius: 20px;
-            margin-top: var(--space-lg);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 15px 50px rgba(212, 165, 116, 0.3);
-        }
-
-        .stats-row::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* ========================================
-           FAQ ACCORDION PREMIUM
-        ======================================== */
-        .faq-item {
-            margin-bottom: var(--space-sm);
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transform: scaleX(0);
+            transform-origin: left;
             transition: var(--transition);
         }
 
-        .faq-item:hover {
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        .program-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
         }
 
-        .faq-item.active {
-            box-shadow: 0 10px 40px rgba(212, 165, 116, 0.15);
+        .program-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .program-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--gold-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin-bottom: var(--space-sm);
+        }
+
+        .program-card h3 {
+            font-size: 20px;
+            color: var(--charcoal);
+            margin-bottom: var(--space-xs);
+            font-family: var(--font-serif);
+        }
+
+        .program-card p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .section-cta {
+            text-align: center;
+            margin-top: var(--space-lg);
         }
 
         /* ========================================
-           CTA FINAL ANIMATED
+           PRACTICES SUMMARY SECTION
         ======================================== */
-        .cta-final {
-            background: var(--gold-gradient);
-            color: white;
-            text-align: center;
+        .practices-summary {
+            background: linear-gradient(135deg, var(--charcoal) 0%, #1a1a1a 100%);
             padding: var(--space-xl) 0;
             position: relative;
             overflow: hidden;
         }
 
-        .cta-final::before {
+        .practices-summary::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: sweep 3s linear infinite;
+            background: radial-gradient(circle at 20% 50%, rgba(212, 165, 116, 0.1) 0%, transparent 50%);
+            pointer-events: none;
         }
 
-        @keyframes sweep {
-            to { left: 100%; }
-        }
-
-        .btn-cta {
-            display: inline-block;
-            padding: 18px 48px;
-            background: white;
+        .practices-summary .section-label {
             color: var(--gold);
-            border-radius: 35px;
-            font-weight: 700;
-            font-size: 16px;
-            transition: var(--transition);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .practices-summary .section-title {
+            color: white;
+        }
+
+        .practices-summary .section-subtitle {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .practices-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-lg);
+            align-items: center;
+            margin-top: var(--space-lg);
+        }
+
+        .practices-features {
+            display: grid;
+            gap: var(--space-md);
+        }
+
+        .practice-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            min-width: 50px;
+            background: var(--gold-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .feature-text h4 {
+            color: white;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .feature-text p {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .practices-highlight {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: var(--space-lg);
+            text-align: center;
+        }
+
+        .highlight-number {
+            font-size: 4rem;
+            font-weight: 900;
+            font-family: var(--font-serif);
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .highlight-label {
+            color: white;
+            font-size: 18px;
+            margin-top: var(--space-sm);
+        }
+
+        .highlight-description {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            margin-top: var(--space-xs);
+        }
+
+        .practices-summary .btn-primary {
             margin-top: var(--space-md);
         }
 
-        .btn-cta:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        /* ========================================
+           LOCATIONS SUMMARY SECTION
+        ======================================== */
+        .locations-summary {
+            background: var(--ivory);
+            padding: var(--space-xl) 0;
+        }
+
+        .locations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+
+        .location-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .location-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .location-flag {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            background: linear-gradient(135deg, var(--ivory) 0%, white 100%);
+        }
+
+        .location-info {
+            padding: var(--space-md);
+            text-align: center;
+        }
+
+        .location-info h3 {
+            font-size: 18px;
+            color: var(--charcoal);
+            margin-bottom: var(--space-xs);
+            font-family: var(--font-serif);
+        }
+
+        .location-info p {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .location-badge {
+            display: inline-block;
+            background: var(--gold-gradient);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: var(--space-xs);
         }
 
         /* ========================================
-           FOOTER PREMIUM
+           VIDEO TESTIMONIALS SECTION
         ======================================== */
-        .footer {
-            background: linear-gradient(135deg, var(--charcoal) 0%, #1a1a1a 100%);
-            color: white;
-            padding: var(--space-xl) 0 var(--space-md);
+        .video-testimonials {
+            background: white;
+            padding: var(--space-xl) 0;
             position: relative;
             overflow: hidden;
         }
 
-        .footer::before {
+        .video-testimonials::before {
             content: '';
             position: absolute;
             top: 0;
@@ -1030,118 +680,401 @@
             pointer-events: none;
         }
 
-        .footer-content {
+        .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
             gap: var(--space-lg);
-            margin-bottom: var(--space-lg);
+            margin-top: var(--space-lg);
+        }
+
+        .video-container {
             position: relative;
-            z-index: 1;
-        }
-
-        .footer-section h4 {
-            color: var(--gold);
-            margin-bottom: var(--space-md);
-            font-size: 18px;
-        }
-
-        .footer-logo {
-            font-size: 32px;
-            font-weight: 900;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-family: var(--font-serif);
-            margin-bottom: var(--space-sm);
-        }
-
-        .footer-text {
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.8;
-            margin-bottom: var(--space-sm);
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: var(--space-sm);
-        }
-
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.7);
+            background: var(--ivory);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
             transition: var(--transition);
-            display: inline-block;
-            position: relative;
-            padding-left: 20px;
         }
 
-        .footer-links a::before {
-            content: '→';
+        .video-container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 70px rgba(0,0,0,0.15);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe {
             position: absolute;
+            top: 0;
             left: 0;
-            opacity: 0;
-            transform: translateX(-10px);
-            transition: var(--transition);
-            color: var(--gold);
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
-        .footer-links a:hover {
-            color: var(--gold);
-            transform: translateX(10px);
+        .video-info {
+            padding: var(--space-md);
+            background: white;
         }
 
-        .footer-links a:hover::before {
-            opacity: 1;
-            transform: translateX(0);
+        .video-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--charcoal);
+            margin-bottom: var(--space-xs);
         }
 
-        .footer-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(212, 165, 116, 0.3), transparent);
-            margin: var(--space-lg) 0;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.5);
+        .video-description {
             font-size: 14px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .video-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--gold);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 10;
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+
+        /* ========================================
+           INSTAGRAM STORIES CAROUSEL
+        ======================================== */
+        .stories-section {
+            background: linear-gradient(135deg, var(--ivory) 0%, white 100%);
+            padding: var(--space-xl) 0;
             position: relative;
-            z-index: 1;
+            overflow: hidden;
         }
 
-        .footer-social {
+        .stories-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .stories-wrapper {
             display: flex;
-            gap: var(--space-sm);
-            margin-top: var(--space-md);
+            gap: var(--space-md);
+            padding: var(--space-md) 0;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
 
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
+        .stories-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .story-card {
+            flex: 0 0 280px;
+            height: 500px;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: var(--transition);
+            cursor: pointer;
+            background: var(--charcoal);
+        }
+
+        .story-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .story-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .story-card:hover .story-image {
+            transform: scale(1.1);
+            filter: brightness(0.8);
+        }
+
+        .story-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: var(--space-md);
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+            color: white;
+            transform: translateY(100px);
+            transition: var(--transition);
+        }
+
+        .story-card:hover .story-overlay {
+            transform: translateY(0);
+        }
+
+        .story-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+
+        .story-text {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .story-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--gold);
+            color: white;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
             transition: var(--transition);
-            border: 1px solid rgba(212, 165, 116, 0.3);
+            border: none;
+            font-size: 24px;
         }
 
-        .social-icon:hover {
-            background: var(--gold-gradient);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(212, 165, 116, 0.3);
+        .story-nav:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .story-nav.prev {
+            left: 20px;
+        }
+
+        .story-nav.next {
+            right: 20px;
+        }
+
+        .story-indicators {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-xs);
+            margin-top: var(--space-md);
+        }
+
+        .indicator {
+            width: 40px;
+            height: 4px;
+            background: rgba(212, 165, 116, 0.3);
+            border-radius: 2px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .indicator.active {
+            background: var(--gold);
+            transform: scaleX(1.5);
         }
 
         /* ========================================
-           FLOATING ACTION BUTTON
+           LIGHTBOX
         ======================================== */
-        .fab {
+        .lightbox {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90vh;
+            position: relative;
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .lightbox-image {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 36px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .lightbox-close:hover {
+            transform: rotate(90deg);
+        }
+
+        /* ========================================
+           STATS COUNTER SECTION
+        ======================================== */
+        .stats-section {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--rose) 100%);
+            padding: var(--space-xl) 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>');
+            opacity: 0.3;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .stat-card {
+            text-align: center;
+            color: white;
+            padding: var(--space-md);
+            position: relative;
+        }
+
+        .stat-number {
+            font-size: clamp(3rem, 5vw, 4rem);
+            font-weight: 900;
+            font-family: var(--font-serif);
+            line-height: 1;
+            margin-bottom: var(--space-sm);
+        }
+
+        .stat-label {
+            font-size: 16px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.95;
+        }
+
+        .stat-description {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: var(--space-xs);
+        }
+
+        /* ========================================
+           TIMELINE SECTION
+        ======================================== */
+        .timeline-section {
+            background: linear-gradient(135deg, var(--ivory) 0%, white 100%);
+            padding: var(--space-xl) 0;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: var(--space-md) 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--gold), var(--rose));
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: var(--space-lg);
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: calc(50% - 40px);
+            background: white;
+            padding: var(--space-md);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .timeline-content:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .timeline-number {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             width: 60px;
             height: 60px;
             background: var(--gold-gradient);
@@ -1150,381 +1083,1531 @@
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 24px;
-            box-shadow: 0 10px 30px rgba(212, 165, 116, 0.4);
-            cursor: none;
+            font-weight: 700;
+            font-size: 20px;
+            box-shadow: 0 5px 20px rgba(212, 165, 116, 0.4);
+            z-index: 10;
+        }
+
+        .timeline-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--charcoal);
+            margin-bottom: var(--space-xs);
+            font-family: var(--font-serif);
+        }
+
+        .timeline-description {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .timeline-badge {
+            display: inline-block;
+            background: var(--rose-light);
+            color: var(--rose);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: var(--space-xs);
+        }
+
+        /* ========================================
+           FAQ SECTION
+        ======================================== */
+        .faq-section {
+            background: white;
+            padding: var(--space-xl) 0;
+        }
+
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--ivory);
+            border-radius: 15px;
+            margin-bottom: var(--space-md);
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
             transition: var(--transition);
-            z-index: 100;
-            opacity: 0;
-            transform: scale(0);
-            animation: fabAppear 0.3s ease 1s forwards;
         }
 
-        @keyframes fabAppear {
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        .faq-item:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        .fab:hover {
+        .faq-question {
+            padding: var(--space-md);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--charcoal);
+            user-select: none;
+            transition: var(--transition);
+        }
+
+        .faq-question:hover {
+            color: var(--gold);
+        }
+
+        .faq-icon {
+            width: 30px;
+            height: 30px;
+            background: var(--gold-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            transition: var(--transition);
+            flex-shrink: 0;
+            margin-left: var(--space-sm);
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer-content {
+            padding: 0 var(--space-md) var(--space-md) var(--space-md);
+            color: var(--gray);
+            line-height: 1.8;
+        }
+
+        .faq-highlight {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* ========================================
+           CERTIFICATIONS SECTION
+        ======================================== */
+        .certifications-section {
+            background: var(--ivory);
+            padding: var(--space-xl) 0;
+        }
+
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+
+        .cert-card {
+            background: white;
+            padding: var(--space-md);
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .cert-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gold-gradient);
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .cert-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .cert-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        .cert-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto var(--space-md);
+            background: var(--gold-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: white;
+        }
+
+        .cert-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--charcoal);
+            margin-bottom: var(--space-xs);
+        }
+
+        .cert-description {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* ========================================
+           CONTACT SECTION
+        ======================================== */
+        .contact-section {
+            background: linear-gradient(135deg, var(--charcoal) 0%, #1a1a1a 100%);
+            padding: var(--space-xl) 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 165, 116, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .contact-section .section-label {
+            color: var(--gold);
+        }
+
+        .contact-section .section-title {
+            color: white;
+        }
+
+        .contact-section .section-subtitle {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-lg);
+            margin-top: var(--space-lg);
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-form-container {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: var(--space-lg);
+        }
+
+        .form-group {
+            margin-bottom: var(--space-md);
+        }
+
+        .form-group label {
+            display: block;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: var(--space-xs);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            color: white;
+            font-size: 15px;
+            font-family: var(--font-sans);
+            transition: var(--transition);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255,255,255,0.4);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: rgba(255,255,255,0.12);
+        }
+
+        .form-group select option {
+            background: var(--charcoal);
+            color: white;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-md);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .contact-info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+            padding: var(--space-md);
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            transition: var(--transition);
+        }
+
+        .contact-info-item:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateX(10px);
+        }
+
+        .contact-info-icon {
+            width: 50px;
+            height: 50px;
+            min-width: 50px;
+            background: var(--gold-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .contact-info-text h4 {
+            color: white;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .contact-info-text p {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+
+        .contact-info-text a {
+            color: var(--gold);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .contact-info-text a:hover {
+            color: var(--gold-light);
+        }
+
+        /* ========================================
+           CTA SECTION
+        ======================================== */
+        .cta-section {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--rose) 100%);
+            padding: var(--space-lg) 0;
+            text-align: center;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            color: white;
+            font-family: var(--font-serif);
+            margin-bottom: var(--space-sm);
+        }
+
+        .cta-subtitle {
+            font-size: 16px;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: var(--space-md);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: var(--charcoal);
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        /* ========================================
+           FOOTER
+        ======================================== */
+        .footer {
+            background: var(--charcoal);
+            color: white;
+            padding: var(--space-lg) 0 var(--space-md);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+
+        .footer-brand .logo {
+            margin-bottom: var(--space-sm);
+            display: inline-block;
+        }
+
+        .footer-brand p {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            line-height: 1.7;
+            margin-top: var(--space-sm);
+        }
+
+        .footer-links h4 {
+            color: white;
+            font-size: 16px;
+            margin-bottom: var(--space-sm);
+            font-family: var(--font-serif);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: var(--space-xs);
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: var(--space-md);
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+        }
+
+        /* ========================================
+           WHATSAPP FLOATING BUTTON
+        ======================================== */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+            text-decoration: none;
+            box-shadow: 0 5px 25px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            transition: var(--transition);
+        }
+
+        .whatsapp-float:hover {
             transform: scale(1.1);
-            box-shadow: 0 15px 40px rgba(212, 165, 116, 0.5);
-        }
-
-        .fab.hide {
-            opacity: 0;
-            transform: scale(0);
+            box-shadow: 0 10px 35px rgba(37, 211, 102, 0.5);
         }
 
         /* ========================================
            RESPONSIVE
         ======================================== */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text {
+                max-width: 100%;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                display: none;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .story-card {
+                flex: 0 0 240px;
+                height: 420px;
+            }
+
+            .timeline::before {
+                left: 30px;
+            }
+
+            .timeline-item {
+                flex-direction: row !important;
+            }
+
+            .timeline-content {
+                width: calc(100% - 80px);
+                margin-left: 80px;
+            }
+
+            .timeline-number {
+                left: 30px;
+            }
+
+            .practices-content {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
         @media (max-width: 768px) {
-            .cursor,
-            .cursor-follower {
+            .nav-links {
                 display: none;
             }
-            
-            * {
-                cursor: auto;
+
+            .mobile-menu-btn {
+                display: block;
             }
-            
-            .nav {
-                display: none;
-            }
-            
-            .hero-cta {
+
+            .nav.active .nav-links {
+                display: flex;
                 flex-direction: column;
-                align-items: center;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                padding: var(--space-md);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             }
-            
+
             .hero-stats {
                 flex-direction: column;
                 gap: var(--space-md);
             }
-            
-            .programs-grid {
-                grid-template-columns: 1fr;
+
+            .video-grid {
+                gap: var(--space-md);
             }
             
-            .stats-row {
-                flex-direction: column;
-                gap: var(--space-md);
+            .story-nav {
+                display: none;
+            }
+            
+            .story-card {
+                flex: 0 0 200px;
+                height: 350px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .faq-question {
+                font-size: 16px;
+            }
+
+            .cert-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
             }
 
             .footer-content {
                 grid-template-columns: 1fr;
+                text-align: center;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Loader -->
-    <div class="loader-wrapper" id="loader">
-        <div class="loader">
-            <div class="loader-circle"></div>
-            <div class="loader-circle"></div>
-            <div class="loader-circle"></div>
-        </div>
-        <div class="loader-text">ICIGIFCA</div>
-    </div>
-
-    <!-- Custom Cursor -->
-    <div class="cursor"></div>
-    <div class="cursor-follower"></div>
-
-    <!-- Progress Bar -->
-    <div class="progress-bar" id="progressBar"></div>
-
     <!-- Header -->
-    <header class="header" id="header">
+    <header class="header">
         <div class="container">
             <div class="header-content">
-                <div class="logo" data-text="ICIGIFCA">ICIGIFCA</div>
-                
-                <nav class="nav">
-                    <a href="#instituto" class="nav-link">Instituto</a>
-                    <a href="#dra-renaud" class="nav-link">Dra. Ajakaida Renaud</a>
-                    <a href="#programas" class="nav-link">Programas</a>
-                    <a href="ICIGIFCA_Multimedia_Section_1.html" class="nav-link">Testimonios</a>
-                    <a href="#contacto" class="btn-header">Solicitar Información</a>
+                <a href="index.html" class="logo">ICIGIFCA</a>
+                <nav class="nav" id="mainNav">
+                    <ul class="nav-links">
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="programa.html">Programa</a></li>
+                        <li><a href="practicas-clinicas.html">Prácticas Clínicas</a></li>
+                        <li><a href="sedes.html">Sedes</a></li>
+                        <li><a href="condiciones-academicas.html">Condiciones</a></li>
+                        <li><a href="#video-testimonials">Testimonios</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                    <a href="#contacto" class="nav-cta">Solicitar Información</a>
+                    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
                 </nav>
             </div>
         </div>
     </header>
 
-    <!-- Hero -->
-    <section class="hero">
-        <div class="particles" id="particles"></div>
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
         <div class="container">
             <div class="hero-content">
-                <h1 class="hero-title" data-text="27 años transformando la ginecología en Latinoamérica">
-                    27 años transformando la ginecología en Latinoamérica
-                </h1>
-                <p class="hero-subtitle">Instituto Iberoamericano de Cirugía y Ginecología Regenerativa, Funcional y Estética</p>
-                <p class="hero-description">
-                    Formación médica de excelencia en técnicas avanzadas de rejuvenecimiento íntimo. 
-                    Aval universitario. Hands-on internacional. Más de 1500 médicos egresados.
-                </p>
-                
-                <div class="hero-cta">
-                    <a href="#programas" class="btn btn-primary">Aplicar al Diplomado</a>
-                    <a href="#" class="btn btn-secondary">Descargar Brochure</a>
+                <div class="hero-text" data-aos="fade-right">
+                    <div class="hero-badge">
+                        <span>✦</span> Instituto Líder en Latinoamérica
+                    </div>
+                    <h1 class="hero-title">
+                        Formación de Excelencia en <span>Ginecología Regenerativa</span>
+                    </h1>
+                    <p class="hero-description">
+                        ICIGIFCA es el instituto especializado en formación avanzada en ginecología regenerativa, 
+                        funcional y estética. Combinamos fundamentación científica sólida, entrenamiento clínico 
+                        real y acompañamiento continuo para transformar tu práctica médica.
+                    </p>
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <div class="hero-stat-number">27</div>
+                            <div class="hero-stat-label">Años</div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="hero-stat-number">+1500</div>
+                            <div class="hero-stat-label">Egresados</div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="hero-stat-number">15</div>
+                            <div class="hero-stat-label">Países</div>
+                        </div>
+                    </div>
+                    <div class="hero-buttons">
+                        <a href="#contacto" class="btn btn-primary">Solicitar Información</a>
+                        <a href="programa.html" class="btn btn-secondary">Ver Programa</a>
+                    </div>
                 </div>
-                
-                <div class="hero-stats">
-                    <div class="stat" data-aos="zoom-in" data-aos-delay="100">
-                        <span class="stat-number" data-value="27">27</span>
-                        <span class="stat-label">Años</span>
-                    </div>
-                    <div class="stat" data-aos="zoom-in" data-aos-delay="200">
-                        <span class="stat-number" data-value="+1500">+1500</span>
-                        <span class="stat-label">Egresados</span>
-                    </div>
-                    <div class="stat" data-aos="zoom-in" data-aos-delay="300">
-                        <span class="stat-number" data-value="12">12</span>
-                        <span class="stat-label">Países</span>
-                    </div>
-                    <div class="stat" data-aos="zoom-in" data-aos-delay="400">
-                        <span class="stat-number" data-value="100%">100%</span>
-                        <span class="stat-label">Aval Universitario</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About -->
-    <section class="section about" id="instituto">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <span class="section-label">Sobre el Instituto</span>
-                <h2 class="section-title">El epicentro de la ginecología regenerativa en Latinoamérica</h2>
-            </div>
-            
-            <div class="about-content">
-                <p class="about-text" data-aos="fade-up" data-aos-delay="100">
-                    Durante 27 años, el ICIGIFCA ha liderado la formación médica especializada en ginecología 
-                    regenerativa, funcional y estética. Fundado por la Dra. Ajakaida Renaud, nuestro instituto 
-                    combina rigor científico con práctica intensiva.
-                </p>
-                
-                <div class="pillars">
-                    <div class="pillar" data-aos="flip-left" data-aos-delay="100">
-                        <div class="pillar-icon">🔬</div>
-                        <h4 class="pillar-title">Evidencia científica</h4>
-                        <p class="pillar-text">Protocolos basados en investigación</p>
-                    </div>
-                    <div class="pillar" data-aos="flip-left" data-aos-delay="200">
-                        <div class="pillar-icon">👥</div>
-                        <h4 class="pillar-title">Práctica intensiva</h4>
-                        <p class="pillar-text">Hands-on con pacientes reales</p>
-                    </div>
-                    <div class="pillar" data-aos="flip-left" data-aos-delay="300">
-                        <div class="pillar-icon">⚕️</div>
-                        <h4 class="pillar-title">Ética médica</h4>
-                        <p class="pillar-text">Compromiso con seguridad y resultados</p>
-                    </div>
-                    <div class="pillar" data-aos="flip-left" data-aos-delay="400">
-                        <div class="pillar-icon">💡</div>
-                        <h4 class="pillar-title">Innovación continua</h4>
-                        <p class="pillar-text">Tecnologías de vanguardia mundial</p>
+                <div class="hero-visual" data-aos="fade-left">
+                    <div class="hero-image-container">
+                        <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251866/PXL_20250724_155241641.PORTRAIT_txoou7.jpg" 
+                             alt="Formación médica ICIGIFCA" 
+                             class="hero-image">
+                        <div class="hero-floating-card top" data-aos="fade-down" data-aos-delay="300">
+                            <div class="floating-icon">🎓</div>
+                            <div class="floating-text">
+                                <strong>Aval Universitario</strong>
+                                <span>Certificación Internacional</span>
+                            </div>
+                        </div>
+                        <div class="hero-floating-card bottom" data-aos="fade-up" data-aos-delay="400">
+                            <div class="floating-icon">⚕️</div>
+                            <div class="floating-text">
+                                <strong>Práctica Real</strong>
+                                <span>Con pacientes reales</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Programs -->
-    <section class="section programs" id="programas">
+    <!-- Program Summary Section -->
+    <section class="program-summary section" id="programa-resumen">
         <div class="container">
             <div class="section-header" data-aos="fade-up">
-                <span class="section-label">Programas Académicos</span>
-                <h2 class="section-title">Formación que transforma carreras médicas</h2>
+                <span class="section-label">Programa de Formación</span>
+                <h2 class="section-title">Formación Integral en Ginecología Regenerativa</h2>
+                <p class="section-subtitle">
+                    Programa diseñado bajo modalidad híbrida, combinando módulos teóricos con 
+                    entrenamiento clínico presencial intensivo
+                </p>
             </div>
-            
-            <div class="programs-grid">
+
+            <div class="program-grid">
                 <div class="program-card" data-aos="fade-up" data-aos-delay="100">
-                    <h3 class="program-title">Maestría</h3>
-                    <p class="program-details">Próximamente</p>
-                    <p>El programa de posgrado más completo en medicina regenerativa ginecológica.</p>
-                    <ul class="program-list">
-                        <li>Modalidad online avanzada</li>
-                        <li>Doble certificación universitaria</li>
-                        <li>Investigación aplicada</li>
-                    </ul>
+                    <div class="program-icon">📚</div>
+                    <h3>Fundamentación Científica</h3>
+                    <p>Base teórica sólida en anatomía, fisiología, diagnósticos y protocolos terapéuticos con énfasis en práctica basada en evidencia.</p>
                 </div>
-                
-                <div class="program-card featured" data-aos="fade-up" data-aos-delay="200">
-                    <span class="program-badge">Inscripciones Abiertas</span>
-                    <h3 class="program-title">Diplomado Internacional</h3>
-                    <p class="program-details"><strong>210 horas | 9 meses | Modalidad híbrida</strong></p>
-                    <p>Formación integral con el respaldo de 27 años de experiencia.</p>
-                    <ul class="program-list">
-                        <li>Clases online 24/7 durante 1 año</li>
-                        <li>Hands-on con 25 pacientes garantizados</li>
-                        <li>Grupos de máximo 12 médicos</li>
-                        <li>Supervisión directa de la Dra. Ajakaida</li>
-                        <li>Certificación con aval universitario</li>
-                    </ul>
+
+                <div class="program-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="program-icon">🔬</div>
+                    <h3>Ginecología Regenerativa</h3>
+                    <p>Dominio de técnicas regenerativas avanzadas: PRP, ácido hialurónico, láser CO2 y radiofrecuencia para rejuvenecimiento íntimo.</p>
                 </div>
-                
+
                 <div class="program-card" data-aos="fade-up" data-aos-delay="300">
-                    <h3 class="program-title">Cursos de Alta Especialización</h3>
-                    <p class="program-details">Inscripciones permanentes</p>
-                    <p>Actualización profesional en técnicas específicas:</p>
-                    <ul class="program-list">
-                        <li>Láser CO2 Ginecológico</li>
-                        <li>PRP y Exosomas</li>
-                        <li>Tecnologías No Invasivas</li>
-                        <li>Piso Pélvico Integral</li>
-                    </ul>
+                    <div class="program-icon">⚕️</div>
+                    <h3>Ginecología Funcional</h3>
+                    <p>Protocolos para tratamiento de disfunciones del piso pélvico, incontinencia y síndrome genitourinario de la menopausia.</p>
                 </div>
+
+                <div class="program-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="program-icon">✨</div>
+                    <h3>Ginecología Estética</h3>
+                    <p>Procedimientos estéticos íntimos de última generación para mejorar la calidad de vida de las pacientes.</p>
+                </div>
+            </div>
+
+            <div class="section-cta" data-aos="fade-up">
+                <a href="programa.html" class="btn btn-primary">Ver Programa Completo</a>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials -->
-    <section class="section testimonials" id="testimonios">
+    <!-- Practices Summary Section -->
+    <section class="practices-summary section" id="practicas-resumen">
         <div class="container">
             <div class="section-header" data-aos="fade-up">
-                <span class="section-label">Testimonios</span>
-                <h2 class="section-title">Resultados que hablan por sí mismos</h2>
-            </div>
-            
-            <div class="testimonials-grid">
-                <div class="testimonial" data-aos="fade-right" data-aos-delay="100">
-                    <p class="testimonial-text">
-                        "El diplomado transformó mi práctica. Pasé de ginecología tradicional a medicina 
-                        regenerativa con lista de espera de 3 meses."
-                    </p>
-                    <div class="testimonial-author">Dra. María González</div>
-                    <div class="testimonial-location">México</div>
-                </div>
-                
-                <div class="testimonial" data-aos="fade-up" data-aos-delay="200">
-                    <p class="testimonial-text">
-                        "La calidad del hands-on es incomparable. 25 procedimientos supervisados me dieron 
-                        la confianza para iniciar inmediatamente."
-                    </p>
-                    <div class="testimonial-author">Dr. Carlos Mendoza</div>
-                    <div class="testimonial-location">Colombia</div>
-                </div>
-                
-                <div class="testimonial" data-aos="fade-left" data-aos-delay="300">
-                    <p class="testimonial-text">
-                        "Más que formación, es una transformación profesional completa. El ROI se recupera 
-                        en 60 días."
-                    </p>
-                    <div class="testimonial-author">Dra. Ana Rodríguez</div>
-                    <div class="testimonial-location">República Dominicana</div>
-                </div>
+                <span class="section-label">Prácticas Clínicas</span>
+                <h2 class="section-title">Full Immersion Training</h2>
+                <p class="section-subtitle">
+                    Entrenamiento intensivo con pacientes reales bajo supervisión directa de especialistas certificados
+                </p>
             </div>
 
-            <!-- Botón para ver más testimonios -->
-            <div class="view-more-testimonials" data-aos="fade-up" data-aos-delay="400">
-                <a href="ICIGIFCA_Multimedia_Section_1.html" class="btn-view-more">
-                    Ver Más Testimonios y Multimedia →
-                </a>
-            </div>
-            
-            <div class="stats-row" data-aos="zoom-in">
-                <div class="stat">
-                    <span class="stat-number">27</span>
-                    <span class="stat-label">Años de trayectoria</span>
+            <div class="practices-content">
+                <div class="practices-features" data-aos="fade-right">
+                    <div class="practice-feature">
+                        <div class="feature-icon">📅</div>
+                        <div class="feature-text">
+                            <h4>4 Días Intensivos</h4>
+                            <p>Programa de inmersión total diseñado para maximizar tu experiencia práctica en el menor tiempo posible.</p>
+                        </div>
+                    </div>
+
+                    <div class="practice-feature">
+                        <div class="feature-icon">⏰</div>
+                        <div class="feature-text">
+                            <h4>8:00 AM a 6:00 PM</h4>
+                            <p>Jornadas completas de entrenamiento con pausas estratégicas para asimilación de conocimientos.</p>
+                        </div>
+                    </div>
+
+                    <div class="practice-feature">
+                        <div class="feature-icon">👥</div>
+                        <div class="feature-text">
+                            <h4>Casos Reales</h4>
+                            <p>Rotación por múltiples ambientes clínicos con pacientes reales y supervisión constante.</p>
+                        </div>
+                    </div>
+
+                    <div class="practice-feature">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-text">
+                            <h4>Supervisión Directa</h4>
+                            <p>Acompañamiento uno a uno con especialistas certificados durante cada procedimiento.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="stat">
-                    <span class="stat-number">+1500</span>
-                    <span class="stat-label">Médicos formados</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">12</span>
-                    <span class="stat-label">Países con egresados</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">98%</span>
-                    <span class="stat-label">Satisfacción</span>
+
+                <div class="practices-highlight" data-aos="fade-left">
+                    <div class="highlight-number">25+</div>
+                    <div class="highlight-label">Procedimientos por Día</div>
+                    <div class="highlight-description">Experiencia práctica intensiva garantizada</div>
+                    <a href="practicas-clinicas.html" class="btn btn-primary">Ver Detalles</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Final -->
-    <section class="section cta-final" id="contacto">
+    <!-- Locations Summary Section -->
+    <section class="locations-summary section" id="sedes-resumen">
         <div class="container">
-            <h2 data-aos="fade-up">Da el paso que transformará tu práctica médica</h2>
-            <p data-aos="fade-up" data-aos-delay="100">Únete a más de 1500 médicos que ya lideran la ginecología regenerativa.</p>
-            
-            <div class="cta-buttons" data-aos="fade-up" data-aos-delay="200">
-                <a href="#" class="btn btn-cta">APLICAR AL DIPLOMADO 2025</a>
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Sedes Internacionales</span>
+                <h2 class="section-title">Alcance Regional</h2>
+                <p class="section-subtitle">
+                    Las prácticas clínicas se realizan en distintas sedes internacionales, 
+                    permitiendo flexibilidad y alcance regional
+                </p>
+            </div>
+
+            <div class="locations-grid">
+                <div class="location-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="location-flag">🇻🇪</div>
+                    <div class="location-info">
+                        <h3>Barquisimeto, Venezuela</h3>
+                        <p>Estado Lara</p>
+                        <span class="location-badge">Sede Principal</span>
+                    </div>
+                </div>
+
+                <div class="location-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="location-flag">🇩🇴</div>
+                    <div class="location-info">
+                        <h3>República Dominicana</h3>
+                        <p>Sede Internacional</p>
+                    </div>
+                </div>
+
+                <div class="location-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="location-flag">🇵🇪</div>
+                    <div class="location-info">
+                        <h3>Perú</h3>
+                        <p>Sede Opcional</p>
+                    </div>
+                </div>
+
+                <div class="location-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="location-flag">🇲🇽</div>
+                    <div class="location-info">
+                        <h3>México</h3>
+                        <p>Sede Opcional</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-cta" data-aos="fade-up">
+                <a href="sedes.html" class="btn btn-primary">Ver Todas las Sedes</a>
             </div>
         </div>
     </section>
 
-    <!-- Footer Premium -->
+    <!-- Video Testimonials Section -->
+    <section class="video-testimonials section" id="video-testimonials">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Testimonios en Video</span>
+                <h2 class="section-title">Experiencias Reales de Nuestros Egresados</h2>
+                <p class="section-subtitle">
+                    Conoce de primera mano cómo ICIGIFCA ha transformado las carreras de médicos en toda Latinoamérica
+                </p>
+            </div>
+            
+            <div class="video-grid">
+                <!-- Video 1 -->
+                <div class="video-container" data-aos="fade-up" data-aos-delay="100">
+                    <div class="video-badge">Testimonio Destacado</div>
+                    <div class="video-wrapper">
+                        <iframe 
+                            src="https://www.youtube.com/embed/iIwus5sBjAQ" 
+                            title="Testimonio ICIGIFCA - Transformación Profesional"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Transformación Profesional Completa</h3>
+                        <p class="video-description">
+                            Descubre cómo nuestro diplomado ha revolucionado la práctica médica de ginecólogos, 
+                            llevándolos al siguiente nivel en medicina regenerativa.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Video 2 -->
+                <div class="video-container" data-aos="fade-up" data-aos-delay="200">
+                    <div class="video-badge">Caso de Éxito</div>
+                    <div class="video-wrapper">
+                        <iframe 
+                            src="https://www.youtube.com/embed/nIJQ7x4YSl4" 
+                            title="Testimonio ICIGIFCA - Éxito en la Práctica"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Del Aprendizaje a la Práctica Exitosa</h3>
+                        <p class="video-description">
+                            La experiencia hands-on y el acompañamiento personalizado marcan la diferencia 
+                            en la formación de especialistas en ginecología regenerativa.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instagram Stories Style Carousel -->
+    <section class="stories-section" id="gallery">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Galería</span>
+                <h2 class="section-title">Nuestros Médicos en Acción</h2>
+                <p class="section-subtitle">
+                    Momentos capturados durante nuestras sesiones de formación y práctica hands-on
+                </p>
+            </div>
+        </div>
+        
+        <div class="stories-container">
+            <button class="story-nav prev" onclick="scrollStories('prev')">←</button>
+            <button class="story-nav next" onclick="scrollStories('next')">→</button>
+            
+            <div class="stories-wrapper" id="storiesWrapper">
+                <!-- Story 1 -->
+                <div class="story-card" data-aos="fade-up" data-aos-delay="100" onclick="openLightbox(0)">
+                    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251866/PXL_20250724_155241641.PORTRAIT_txoou7.jpg" 
+                         alt="Médicos ICIGIFCA en formación" 
+                         class="story-image">
+                    <div class="story-overlay">
+                        <h3 class="story-title">Formación Práctica</h3>
+                        <p class="story-text">Hands-on con supervisión directa de expertos</p>
+                    </div>
+                </div>
+                
+                <!-- Story 2 -->
+                <div class="story-card" data-aos="fade-up" data-aos-delay="200" onclick="openLightbox(1)">
+                    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251854/PXL_20250724_153618504.PORTRAIT_zsdeem.jpg" 
+                         alt="Práctica clínica ICIGIFCA" 
+                         class="story-image">
+                    <div class="story-overlay">
+                        <h3 class="story-title">Tecnología Avanzada</h3>
+                        <p class="story-text">Equipos de última generación en ginecología</p>
+                    </div>
+                </div>
+                
+                <!-- Story 3 -->
+                <div class="story-card" data-aos="fade-up" data-aos-delay="300" onclick="openLightbox(2)">
+                    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251838/PXL_20250724_155202412.PORTRAIT_ra4nbx.jpg" 
+                         alt="Trabajo en equipo ICIGIFCA" 
+                         class="story-image">
+                    <div class="story-overlay">
+                        <h3 class="story-title">Trabajo Colaborativo</h3>
+                        <p class="story-text">Aprendizaje en grupos reducidos</p>
+                    </div>
+                </div>
+                
+                <!-- Story 4 -->
+                <div class="story-card" data-aos="fade-up" data-aos-delay="400" onclick="openLightbox(3)">
+                    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763939484/PXL_20250724_155239046.PORTRAIT_lhkhse.jpg" 
+                         alt="Sesión práctica ICIGIFCA" 
+                         class="story-image">
+                    <div class="story-overlay">
+                        <h3 class="story-title">Sesiones Intensivas</h3>
+                        <p class="story-text">25 pacientes por día de práctica</p>
+                    </div>
+                </div>
+                
+                <!-- Story 5 -->
+                <div class="story-card" data-aos="fade-up" data-aos-delay="500" onclick="openLightbox(4)">
+                    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763939467/PXL_20250724_142148471.PORTRAIT_avcliw.jpg" 
+                         alt="Equipo médico ICIGIFCA" 
+                         class="story-image">
+                    <div class="story-overlay">
+                        <h3 class="story-title">Equipo de Élite</h3>
+                        <p class="story-text">Instructores con experiencia internacional</p>
+                    </div>
+                </div>
+                
+                <!-- Story 6 -->
+                <div class="story-card" data-aos="fade-up" data-aos-delay="600" onclick="openLightbox(5)">
+                    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763939459/PXL_20250724_140602715_pox8mn.jpg" 
+                         alt="Procedimiento especializado ICIGIFCA" 
+                         class="story-image">
+                    <div class="story-overlay">
+                        <h3 class="story-title">Procedimientos Especializados</h3>
+                        <p class="story-text">Dominio de técnicas regenerativas</p>
+                    </div>
+                </div>
+                
+                <!-- Story 7 -->
+                <div class="story-card" data-aos="fade-up" data-aos-delay="700" onclick="openLightbox(6)">
+                    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763939448/PXL_20250724_135612291.PORTRAIT.ORIGINAL_ydz0nk.jpg" 
+                         alt="Capacitación médica ICIGIFCA" 
+                         class="story-image">
+                    <div class="story-overlay">
+                        <h3 class="story-title">Capacitación Continua</h3>
+                        <p class="story-text">Actualización en técnicas innovadoras</p>
+                    </div>
+                </div>
+                
+                <!-- Story 8 -->
+                <div class="story-card" data-aos="fade-up" data-aos-delay="800" onclick="openLightbox(7)">
+                    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763939286/PXL_20250724_133718585.PORTRAIT_rvg4y8.jpg" 
+                         alt="Certificación ICIGIFCA" 
+                         class="story-image">
+                    <div class="story-overlay">
+                        <h3 class="story-title">Certificación Internacional</h3>
+                        <p class="story-text">Aval universitario reconocido</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="story-indicators">
+                <span class="indicator active" onclick="goToStory(0)"></span>
+                <span class="indicator" onclick="goToStory(1)"></span>
+                <span class="indicator" onclick="goToStory(2)"></span>
+                <span class="indicator" onclick="goToStory(3)"></span>
+                <span class="indicator" onclick="goToStory(4)"></span>
+                <span class="indicator" onclick="goToStory(5)"></span>
+                <span class="indicator" onclick="goToStory(6)"></span>
+                <span class="indicator" onclick="goToStory(7)"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Counter Section -->
+    <section class="stats-section" id="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="stat-number" data-target="27">0</div>
+                    <div class="stat-label">Años de Experiencia</div>
+                    <div class="stat-description">Transformando la medicina íntima</div>
+                </div>
+                
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="stat-number" data-target="1500">0</div>
+                    <div class="stat-label">Egresados</div>
+                    <div class="stat-description">Médicos certificados en toda Latinoamérica</div>
+                </div>
+                
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="stat-number" data-target="98">0</div>
+                    <div class="stat-label">% Satisfacción</div>
+                    <div class="stat-description">De nuestros estudiantes</div>
+                </div>
+                
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="stat-number" data-target="15">0</div>
+                    <div class="stat-label">Países</div>
+                    <div class="stat-description">Presencia internacional</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline-section" id="proceso">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Proceso de Formación</span>
+                <h2 class="section-title">Tu Camino Hacia la Excelencia</h2>
+                <p class="section-subtitle">
+                    Un programa estructurado diseñado para garantizar tu éxito profesional
+                </p>
+            </div>
+            
+            <div class="timeline">
+                <!-- Timeline Item 1 -->
+                <div class="timeline-item" data-aos="fade-right" data-aos-delay="100">
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Formación Teórica</h3>
+                        <p class="timeline-description">
+                            El participante accede a módulos teóricos impartidos por especialistas con experiencia 
+                            clínica y docente. Esta fase proporciona la base científica necesaria para comprender 
+                            los procedimientos, indicaciones, contraindicaciones y protocolos.
+                        </p>
+                        <span class="timeline-badge">Fase 1</span>
+                    </div>
+                    <div class="timeline-number">1</div>
+                </div>
+                
+                <!-- Timeline Item 2 -->
+                <div class="timeline-item" data-aos="fade-left" data-aos-delay="200">
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Práctica Clínica Hands-On</h3>
+                        <p class="timeline-description">
+                            Entrenamiento intensivo con pacientes reales bajo supervisión directa. El médico 
+                            participa activamente en procedimientos, adquiriendo experiencia práctica real 
+                            en un entorno clínico controlado.
+                        </p>
+                        <span class="timeline-badge">Fase 2</span>
+                    </div>
+                    <div class="timeline-number">2</div>
+                </div>
+                
+                <!-- Timeline Item 3 -->
+                <div class="timeline-item" data-aos="fade-right" data-aos-delay="300">
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Certificación</h3>
+                        <p class="timeline-description">
+                            Al completar las evaluaciones académicas y prácticas, el participante obtiene 
+                            su certificación con aval universitario, validando su formación en ginecología regenerativa.
+                        </p>
+                        <span class="timeline-badge">Fase 3</span>
+                    </div>
+                    <div class="timeline-number">3</div>
+                </div>
+                
+                <!-- Timeline Item 4 -->
+                <div class="timeline-item" data-aos="fade-left" data-aos-delay="400">
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Acompañamiento Continuo</h3>
+                        <p class="timeline-description">
+                            ICIGIFCA ofrece soporte posterior a la certificación, acceso a actualizaciones 
+                            académicas y vinculación con la red de egresados del instituto.
+                        </p>
+                        <span class="timeline-badge">Fase 4</span>
+                    </div>
+                    <div class="timeline-number">4</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Preguntas Frecuentes</span>
+                <h2 class="section-title">¿Tienes Dudas?</h2>
+                <p class="section-subtitle">
+                    Encuentra respuestas a las preguntas más comunes sobre nuestros programas
+                </p>
+            </div>
+            
+            <div class="faq-container">
+                <!-- FAQ 1 -->
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>¿Cuál es la duración del programa?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            El programa combina módulos teóricos en <span class="faq-highlight">modalidad híbrida 
+                            (online/presencial)</span> con sesiones prácticas intensivas. Las prácticas clínicas 
+                            presenciales se desarrollan en <span class="faq-highlight">4 días intensivos</span> 
+                            bajo la modalidad Full Immersion Training.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ 2 -->
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="150">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>¿Qué requisitos necesito para inscribirme?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            El programa está dirigido a <span class="faq-highlight">médicos ginecólogos, médicos 
+                            generales y especialistas afines</span> que buscan actualizarse en medicina íntima femenina. 
+                            Requisitos: título profesional en medicina y compromiso con la práctica de la ginecología regenerativa.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ 3 - CONDICIÓN 70% -->
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>¿Cuál es la condición para acceder a las prácticas clínicas?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Para acceder a las prácticas clínicas presenciales, el alumno deberá haber cancelado 
+                            al menos el <span class="faq-highlight">70% del valor total del programa</span>. 
+                            Esta condición es <span class="faq-highlight">obligatoria y sin excepción</span>, 
+                            y tiene como objetivo garantizar la adecuada organización logística, la calidad 
+                            académica del entrenamiento y el cumplimiento de los compromisos docentes y clínicos.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ 4 - SEDES -->
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="250">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>¿Cuáles son las sedes disponibles para las prácticas?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Las prácticas clínicas se realizan en distintas sedes internacionales: 
+                            <span class="faq-highlight">Barquisimeto, Estado Lara (sede principal)</span>, 
+                            República Dominicana, Perú (opcional) y México (opcional). La asignación se 
+                            realiza según disponibilidad, cronograma académico y elección del participante.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ 5 - FULL IMMERSION -->
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>¿Cómo funciona el Full Immersion Training?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            El Full Immersion Training consiste en <span class="faq-highlight">4 días intensivos</span> 
+                            de práctica clínica, con horario de <span class="faq-highlight">8:00 a.m. a 6:00 p.m.</span>. 
+                            Durante las prácticas, los participantes realizan procedimientos completos con casos 
+                            reales, rotando por múltiples ambientes clínicos bajo supervisión directa y constante 
+                            de especialistas certificados.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ 6 -->
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="350">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>¿El certificado tiene validez internacional?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Sí, nuestro certificado cuenta con <span class="faq-highlight">aval universitario 
+                            reconocido internacionalmente</span>. Con 27 años de trayectoria y más de 1,500 egresados 
+                            en 15 países de Latinoamérica, nuestros certificados son ampliamente reconocidos en 
+                            el sector médico especializado.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ 7 -->
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="400">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>¿Qué pasa si no puedo asistir en la fecha asignada?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Si no puedes asistir en la fecha asignada, deberás coordinar con la administración 
+                            del instituto para reprogramar tu asistencia según <span class="faq-highlight">cupos 
+                            disponibles y cronograma académico</span>. Se recomienda notificar con anticipación 
+                            para facilitar la reasignación.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ 8 -->
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="450">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>¿Ofrecen opciones de financiamiento?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Sí, contamos con <span class="faq-highlight">diversas opciones de financiamiento 
+                            y planes de pago flexibles</span> para facilitar tu inversión en educación especializada. 
+                            Contáctanos para conocer todas las opciones disponibles adaptadas a tu situación.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ 9 -->
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="500">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>¿Qué equipos y tecnología utilizan?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Trabajamos con <span class="faq-highlight">tecnología de última generación</span> en 
+                            ginecología regenerativa: láser CO2 fraccionado, radiofrecuencia vaginal, PRP 
+                            (plasma rico en plaquetas), ácido hialurónico de grado médico, y equipos especializados 
+                            para procedimientos estéticos íntimos.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section class="certifications-section" id="certificaciones">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Certificaciones</span>
+                <h2 class="section-title">Respaldo y Reconocimiento</h2>
+                <p class="section-subtitle">
+                    Nuestra formación está avalada por las instituciones más prestigiosas
+                </p>
+            </div>
+            
+            <div class="cert-grid">
+                <div class="cert-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="cert-icon">🎓</div>
+                    <h3 class="cert-title">Aval Universitario</h3>
+                    <p class="cert-description">
+                        Certificación con reconocimiento académico internacional respaldada por 
+                        instituciones educativas de prestigio.
+                    </p>
+                </div>
+                
+                <div class="cert-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="cert-icon">🏆</div>
+                    <h3 class="cert-title">27 Años de Trayectoria</h3>
+                    <p class="cert-description">
+                        Más de dos décadas formando especialistas en ginecología regenerativa 
+                        con estándares de excelencia.
+                    </p>
+                </div>
+                
+                <div class="cert-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="cert-icon">🌎</div>
+                    <h3 class="cert-title">Presencia Internacional</h3>
+                    <p class="cert-description">
+                        Red de más de 1,500 egresados en 15 países de Latinoamérica, 
+                        consolidando nuestra proyección regional.
+                    </p>
+                </div>
+                
+                <div class="cert-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="cert-icon">📚</div>
+                    <h3 class="cert-title">Revista Científica</h3>
+                    <p class="cert-description">
+                        Publicamos la Revista Latinoamericana (ISSN: 3005-2653) con 
+                        investigaciones de vanguardia en el área.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section section" id="contacto">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Contacto</span>
+                <h2 class="section-title">Solicita Información Personalizada</h2>
+                <p class="section-subtitle">
+                    Completa el formulario y un asesor académico se comunicará contigo para 
+                    orientarte sobre el programa, fechas y opciones de inscripción
+                </p>
+            </div>
+
+            <div class="contact-content">
+                <div class="contact-form-container" data-aos="fade-right">
+                    <form id="contactForm" action="#" method="POST">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nombre">Nombre Completo *</label>
+                                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="pais">País *</label>
+                                <select id="pais" name="pais" required>
+                                    <option value="">Selecciona tu país</option>
+                                    <option value="Venezuela">Venezuela</option>
+                                    <option value="Colombia">Colombia</option>
+                                    <option value="México">México</option>
+                                    <option value="Perú">Perú</option>
+                                    <option value="República Dominicana">República Dominicana</option>
+                                    <option value="Ecuador">Ecuador</option>
+                                    <option value="Chile">Chile</option>
+                                    <option value="Argentina">Argentina</option>
+                                    <option value="Panamá">Panamá</option>
+                                    <option value="Costa Rica">Costa Rica</option>
+                                    <option value="Guatemala">Guatemala</option>
+                                    <option value="Bolivia">Bolivia</option>
+                                    <option value="Paraguay">Paraguay</option>
+                                    <option value="Uruguay">Uruguay</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="especialidad">Especialidad Médica *</label>
+                                <select id="especialidad" name="especialidad" required>
+                                    <option value="">Selecciona tu especialidad</option>
+                                    <option value="Ginecología">Ginecología</option>
+                                    <option value="Medicina General">Medicina General</option>
+                                    <option value="Medicina Estética">Medicina Estética</option>
+                                    <option value="Urología">Urología</option>
+                                    <option value="Cirugía Plástica">Cirugía Plástica</option>
+                                    <option value="Otra">Otra</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="whatsapp">WhatsApp *</label>
+                                <input type="tel" id="whatsapp" name="whatsapp" placeholder="+XX XXXXXXXXX" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Correo Electrónico *</label>
+                            <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mensaje">Mensaje (Opcional)</label>
+                            <textarea id="mensaje" name="mensaje" placeholder="¿Tienes alguna pregunta específica?"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            Enviar Solicitud
+                        </button>
+                    </form>
+                </div>
+
+                <div class="contact-info" data-aos="fade-left">
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">📱</div>
+                        <div class="contact-info-text">
+                            <h4>WhatsApp</h4>
+                            <p><a href="https://wa.me/XXXXXXXXXXX" target="_blank">(Colocar número aquí)</a></p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">✉️</div>
+                        <div class="contact-info-text">
+                            <h4>Email</h4>
+                            <p><a href="mailto:info@icigifca.com">info@icigifca.com</a></p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">🕐</div>
+                        <div class="contact-info-text">
+                            <h4>Horario de Atención</h4>
+                            <p>Lunes a Viernes: 9:00 AM - 6:00 PM</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">📍</div>
+                        <div class="contact-info-text">
+                            <h4>Sede Principal</h4>
+                            <p>Barquisimeto, Estado Lara, Venezuela</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="inscripcion">
+        <div class="container">
+            <div class="cta-content" data-aos="fade-up">
+                <h2 class="cta-title">Transforma Tu Práctica Médica Hoy</h2>
+                <p class="cta-subtitle">
+                    Únete a más de 1,500 especialistas que han revolucionado su carrera con ICIGIFCA
+                </p>
+                <a href="#contacto" class="cta-button">Solicita Información Ahora</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <!-- Columna 1: Instituto -->
-                <div class="footer-section">
-                    <div class="footer-logo">ICIGIFCA</div>
-                    <p class="footer-text">
-                        27 años liderando la formación en ginecología regenerativa, funcional y estética en Latinoamérica.
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">ICIGIFCA</a>
+                    <p>
+                        Instituto Iberoamericano de Cirugía y Ginecología Regenerativa, Funcional y Estética. 
+                        27 años formando especialistas en medicina íntima en Latinoamérica.
                     </p>
-                    <div class="footer-social">
-                        <a href="#" class="social-icon">📘</a>
-                        <a href="#" class="social-icon">📷</a>
-                        <a href="#" class="social-icon">▶️</a>
-                        <a href="#" class="social-icon">💼</a>
-                    </div>
                 </div>
 
-                <!-- Columna 2: Enlaces Rápidos -->
-                <div class="footer-section">
-                    <h4>Enlaces Rápidos</h4>
-                    <ul class="footer-links">
-                        <li><a href="#instituto">Sobre el Instituto</a></li>
-                        <li><a href="#dra-renaud">Dra. Ajakaida Renaud</a></li>
-                        <li><a href="#programas">Programas Académicos</a></li>
-                        <li><a href="ICIGIFCA_Multimedia_Section_1.html">Testimonios</a></li>
+                <div class="footer-links">
+                    <h4>Navegación</h4>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="programa.html">Programa</a></li>
+                        <li><a href="practicas-clinicas.html">Prácticas Clínicas</a></li>
+                        <li><a href="sedes.html">Sedes</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Información</h4>
+                    <ul>
+                        <li><a href="condiciones-academicas.html">Condiciones Académicas</a></li>
+                        <li><a href="#video-testimonials">Testimonios</a></li>
+                        <li><a href="#faq">FAQ</a></li>
                         <li><a href="#contacto">Contacto</a></li>
                     </ul>
                 </div>
 
-                <!-- Columna 3: Proyectos Especiales -->
-                <div class="footer-section">
-                    <h4>Nuestros Proyectos</h4>
-                    <ul class="footer-links">
-                        <li><a href="#revista">Revista Latinoamericana</a></li>
-                        <li><a href="https://icigifca.net/Fundaren.html">Fundaren</a></li>
-                        <li><a href="#">Investigación Científica</a></li>
-                        <li><a href="#">Congresos Internacionales</a></li>
+                <div class="footer-links">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="#certificaciones">Certificaciones</a></li>
+                        <li><a href="#gallery">Galería</a></li>
+                        <li><a href="#">Revista Científica</a></li>
                     </ul>
-                </div>
-
-                <!-- Columna 4: Contacto -->
-                <div class="footer-section">
-                    <h4>Contacto</h4>
-                    <p class="footer-text">
-                        📍 Caracas, Venezuela<br>
-                        📧 info@icigifca.com<br>
-                        📱 WhatsApp: +58 414 5134603<br>
-                        🌐 www.icigifca.com
-                    </p>
                 </div>
             </div>
 
-            <div class="footer-divider"></div>
-
             <div class="footer-bottom">
-                <p>&copy; 2025 ICIGIFCA - Instituto Iberoamericano de Cirugía y Ginecología Regenerativa, Funcional y Estética. Todos los derechos reservados.</p>
+                <p>© 2025 ICIGIFCA. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Floating Action Button -->
-    <a href="#" class="fab" id="fab">↑</a>
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/XXXXXXXXXXX" class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">
+        💬
+    </a>
+
+    <!-- Lightbox for Images -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <div class="lightbox-content">
+            <span class="lightbox-close">×</span>
+            <img src="" alt="" class="lightbox-image" id="lightboxImage">
+        </div>
+    </div>
 
     <!-- AOS Script -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -1537,90 +2620,232 @@
             offset: 100
         });
 
-        // Loader
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loader').classList.add('fade-out');
-            }, 1500);
-        });
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('mainNav');
+            nav.classList.toggle('active');
+        }
 
-        // Custom Cursor
-        const cursor = document.querySelector('.cursor');
-        const follower = document.querySelector('.cursor-follower');
-        
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
+        // Stories Carousel Functions
+        const storiesWrapper = document.getElementById('storiesWrapper');
+        const indicators = document.querySelectorAll('.indicator');
+        let currentStory = 0;
+        let autoScrollInterval;
+        let userInteracting = false;
+
+        function scrollStories(direction) {
+            userInteracting = true;
+            clearInterval(autoScrollInterval);
             
-            follower.style.left = e.clientX + 'px';
-            follower.style.top = e.clientY + 'px';
-        });
-
-        document.addEventListener('mousedown', () => {
-            cursor.classList.add('active');
-            follower.classList.add('active');
-        });
-
-        document.addEventListener('mouseup', () => {
-            cursor.classList.remove('active');
-            follower.classList.remove('active');
-        });
-
-        // Progress Bar
-        window.addEventListener('scroll', () => {
-            const scrollTop = document.documentElement.scrollTop;
-            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrollProgress = (scrollTop / scrollHeight) * 100;
-            document.getElementById('progressBar').style.width = scrollProgress + '%';
-        });
-
-        // Header Scroll Effect
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
+            const cardWidth = 280 + 32;
+            const currentScroll = storiesWrapper.scrollLeft;
+            
+            if (direction === 'next') {
+                storiesWrapper.scrollLeft = currentScroll + cardWidth;
+                currentStory = Math.min(currentStory + 1, 7);
             } else {
-                header.classList.remove('scrolled');
+                storiesWrapper.scrollLeft = currentScroll - cardWidth;
+                currentStory = Math.max(currentStory - 1, 0);
             }
-        });
+            
+            updateIndicators();
+            
+            // Resume auto-scroll after 10 seconds of inactivity
+            setTimeout(() => {
+                userInteracting = false;
+                startAutoScroll();
+            }, 10000);
+        }
 
-        // Particles
-        const particlesContainer = document.getElementById('particles');
-        if (particlesContainer) {
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 10 + 's';
-                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-                particlesContainer.appendChild(particle);
+        function goToStory(index) {
+            userInteracting = true;
+            clearInterval(autoScrollInterval);
+            
+            const cardWidth = 280 + 32;
+            storiesWrapper.scrollLeft = cardWidth * index;
+            currentStory = index;
+            updateIndicators();
+            
+            setTimeout(() => {
+                userInteracting = false;
+                startAutoScroll();
+            }, 10000);
+        }
+
+        function updateIndicators() {
+            indicators.forEach((indicator, index) => {
+                if (index === currentStory) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+        }
+
+        function startAutoScroll() {
+            if (userInteracting) return;
+            
+            autoScrollInterval = setInterval(() => {
+                if (!userInteracting) {
+                    if (currentStory < 7) {
+                        const cardWidth = 280 + 32;
+                        storiesWrapper.scrollLeft += cardWidth;
+                        currentStory++;
+                    } else {
+                        currentStory = 0;
+                        storiesWrapper.scrollLeft = 0;
+                    }
+                    updateIndicators();
+                }
+            }, 5000);
+        }
+
+        // Start auto-scroll on page load
+        startAutoScroll();
+
+        // Lightbox Functions
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
+        
+        const images = [
+            'https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251866/PXL_20250724_155241641.PORTRAIT_txoou7.jpg',
+            'https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251854/PXL_20250724_153618504.PORTRAIT_zsdeem.jpg',
+            'https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251838/PXL_20250724_155202412.PORTRAIT_ra4nbx.jpg',
+            'https://res.cloudinary.com/dzq9lldhw/image/upload/v1763939484/PXL_20250724_155239046.PORTRAIT_lhkhse.jpg',
+            'https://res.cloudinary.com/dzq9lldhw/image/upload/v1763939467/PXL_20250724_142148471.PORTRAIT_avcliw.jpg',
+            'https://res.cloudinary.com/dzq9lldhw/image/upload/v1763939459/PXL_20250724_140602715_pox8mn.jpg',
+            'https://res.cloudinary.com/dzq9lldhw/image/upload/v1763939448/PXL_20250724_135612291.PORTRAIT.ORIGINAL_ydz0nk.jpg',
+            'https://res.cloudinary.com/dzq9lldhw/image/upload/v1763939286/PXL_20250724_133718585.PORTRAIT_rvg4y8.jpg'
+        ];
+
+        function openLightbox(index) {
+            lightboxImage.src = images[index];
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Touch/Swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        storiesWrapper.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            userInteracting = true;
+            clearInterval(autoScrollInterval);
+        }, false);
+
+        storiesWrapper.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+            setTimeout(() => {
+                userInteracting = false;
+                startAutoScroll();
+            }, 10000);
+        }, false);
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                scrollStories('next');
+            }
+            if (touchEndX > touchStartX + 50) {
+                scrollStories('prev');
             }
         }
 
-        // Floating Action Button
-        const fab = document.getElementById('fab');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 500) {
-                fab.classList.remove('hide');
-            } else {
-                fab.classList.add('hide');
+        // Smooth scroll behavior for the wrapper
+        storiesWrapper.addEventListener('scroll', () => {
+            const scrollPosition = storiesWrapper.scrollLeft;
+            const cardWidth = 280 + 32;
+            const newIndex = Math.round(scrollPosition / cardWidth);
+            
+            if (newIndex !== currentStory && newIndex <= 7) {
+                currentStory = newIndex;
+                updateIndicators();
             }
         });
 
-        fab.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        // FAQ Toggle Function
+        function toggleFaq(element) {
+            const faqItem = element.parentElement;
+            const isActive = faqItem.classList.contains('active');
+            
+            // Close all FAQ items
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // If the clicked item wasn't active, open it
+            if (!isActive) {
+                faqItem.classList.add('active');
+            }
+        }
+
+        // Stats Counter Animation
+        function animateCounter(element) {
+            const target = parseInt(element.getAttribute('data-target'));
+            const duration = 2000;
+            const increment = target / (duration / 16);
+            let current = 0;
+
+            const updateCounter = () => {
+                current += increment;
+                if (current < target) {
+                    element.textContent = Math.floor(current);
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = target;
+                }
+            };
+
+            updateCounter();
+        }
+
+        // Intersection Observer for Stats
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counters = entry.target.querySelectorAll('.stat-number');
+                    counters.forEach(counter => {
+                        if (counter.textContent === '0') {
+                            animateCounter(counter);
+                        }
+                    });
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        // Observe stats section
+        const statsSection = document.querySelector('.stats-section');
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
         });
 
-        // Parallax Effect
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallaxElements = document.querySelectorAll('.section-bg');
-            
-            parallaxElements.forEach(element => {
-                const speed = 0.5;
-                element.style.transform = `translateY(${scrolled * speed}px)`;
-            });
+        // Form submission handler
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you would typically send the form data to a server
+            alert('¡Gracias por tu interés! Un asesor se comunicará contigo pronto.');
+            this.reset();
         });
     </script>
 </body>
