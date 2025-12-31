@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Programa de formación en ginecología regenerativa, funcional y estética - ICIGIFCA">
+    <title>Programa de Formación - ICIGIFCA</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        /* ========================================
+           RESET & VARIABLES
+        ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #D4A574;
+            --gold-light: #E6C896;
+            --gold-gradient: linear-gradient(135deg, #D4A574 0%, #E6C896 100%);
+            --rose: #E8B4B8;
+            --rose-light: #F5D5D8;
+            --charcoal: #2C2C2C;
+            --gray: #666666;
+            --gray-light: #999999;
+            --ivory: #FDFDF5;
+            --white: #FFFFFF;
+            
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 32px;
+            --space-lg: 64px;
+            --space-xl: 128px;
+            
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, sans-serif;
+            
+            --shadow-sm: 0 2px 10px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.12);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--charcoal);
+            background: var(--ivory);
+            line-height: 1.6;
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        .section {
+            padding: var(--space-xl) 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .section-label {
+            display: inline-block;
+            color: var(--gold);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: var(--space-sm);
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--charcoal);
+            margin-bottom: var(--space-md);
+            font-family: var(--font-serif);
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ========================================
+           HEADER & NAVIGATION
+        ======================================== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: var(--font-serif);
+            text-decoration: none;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--space-sm);
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--charcoal);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--gold);
+            background: rgba(212, 165, 116, 0.1);
+        }
+
+        .nav-cta {
+            background: var(--gold-gradient);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(212, 165, 116, 0.3);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 165, 116, 0.4);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--charcoal);
+            margin: 5px 0;
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        /* ========================================
+           PAGE HERO
+        ======================================== */
+        .page-hero {
+            min-height: 50vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--charcoal) 0%, #1a1a1a 100%);
+            padding-top: 100px;
+            overflow: hidden;
+        }
+
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 50%, rgba(212, 165, 116, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(232, 180, 184, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .page-hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-hero .section-label {
+            color: var(--gold);
+        }
+
+        .page-hero .section-title {
+            color: white;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+        }
+
+        .page-hero .section-subtitle {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .breadcrumb {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-xs);
+            margin-top: var(--space-md);
+        }
+
+        .breadcrumb a {
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .breadcrumb a:hover {
+            color: var(--gold-light);
+        }
+
+        .breadcrumb span {
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+        }
+
+        /* ========================================
+           CONTENT SECTIONS
+        ======================================== */
+        .content-section {
+            background: white;
+            padding: var(--space-xl) 0;
+        }
+
+        .content-section.alt {
+            background: var(--ivory);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-lg);
+            align-items: center;
+        }
+
+        .content-grid.reverse {
+            direction: rtl;
+        }
+
+        .content-grid.reverse > * {
+            direction: ltr;
+        }
+
+        .content-text h2 {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-family: var(--font-serif);
+            color: var(--charcoal);
+            margin-bottom: var(--space-md);
+        }
+
+        .content-text p {
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: var(--space-md);
+        }
+
+        .content-image {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .content-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ========================================
+           PROGRAM CARDS
+        ======================================== */
+        .program-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+
+        .program-card {
+            background: white;
+            padding: var(--space-lg);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+        }
+
+        .program-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gold-gradient);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition);
+        }
+
+        .program-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .program-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .program-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gold-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin-bottom: var(--space-md);
+        }
+
+        .program-card h3 {
+            font-size: 22px;
+            color: var(--charcoal);
+            margin-bottom: var(--space-sm);
+            font-family: var(--font-serif);
+        }
+
+        .program-card p {
+            font-size: 15px;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        /* ========================================
+           AUDIENCE SECTION
+        ======================================== */
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+
+        .audience-card {
+            background: var(--ivory);
+            padding: var(--space-md);
+            border-radius: 15px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .audience-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .audience-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gold-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto var(--space-sm);
+        }
+
+        .audience-card h4 {
+            font-size: 16px;
+            color: var(--charcoal);
+            margin-bottom: var(--space-xs);
+        }
+
+        .audience-card p {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        /* ========================================
+           BENEFITS LIST
+        ======================================== */
+        .benefits-list {
+            display: grid;
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            padding: var(--space-md);
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .benefit-item:hover {
+            transform: translateX(10px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .benefit-icon {
+            width: 50px;
+            height: 50px;
+            min-width: 50px;
+            background: var(--gold-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .benefit-text h4 {
+            font-size: 18px;
+            color: var(--charcoal);
+            margin-bottom: var(--space-xs);
+        }
+
+        .benefit-text p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* ========================================
+           CTA SECTION
+        ======================================== */
+        .cta-section {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--rose) 100%);
+            padding: var(--space-xl) 0;
+            text-align: center;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            color: white;
+            font-family: var(--font-serif);
+            margin-bottom: var(--space-sm);
+        }
+
+        .cta-subtitle {
+            font-size: 16px;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: var(--space-md);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: var(--space-sm);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--charcoal);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .btn-white:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: var(--charcoal);
+        }
+
+        /* ========================================
+           FOOTER
+        ======================================== */
+        .footer {
+            background: var(--charcoal);
+            color: white;
+            padding: var(--space-lg) 0 var(--space-md);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+
+        .footer-brand .logo {
+            margin-bottom: var(--space-sm);
+            display: inline-block;
+        }
+
+        .footer-brand p {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            line-height: 1.7;
+            margin-top: var(--space-sm);
+        }
+
+        .footer-links h4 {
+            color: white;
+            font-size: 16px;
+            margin-bottom: var(--space-sm);
+            font-family: var(--font-serif);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: var(--space-xs);
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: var(--space-md);
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+        }
+
+        /* ========================================
+           WHATSAPP FLOATING BUTTON
+        ======================================== */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+            text-decoration: none;
+            box-shadow: 0 5px 25px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            transition: var(--transition);
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 35px rgba(37, 211, 102, 0.5);
+        }
+
+        /* ========================================
+           RESPONSIVE
+        ======================================== */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content-grid.reverse {
+                direction: ltr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .program-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">ICIGIFCA</a>
+                <nav class="nav" id="mainNav">
+                    <ul class="nav-links">
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="programa.html" class="active">Programa</a></li>
+                        <li><a href="practicas-clinicas.html">Prácticas Clínicas</a></li>
+                        <li><a href="sedes.html">Sedes</a></li>
+                        <li><a href="condiciones-academicas.html">Condiciones</a></li>
+                        <li><a href="index.html#video-testimonials">Testimonios</a></li>
+                        <li><a href="index.html#faq">FAQ</a></li>
+                    </ul>
+                    <a href="index.html#contacto" class="nav-cta">Solicitar Información</a>
+                    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="page-hero-content" data-aos="fade-up">
+                <span class="section-label">Formación Especializada</span>
+                <h1 class="section-title">Programa de Formación</h1>
+                <p class="section-subtitle">
+                    Formación integral en ginecología regenerativa, funcional y estética 
+                    con modalidad híbrida y práctica clínica intensiva
+                </p>
+                <div class="breadcrumb">
+                    <a href="index.html">Inicio</a>
+                    <span>/</span>
+                    <span>Programa</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision Section -->
+    <section class="content-section section">
+        <div class="container">
+            <div class="content-grid" data-aos="fade-up">
+                <div class="content-text">
+                    <h2>Visión General del Programa</h2>
+                    <p>
+                        El programa de formación de ICIGIFCA está diseñado bajo una modalidad híbrida, 
+                        combinando módulos teóricos con entrenamiento clínico presencial intensivo. Su 
+                        estructura permite al participante adquirir conocimientos científicos, desarrollar 
+                        habilidades prácticas y aplicar protocolos clínicos de manera progresiva.
+                    </p>
+                    <p>
+                        La formación abarca ginecología regenerativa, funcional y estética, integrando 
+                        conceptos anatómicos, fisiológicos, diagnósticos y terapéuticos, con énfasis en 
+                        la práctica segura y basada en evidencia.
+                    </p>
+                    <p>
+                        Nuestro enfoque combina fundamentación científica sólida, entrenamiento clínico 
+                        real y acompañamiento continuo, permitiendo al profesional integrar estas técnicas 
+                        de forma segura, ética y rentable en su práctica médica.
+                    </p>
+                </div>
+                <div class="content-image" data-aos="fade-left">
+                    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251866/PXL_20250724_155241641.PORTRAIT_txoou7.jpg" 
+                         alt="Formación médica ICIGIFCA">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Program Areas -->
+    <section class="content-section section alt">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Áreas de Formación</span>
+                <h2 class="section-title">Programa Integral</h2>
+                <p class="section-subtitle">
+                    Tres pilares fundamentales que conforman la formación completa en medicina íntima femenina
+                </p>
+            </div>
+
+            <div class="program-grid">
+                <div class="program-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="program-icon">🔬</div>
+                    <h3>Ginecología Regenerativa</h3>
+                    <p>
+                        Dominio de técnicas regenerativas avanzadas que permiten la restauración y 
+                        rejuvenecimiento de tejidos íntimos. Incluye protocolos de PRP (Plasma Rico 
+                        en Plaquetas), terapias con factores de crecimiento y aplicación de ácido 
+                        hialurónico de grado médico para resultados naturales y duraderos.
+                    </p>
+                </div>
+
+                <div class="program-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="program-icon">⚕️</div>
+                    <h3>Ginecología Funcional</h3>
+                    <p>
+                        Protocolos especializados para el tratamiento de disfunciones del piso pélvico, 
+                        incontinencia urinaria y síndrome genitourinario de la menopausia. Enfoque 
+                        integral que combina diagnóstico preciso con tratamientos personalizados 
+                        para mejorar la calidad de vida de las pacientes.
+                    </p>
+                </div>
+
+                <div class="program-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="program-icon">✨</div>
+                    <h3>Ginecología Estética</h3>
+                    <p>
+                        Procedimientos estéticos íntimos de última generación utilizando tecnologías 
+                        como láser CO2 fraccionado y radiofrecuencia vaginal. Formación en técnicas 
+                        que responden a la creciente demanda de procedimientos de rejuvenecimiento 
+                        íntimo con resultados seguros y efectivos.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Audience Section -->
+    <section class="content-section section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">¿A Quién Va Dirigido?</span>
+                <h2 class="section-title">Perfil del Participante</h2>
+                <p class="section-subtitle">
+                    Profesionales de la salud que desean especializarse en medicina íntima femenina
+                </p>
+            </div>
+
+            <div class="audience-grid">
+                <div class="audience-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="audience-icon">👩‍⚕️</div>
+                    <h4>Ginecólogos</h4>
+                    <p>Especialistas que buscan ampliar su oferta de servicios clínicos</p>
+                </div>
+
+                <div class="audience-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="audience-icon">👨‍⚕️</div>
+                    <h4>Médicos Generales</h4>
+                    <p>Profesionales que desean especializarse en ginecología regenerativa</p>
+                </div>
+
+                <div class="audience-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="audience-icon">💉</div>
+                    <h4>Médicos Estéticos</h4>
+                    <p>Especialistas que quieren incorporar procedimientos íntimos</p>
+                </div>
+
+                <div class="audience-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="audience-icon">🏥</div>
+                    <h4>Especialistas Afines</h4>
+                    <p>Cirujanos plásticos, urólogos y otros especialistas relacionados</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="content-section section alt">
+        <div class="container">
+            <div class="content-grid reverse" data-aos="fade-up">
+                <div class="content-text">
+                    <h2>¿Por Qué Elegir Este Programa?</h2>
+                    <p>
+                        El programa está pensado para médicos que desean dar un paso adelante en su 
+                        carrera profesional, diferenciándose en un mercado cada vez más competitivo.
+                    </p>
+                    
+                    <div class="benefits-list">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">📈</div>
+                            <div class="benefit-text">
+                                <h4>Ampliar tu Oferta de Servicios</h4>
+                                <p>Incorpora procedimientos de alta demanda a tu práctica clínica actual</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🎯</div>
+                            <div class="benefit-text">
+                                <h4>Mejorar Resultados Terapéuticos</h4>
+                                <p>Protocolos basados en evidencia con resultados comprobados</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">💡</div>
+                            <div class="benefit-text">
+                                <h4>Procedimientos Innovadores</h4>
+                                <p>Tecnología de última generación y técnicas de vanguardia</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">⭐</div>
+                            <div class="benefit-text">
+                                <h4>Diferenciación Profesional</h4>
+                                <p>Posiciónate como especialista en un campo de alta demanda</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-image" data-aos="fade-right">
+                    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763939467/PXL_20250724_142148471.PORTRAIT_avcliw.jpg" 
+                         alt="Equipo médico ICIGIFCA">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modality Section -->
+    <section class="content-section section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Metodología</span>
+                <h2 class="section-title">Modalidad Híbrida</h2>
+                <p class="section-subtitle">
+                    Combinamos la flexibilidad del aprendizaje online con la intensidad de la práctica presencial
+                </p>
+            </div>
+
+            <div class="content-grid" data-aos="fade-up">
+                <div class="content-text">
+                    <h2>Estructura Formativa</h2>
+                    <p>
+                        <strong>Fase Teórica:</strong> Módulos online y presenciales impartidos por 
+                        especialistas con amplia experiencia clínica y docente. Esta fase proporciona 
+                        la base científica necesaria para comprender los procedimientos, indicaciones, 
+                        contraindicaciones y protocolos.
+                    </p>
+                    <p>
+                        <strong>Fase Práctica:</strong> Entrenamiento intensivo bajo la modalidad 
+                        Full Immersion Training. 4 días de práctica hands-on con pacientes reales 
+                        bajo supervisión directa de especialistas certificados.
+                    </p>
+                    <p>
+                        <strong>Certificación:</strong> Al completar las evaluaciones académicas y 
+                        prácticas, obtienes tu certificación con aval universitario reconocido 
+                        internacionalmente.
+                    </p>
+                </div>
+                <div class="content-image" data-aos="fade-left">
+                    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251854/PXL_20250724_153618504.PORTRAIT_zsdeem.jpg" 
+                         alt="Práctica clínica ICIGIFCA">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content" data-aos="fade-up">
+                <h2 class="cta-title">¿Listo para Transformar Tu Carrera?</h2>
+                <p class="cta-subtitle">
+                    Únete a más de 1,500 especialistas formados por ICIGIFCA en toda Latinoamérica
+                </p>
+                <div class="cta-buttons">
+                    <a href="index.html#contacto" class="btn btn-white">Solicitar Información</a>
+                    <a href="practicas-clinicas.html" class="btn btn-outline">Ver Prácticas Clínicas</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">ICIGIFCA</a>
+                    <p>
+                        Instituto Iberoamericano de Cirugía y Ginecología Regenerativa, Funcional y Estética. 
+                        27 años formando especialistas en medicina íntima en Latinoamérica.
+                    </p>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Navegación</h4>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="programa.html">Programa</a></li>
+                        <li><a href="practicas-clinicas.html">Prácticas Clínicas</a></li>
+                        <li><a href="sedes.html">Sedes</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Información</h4>
+                    <ul>
+                        <li><a href="condiciones-academicas.html">Condiciones Académicas</a></li>
+                        <li><a href="index.html#video-testimonials">Testimonios</a></li>
+                        <li><a href="index.html#faq">FAQ</a></li>
+                        <li><a href="index.html#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="index.html#certificaciones">Certificaciones</a></li>
+                        <li><a href="index.html#gallery">Galería</a></li>
+                        <li><a href="#">Revista Científica</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 ICIGIFCA. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/XXXXXXXXXXX" class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">
+        💬
+    </a>
+
+    <!-- AOS Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('mainNav');
+            nav.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
