@@ -1482,6 +1482,373 @@
         }
 
         /* ========================================
+           MAESTRÍA & DIPLOMADO SECTIONS
+        ======================================== */
+        .maestria-section,
+        .diplomado-section {
+            padding: var(--space-xl) 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .maestria-section {
+            background: linear-gradient(135deg, #1a3a3a 0%, #2d5a5a 50%, #1a3a3a 100%);
+            color: white;
+        }
+
+        .diplomado-section {
+            background: var(--ivory);
+        }
+
+        .maestria-section .section-label {
+            color: var(--gold-light);
+        }
+
+        .maestria-section .section-title {
+            color: white;
+        }
+
+        .maestria-section .section-subtitle {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .maestria-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212,165,116,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .program-offerings {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-lg);
+            margin-top: var(--space-lg);
+        }
+
+        .offering-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .offering-info p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.85);
+        }
+
+        .diplomado-section .offering-info p {
+            color: var(--gray);
+        }
+
+        .offering-highlights {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px 20px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 12px;
+            border-left: 3px solid var(--gold);
+            transition: var(--transition);
+        }
+
+        .diplomado-section .highlight-item {
+            background: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .highlight-item:hover {
+            transform: translateX(5px);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .diplomado-section .highlight-item:hover {
+            background: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .highlight-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(212,165,116,0.15);
+            border-radius: 10px;
+        }
+
+        .highlight-text h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: white;
+        }
+
+        .diplomado-section .highlight-text h4 {
+            color: var(--charcoal);
+        }
+
+        .highlight-text p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.5;
+        }
+
+        .diplomado-section .highlight-text p {
+            color: var(--gray-light);
+        }
+
+        /* Modules Grid */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
+        }
+
+        .module-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 24px;
+            transition: var(--transition);
+        }
+
+        .diplomado-section .module-card {
+            background: white;
+            border: 1px solid rgba(0,0,0,0.06);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.1);
+            border-color: var(--gold);
+        }
+
+        .diplomado-section .module-card:hover {
+            background: white;
+            box-shadow: var(--shadow-md);
+            border-color: var(--gold);
+        }
+
+        .module-card .module-number {
+            display: inline-block;
+            background: var(--gold-gradient);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .module-card h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: white;
+            font-family: var(--font-serif);
+        }
+
+        .diplomado-section .module-card h4 {
+            color: var(--charcoal);
+        }
+
+        .module-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .module-card ul li {
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+            padding: 4px 0;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .diplomado-section .module-card ul li {
+            color: var(--gray);
+        }
+
+        .module-card ul li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        /* Info Bar */
+        .info-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-sm);
+            margin-top: var(--space-lg);
+            padding: var(--space-md);
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .diplomado-section .info-bar {
+            background: white;
+            border: 1px solid rgba(0,0,0,0.06);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .info-bar-item {
+            text-align: center;
+            padding: 16px;
+        }
+
+        .info-bar-item .info-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .info-bar-item h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 4px;
+        }
+
+        .info-bar-item p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .diplomado-section .info-bar-item p {
+            color: var(--gray);
+        }
+
+        /* CTA buttons for sections */
+        .section-buttons {
+            display: flex;
+            gap: var(--space-sm);
+            justify-content: center;
+            margin-top: var(--space-lg);
+            flex-wrap: wrap;
+        }
+
+        .btn-gold {
+            display: inline-block;
+            background: var(--gold-gradient);
+            color: white;
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(212,165,116,0.3);
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212,165,116,0.4);
+        }
+
+        .btn-outline-light {
+            display: inline-block;
+            background: transparent;
+            color: white;
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            border: 2px solid rgba(255,255,255,0.3);
+            transition: var(--transition);
+        }
+
+        .btn-outline-light:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--gold);
+            transform: translateY(-3px);
+        }
+
+        .btn-outline-dark {
+            display: inline-block;
+            background: transparent;
+            color: var(--charcoal);
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            border: 2px solid var(--charcoal);
+            transition: var(--transition);
+        }
+
+        .btn-outline-dark:hover {
+            background: var(--charcoal);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Investment badge */
+        .investment-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(212,165,116,0.15);
+            border: 1px solid rgba(212,165,116,0.3);
+            padding: 12px 24px;
+            border-radius: 50px;
+            margin-top: var(--space-sm);
+        }
+
+        .investment-badge span {
+            font-size: 14px;
+            color: var(--gold-light);
+        }
+
+        .investment-badge strong {
+            font-size: 18px;
+            color: var(--gold);
+        }
+
+        .diplomado-section .investment-badge {
+            border-color: var(--gold);
+        }
+
+        .diplomado-section .investment-badge span {
+            color: var(--gray);
+        }
+
+        /* Responsive for new sections */
+        @media (max-width: 768px) {
+            .program-offerings {
+                grid-template-columns: 1fr;
+            }
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+            .info-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* ========================================
            FOOTER
         ======================================== */
         .footer {
@@ -1705,10 +2072,10 @@
                 <nav class="nav" id="mainNav">
                     <ul class="nav-links">
                         <li><a href="index.html">Inicio</a></li>
-                        <li><a href="programa.html">Programa</a></li>
-                        <li><a href="practicas-clinicas.html">Prácticas Clínicas</a></li>
+                        <li><a href="#maestria">Maestría</a></li>
+                        <li><a href="#diplomado">Diplomado</a></li>
+                        <li><a href="practicas-clinicas.html">Prácticas</a></li>
                         <li><a href="sedes.html">Sedes</a></li>
-                        <li><a href="condiciones-academicas.html">Condiciones</a></li>
                         <li><a href="#video-testimonials">Testimonios</a></li>
                         <li><a href="#faq">FAQ</a></li>
                     </ul>
@@ -1779,6 +2146,283 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         MAESTRÍA SECTION
+    ========================================= -->
+    <section class="maestria-section" id="maestria">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Formación de Postgrado</span>
+                <h2 class="section-title">Máster en Ginecología Regenerativa, Funcional y Estética</h2>
+                <p class="section-subtitle">
+                    Abordaje Clínico-Quirúrgico · Avalado por la Universidad Internacional Abierta Generalísimo Sebastián Francisco de Miranda
+                </p>
+            </div>
+
+            <div class="program-offerings" data-aos="fade-up">
+                <div class="offering-info">
+                    <p>
+                        El Máster es una actualización enfocada a médicos especialistas en Ginecología y Obstetricia,
+                        Urología y Cirugía de Piso Pélvico. Organizado y dirigido por la Dra. Ajakaida Renaud,
+                        con más de 12 años de experiencia en técnicas emergentes y conocimiento de vanguardia
+                        en uroginecología regenerativa, funcional y estética.
+                    </p>
+                    <p>
+                        El propósito es integrar nuevas técnicas, habilidades y herramientas para el abordaje
+                        clínico y quirúrgico en pacientes con patologías ginecológicas, mejorando las disfunciones
+                        sexuales femeninas desde lo regenerativo y funcional, más allá de la estética.
+                    </p>
+
+                    <div class="offering-highlights">
+                        <div class="highlight-item">
+                            <div class="highlight-icon">🎓</div>
+                            <div class="highlight-text">
+                                <h4>Título Académico Universitario</h4>
+                                <p>Reconocimiento internacional que te posiciona en otro nivel profesional</p>
+                            </div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-icon">🔬</div>
+                            <div class="highlight-text">
+                                <h4>Dominio Clínico Real</h4>
+                                <p>Formación práctica con pacientes reales, no solo teórica</p>
+                            </div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-icon">🌎</div>
+                            <div class="highlight-text">
+                                <h4>Claustro Internacional</h4>
+                                <p>Más de 30 profesores de España, Argentina, México, Perú, EEUU y Venezuela</p>
+                            </div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-icon">📑</div>
+                            <div class="highlight-text">
+                                <h4>Investigación y Publicación</h4>
+                                <p>Integración con líneas de investigación clínica y publicación científica</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="offering-modules">
+                    <div class="modules-grid">
+                        <div class="module-card" data-aos="fade-up" data-aos-delay="100">
+                            <span class="module-number">Módulo I</span>
+                            <h4>Bases Científicas de la Ginecología Regenerativa</h4>
+                            <ul>
+                                <li>Fundamentos de ginecología regenerativa, funcional y estética</li>
+                                <li>Marco ético, regulatorio y bioseguridad</li>
+                                <li>Biología regenerativa aplicada: PRP, PRF, IPRF, exosomas, PDRN, péptidos</li>
+                                <li>Bioestimulación y bioregeneración tisular vulvovaginal</li>
+                            </ul>
+                        </div>
+                        <div class="module-card" data-aos="fade-up" data-aos-delay="200">
+                            <span class="module-number">Módulo II</span>
+                            <h4>Tecnologías y Procedimientos Regenerativos</h4>
+                            <ul>
+                                <li>Ácido hialurónico, plasma rico en plaquetas, nanograsa, exosomas</li>
+                                <li>Láseres en ginecología (CO2, Er:YAG, híbridos, diodo)</li>
+                                <li>Ultrasonido focalizado de alta intensidad (HIFU)</li>
+                                <li>Radiofrecuencia Monopolar y Microablativa (FRAXX)</li>
+                            </ul>
+                        </div>
+                        <div class="module-card" data-aos="fade-up" data-aos-delay="300">
+                            <span class="module-number">Módulo III</span>
+                            <h4>Piso Pélvico y Rehabilitación Funcional</h4>
+                            <ul>
+                                <li>Manejo de disfunciones sexuales femeninas y masculinas</li>
+                                <li>Incontinencia urinaria y fecal: abordaje integral</li>
+                                <li>Ecografía transperineal y evaluación 3D</li>
+                                <li>Microbiota vaginal, estrógenos y factores de crecimiento</li>
+                            </ul>
+                        </div>
+                        <div class="module-card" data-aos="fade-up" data-aos-delay="400">
+                            <span class="module-number">Módulo IV</span>
+                            <h4>Enfoque Integral, Cirugía y Práctica Clínica</h4>
+                            <ul>
+                                <li>Cirugía reconstructiva vulvar, clitoroplastia, himenoplastia</li>
+                                <li>Histeroscopia con láser y terapias regenerativas</li>
+                                <li>Hormonas bioidénticas y sueroterapia funcional</li>
+                                <li>Protocolos combinados y evaluación de resultados</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-bar" data-aos="fade-up">
+                <div class="info-bar-item">
+                    <div class="info-icon">📋</div>
+                    <h4>Modalidad</h4>
+                    <p>Online en vivo + Clases pregrabadas + Prácticas presenciales</p>
+                </div>
+                <div class="info-bar-item">
+                    <div class="info-icon">⏱️</div>
+                    <h4>Duración</h4>
+                    <p>170 horas académicas y prácticas</p>
+                </div>
+                <div class="info-bar-item">
+                    <div class="info-icon">🏥</div>
+                    <h4>Prácticas</h4>
+                    <p>60 horas presenciales en sedes internacionales</p>
+                </div>
+                <div class="info-bar-item">
+                    <div class="info-icon">📜</div>
+                    <h4>Evaluación</h4>
+                    <p>Protocolo clínico, caso clínico o revisión narrativa</p>
+                </div>
+            </div>
+
+            <div class="section-buttons" data-aos="fade-up">
+                <a href="#contacto" class="btn-gold">Aplicar a la Maestría</a>
+                <a href="#diplomado" class="btn-outline-light">Ver Diplomado</a>
+            </div>
+
+            <div style="text-align:center; margin-top: var(--space-sm);">
+                <div class="investment-badge">
+                    <span>Inversión desde</span>
+                    <strong>USD $3,000</strong>
+                    <span>· Planes de pago disponibles</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         DIPLOMADO SECTION
+    ========================================= -->
+    <section class="diplomado-section" id="diplomado">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Formación Especializada</span>
+                <h2 class="section-title">Diplomado en Ginecología Regenerativa, Funcional y Estética</h2>
+                <p class="section-subtitle">
+                    El programa insignia de ICIGIFCA con 27 años de trayectoria formando especialistas en Latinoamérica
+                </p>
+            </div>
+
+            <div class="program-offerings" data-aos="fade-up">
+                <div class="offering-info">
+                    <p>
+                        Nuestro Diplomado es la formación especializada que ha transformado la práctica de más de
+                        1,500 médicos en 15 países. Diseñado bajo modalidad híbrida, combina módulos teóricos
+                        con entrenamiento clínico presencial intensivo bajo el modelo Full Immersion Training.
+                    </p>
+                    <p>
+                        Dirigido a médicos ginecólogos, obstetras, urólogos y cirujanos de piso pélvico que
+                        buscan ampliar sus conocimientos y generar experticia técnica en ginecología regenerativa,
+                        funcional y estética con certificación avalada internacionalmente.
+                    </p>
+
+                    <div class="offering-highlights">
+                        <div class="highlight-item">
+                            <div class="highlight-icon">⚕️</div>
+                            <div class="highlight-text">
+                                <h4>Full Immersion Training</h4>
+                                <p>Entrenamiento intensivo con pacientes reales bajo supervisión directa</p>
+                            </div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-icon">🏆</div>
+                            <div class="highlight-text">
+                                <h4>Certificación Internacional</h4>
+                                <p>Aval de ICIGIFCA, Ajakaida Renaud Institute y SOGIRE</p>
+                            </div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-icon">💡</div>
+                            <div class="highlight-text">
+                                <h4>Experticia Técnica</h4>
+                                <p>Dominio de técnicas regenerativas, láser, radiofrecuencia y más</p>
+                            </div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-icon">📈</div>
+                            <div class="highlight-text">
+                                <h4>Puerta al Máster</h4>
+                                <p>Egresados pueden acceder al Máster con inversión preferencial de USD $3,000</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="offering-modules">
+                    <div class="modules-grid">
+                        <div class="module-card" data-aos="fade-up" data-aos-delay="100">
+                            <span class="module-number">Módulo I</span>
+                            <h4>Fundamentación Científica</h4>
+                            <ul>
+                                <li>Anatomía y fisiología aplicada</li>
+                                <li>Diagnósticos y protocolos terapéuticos</li>
+                                <li>Práctica basada en evidencia</li>
+                                <li>Bioseguridad y marco regulatorio</li>
+                            </ul>
+                        </div>
+                        <div class="module-card" data-aos="fade-up" data-aos-delay="200">
+                            <span class="module-number">Módulo II</span>
+                            <h4>Ginecología Regenerativa</h4>
+                            <ul>
+                                <li>PRP, ácido hialurónico y nanograsa</li>
+                                <li>Láser CO2 y radiofrecuencia</li>
+                                <li>Técnicas de rejuvenecimiento íntimo</li>
+                                <li>Protocolos combinados</li>
+                            </ul>
+                        </div>
+                        <div class="module-card" data-aos="fade-up" data-aos-delay="300">
+                            <span class="module-number">Módulo III</span>
+                            <h4>Ginecología Funcional</h4>
+                            <ul>
+                                <li>Disfunciones del piso pélvico</li>
+                                <li>Incontinencia y rehabilitación</li>
+                                <li>Síndrome genitourinario de la menopausia</li>
+                                <li>Ecografía funcional</li>
+                            </ul>
+                        </div>
+                        <div class="module-card" data-aos="fade-up" data-aos-delay="400">
+                            <span class="module-number">Módulo IV</span>
+                            <h4>Ginecología Estética</h4>
+                            <ul>
+                                <li>Procedimientos estéticos íntimos</li>
+                                <li>Cirugía reconstructiva</li>
+                                <li>Tecnologías de última generación</li>
+                                <li>Casos clínicos y evaluación</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-bar" data-aos="fade-up">
+                <div class="info-bar-item">
+                    <div class="info-icon">📋</div>
+                    <h4>Modalidad</h4>
+                    <p>Híbrida: teórica online + prácticas presenciales</p>
+                </div>
+                <div class="info-bar-item">
+                    <div class="info-icon">⏱️</div>
+                    <h4>Duración</h4>
+                    <p>Programa completo con prácticas clínicas</p>
+                </div>
+                <div class="info-bar-item">
+                    <div class="info-icon">🏥</div>
+                    <h4>Prácticas</h4>
+                    <p>Full Immersion con pacientes reales</p>
+                </div>
+                <div class="info-bar-item">
+                    <div class="info-icon">🌎</div>
+                    <h4>Sedes</h4>
+                    <p>Venezuela, Rep. Dominicana, Perú, México</p>
+                </div>
+            </div>
+
+            <div class="section-buttons" data-aos="fade-up">
+                <a href="#contacto" class="btn btn-primary">Aplicar al Diplomado</a>
+                <a href="#maestria" class="btn-outline-dark">Ver Maestría</a>
             </div>
         </div>
     </section>
