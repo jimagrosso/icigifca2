@@ -3273,28 +3273,39 @@
         </div>
     </div>
 
-    <!-- AOS Script -->
     <script>
-        // Initialize AOS - with fallback for delayed loading
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof AOS !== 'undefined') {
-                AOS.init({
-                    duration: 1000,
-                    once: true,
-                    offset: 100
+        // ========================================
+        // SCROLL ANIMATION - IntersectionObserver
+        // ========================================
+        function initScrollAnimations() {
+            const animatedElements = document.querySelectorAll('.scroll-animate');
+            
+            // Immediately show elements already in viewport (hero section)
+            animatedElements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight) {
+                    el.classList.add('visible');
+                }
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
                 });
-            }
-        });
-        // Fallback: try again after window load
-        window.addEventListener('load', function() {
-            if (typeof AOS !== 'undefined') {
-                AOS.init({
-                    duration: 1000,
-                    once: true,
-                    offset: 100
-                });
-            }
-        });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+            animatedElements.forEach(el => {
+                if (!el.classList.contains('visible')) {
+                    observer.observe(el);
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', initScrollAnimations);
+        window.addEventListener('load', initScrollAnimations);
 
         // Mobile Menu Toggle
         function toggleMobileMenu() {
