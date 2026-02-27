@@ -10,8 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- AOS Animation Library -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
     <style>
         /* ========================================
            RESET & VARIABLES
@@ -2061,7 +2059,22 @@
                 text-align: center;
             }
         }
-    </style>
+    
+/* Scroll Animation System (replaces AOS) */
+.scroll-animate {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.scroll-animate.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.scroll-animate.delay-1 { transition-delay: 0.1s; }
+.scroll-animate.delay-2 { transition-delay: 0.2s; }
+.scroll-animate.delay-3 { transition-delay: 0.3s; }
+.scroll-animate.delay-4 { transition-delay: 0.4s; }
+
 </head>
 <body>
     <!-- Header -->
@@ -2094,7 +2107,7 @@
     <section class="hero" id="hero">
         <div class="container">
             <div class="hero-content">
-                <div class="hero-text" data-aos="fade-right">
+                <div class="hero-text scroll-animate" >
                     <div class="hero-badge">
                         <span>✦</span> Instituto Líder en Latinoamérica
                     </div>
@@ -2125,19 +2138,19 @@
                         <a href="programa.html" class="btn btn-secondary">Ver Programa</a>
                     </div>
                 </div>
-                <div class="hero-visual" data-aos="fade-left">
+                <div class="hero-visual scroll-animate" >
                     <div class="hero-image-container">
                         <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251866/PXL_20250724_155241641.PORTRAIT_txoou7.jpg" 
                              alt="Formación médica ICIGIFCA" 
                              class="hero-image">
-                        <div class="hero-floating-card top" data-aos="fade-down" data-aos-delay="300">
+                        <div class="hero-floating-card top scroll-animate delay-3"  >
                             <div class="floating-icon">🎓</div>
                             <div class="floating-text">
                                 <strong>Aval Universitario</strong>
                                 <span>Certificación Internacional</span>
                             </div>
                         </div>
-                        <div class="hero-floating-card bottom" data-aos="fade-up" data-aos-delay="400">
+                        <div class="hero-floating-card bottom scroll-animate delay-4"  >
                             <div class="floating-icon">⚕️</div>
                             <div class="floating-text">
                                 <strong>Práctica Real</strong>
@@ -2155,7 +2168,7 @@
     ========================================= -->
     <section class="maestria-section" id="maestria">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header scroll-animate" >
                 <span class="section-label">Formación de Postgrado</span>
                 <h2 class="section-title">Máster en Ginecología Regenerativa, Funcional y Estética</h2>
                 <p class="section-subtitle">
@@ -2163,7 +2176,7 @@
                 </p>
             </div>
 
-            <div class="program-offerings" data-aos="fade-up">
+            <div class="program-offerings scroll-animate" >
                 <div class="offering-info">
                     <p>
                         El Máster es una actualización enfocada a médicos especialistas en Ginecología y Obstetricia,
@@ -2211,7 +2224,7 @@
 
                 <div class="offering-modules">
                     <div class="modules-grid">
-                        <div class="module-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="module-card scroll-animate delay-1"  >
                             <span class="module-number">Módulo I</span>
                             <h4>Bases Científicas de la Ginecología Regenerativa</h4>
                             <ul>
@@ -2221,7 +2234,7 @@
                                 <li>Bioestimulación y bioregeneración tisular vulvovaginal</li>
                             </ul>
                         </div>
-                        <div class="module-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="module-card scroll-animate delay-2"  >
                             <span class="module-number">Módulo II</span>
                             <h4>Tecnologías y Procedimientos Regenerativos</h4>
                             <ul>
@@ -2231,7 +2244,7 @@
                                 <li>Radiofrecuencia Monopolar y Microablativa (FRAXX)</li>
                             </ul>
                         </div>
-                        <div class="module-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="module-card scroll-animate delay-3"  >
                             <span class="module-number">Módulo III</span>
                             <h4>Piso Pélvico y Rehabilitación Funcional</h4>
                             <ul>
@@ -2241,7 +2254,7 @@
                                 <li>Microbiota vaginal, estrógenos y factores de crecimiento</li>
                             </ul>
                         </div>
-                        <div class="module-card" data-aos="fade-up" data-aos-delay="400">
+                        <div class="module-card scroll-animate delay-4"  >
                             <span class="module-number">Módulo IV</span>
                             <h4>Enfoque Integral, Cirugía y Práctica Clínica</h4>
                             <ul>
@@ -2255,7 +2268,7 @@
                 </div>
             </div>
 
-            <div class="info-bar" data-aos="fade-up">
+            <div class="info-bar scroll-animate" >
                 <div class="info-bar-item">
                     <div class="info-icon">📋</div>
                     <h4>Modalidad</h4>
@@ -2278,7 +2291,7 @@
                 </div>
             </div>
 
-            <div class="section-buttons" data-aos="fade-up">
+            <div class="section-buttons scroll-animate" >
                 <a href="#contacto" class="btn-gold">Aplicar a la Maestría</a>
                 <a href="#diplomado" class="btn-outline-light">Ver Diplomado</a>
             </div>
@@ -2298,7 +2311,7 @@
     ========================================= -->
     <section class="diplomado-section" id="diplomado">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header scroll-animate" >
                 <span class="section-label">Formación Especializada</span>
                 <h2 class="section-title">Diplomado en Ginecología Regenerativa, Funcional y Estética</h2>
                 <p class="section-subtitle">
@@ -2306,7 +2319,7 @@
                 </p>
             </div>
 
-            <div class="program-offerings" data-aos="fade-up">
+            <div class="program-offerings scroll-animate" >
                 <div class="offering-info">
                     <p>
                         Nuestro Diplomado es la formación especializada que ha transformado la práctica de más de
@@ -2353,7 +2366,7 @@
 
                 <div class="offering-modules">
                     <div class="modules-grid">
-                        <div class="module-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="module-card scroll-animate delay-1"  >
                             <span class="module-number">Módulo I</span>
                             <h4>Fundamentación Científica</h4>
                             <ul>
@@ -2363,7 +2376,7 @@
                                 <li>Bioseguridad y marco regulatorio</li>
                             </ul>
                         </div>
-                        <div class="module-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="module-card scroll-animate delay-2"  >
                             <span class="module-number">Módulo II</span>
                             <h4>Ginecología Regenerativa</h4>
                             <ul>
@@ -2373,7 +2386,7 @@
                                 <li>Protocolos combinados</li>
                             </ul>
                         </div>
-                        <div class="module-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="module-card scroll-animate delay-3"  >
                             <span class="module-number">Módulo III</span>
                             <h4>Ginecología Funcional</h4>
                             <ul>
@@ -2383,7 +2396,7 @@
                                 <li>Ecografía funcional</li>
                             </ul>
                         </div>
-                        <div class="module-card" data-aos="fade-up" data-aos-delay="400">
+                        <div class="module-card scroll-animate delay-4"  >
                             <span class="module-number">Módulo IV</span>
                             <h4>Ginecología Estética</h4>
                             <ul>
@@ -2397,7 +2410,7 @@
                 </div>
             </div>
 
-            <div class="info-bar" data-aos="fade-up">
+            <div class="info-bar scroll-animate" >
                 <div class="info-bar-item">
                     <div class="info-icon">📋</div>
                     <h4>Modalidad</h4>
@@ -2420,7 +2433,7 @@
                 </div>
             </div>
 
-            <div class="section-buttons" data-aos="fade-up">
+            <div class="section-buttons scroll-animate" >
                 <a href="#contacto" class="btn btn-primary">Aplicar al Diplomado</a>
                 <a href="#maestria" class="btn-outline-dark">Ver Maestría</a>
             </div>
@@ -2430,7 +2443,7 @@
     <!-- Program Summary Section -->
     <section class="program-summary section" id="programa-resumen">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header scroll-animate" >
                 <span class="section-label">Programa de Formación</span>
                 <h2 class="section-title">Formación Integral en Ginecología Regenerativa</h2>
                 <p class="section-subtitle">
@@ -2440,32 +2453,32 @@
             </div>
 
             <div class="program-grid">
-                <div class="program-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="program-card scroll-animate delay-1"  >
                     <div class="program-icon">📚</div>
                     <h3>Fundamentación Científica</h3>
                     <p>Base teórica sólida en anatomía, fisiología, diagnósticos y protocolos terapéuticos con énfasis en práctica basada en evidencia.</p>
                 </div>
 
-                <div class="program-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="program-card scroll-animate delay-2"  >
                     <div class="program-icon">🔬</div>
                     <h3>Ginecología Regenerativa</h3>
                     <p>Dominio de técnicas regenerativas avanzadas: PRP, ácido hialurónico, láser CO2 y radiofrecuencia para rejuvenecimiento íntimo.</p>
                 </div>
 
-                <div class="program-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="program-card scroll-animate delay-3"  >
                     <div class="program-icon">⚕️</div>
                     <h3>Ginecología Funcional</h3>
                     <p>Protocolos para tratamiento de disfunciones del piso pélvico, incontinencia y síndrome genitourinario de la menopausia.</p>
                 </div>
 
-                <div class="program-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="program-card scroll-animate delay-4"  >
                     <div class="program-icon">✨</div>
                     <h3>Ginecología Estética</h3>
                     <p>Procedimientos estéticos íntimos de última generación para mejorar la calidad de vida de las pacientes.</p>
                 </div>
             </div>
 
-            <div class="section-cta" data-aos="fade-up">
+            <div class="section-cta scroll-animate" >
                 <a href="programa.html" class="btn btn-primary">Ver Programa Completo</a>
             </div>
         </div>
@@ -2474,7 +2487,7 @@
     <!-- Practices Summary Section -->
     <section class="practices-summary section" id="practicas-resumen">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header scroll-animate" >
                 <span class="section-label">Prácticas Clínicas</span>
                 <h2 class="section-title">Full Immersion Training</h2>
                 <p class="section-subtitle">
@@ -2483,7 +2496,7 @@
             </div>
 
             <div class="practices-content">
-                <div class="practices-features" data-aos="fade-right">
+                <div class="practices-features scroll-animate" >
                     <div class="practice-feature">
                         <div class="feature-icon">📅</div>
                         <div class="feature-text">
@@ -2517,7 +2530,7 @@
                     </div>
                 </div>
 
-                <div class="practices-highlight" data-aos="fade-left">
+                <div class="practices-highlight scroll-animate" >
                     <div class="highlight-number">25+</div>
                     <div class="highlight-label">Procedimientos por Día</div>
                     <div class="highlight-description">Experiencia práctica intensiva garantizada</div>
@@ -2530,7 +2543,7 @@
     <!-- Locations Summary Section -->
     <section class="locations-summary section" id="sedes-resumen">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header scroll-animate" >
                 <span class="section-label">Sedes Internacionales</span>
                 <h2 class="section-title">Alcance Regional</h2>
                 <p class="section-subtitle">
@@ -2540,7 +2553,7 @@
             </div>
 
             <div class="locations-grid">
-                <div class="location-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="location-card scroll-animate delay-1"  >
                     <div class="location-flag">🇻🇪</div>
                     <div class="location-info">
                         <h3>Barquisimeto, Venezuela</h3>
@@ -2549,7 +2562,7 @@
                     </div>
                 </div>
 
-                <div class="location-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="location-card scroll-animate delay-2"  >
                     <div class="location-flag">🇩🇴</div>
                     <div class="location-info">
                         <h3>República Dominicana</h3>
@@ -2557,7 +2570,7 @@
                     </div>
                 </div>
 
-                <div class="location-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="location-card scroll-animate delay-3"  >
                     <div class="location-flag">🇵🇪</div>
                     <div class="location-info">
                         <h3>Perú</h3>
@@ -2565,7 +2578,7 @@
                     </div>
                 </div>
 
-                <div class="location-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="location-card scroll-animate delay-4"  >
                     <div class="location-flag">🇲🇽</div>
                     <div class="location-info">
                         <h3>México</h3>
@@ -2574,7 +2587,7 @@
                 </div>
             </div>
 
-            <div class="section-cta" data-aos="fade-up">
+            <div class="section-cta scroll-animate" >
                 <a href="sedes.html" class="btn btn-primary">Ver Todas las Sedes</a>
             </div>
         </div>
@@ -2583,7 +2596,7 @@
     <!-- Video Testimonials Section -->
     <section class="video-testimonials section" id="video-testimonials">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header scroll-animate" >
                 <span class="section-label">Testimonios en Video</span>
                 <h2 class="section-title">Experiencias Reales de Nuestros Egresados</h2>
                 <p class="section-subtitle">
@@ -2593,7 +2606,7 @@
             
             <div class="video-grid">
                 <!-- Video 1 -->
-                <div class="video-container" data-aos="fade-up" data-aos-delay="100">
+                <div class="video-container scroll-animate delay-1"  >
                     <div class="video-badge">Testimonio Destacado</div>
                     <div class="video-wrapper">
                         <iframe 
@@ -2613,7 +2626,7 @@
                 </div>
                 
                 <!-- Video 2 -->
-                <div class="video-container" data-aos="fade-up" data-aos-delay="200">
+                <div class="video-container scroll-animate delay-2"  >
                     <div class="video-badge">Caso de Éxito</div>
                     <div class="video-wrapper">
                         <iframe 
@@ -2638,7 +2651,7 @@
     <!-- Instagram Stories Style Carousel -->
     <section class="stories-section" id="gallery">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header scroll-animate" >
                 <span class="section-label">Galería</span>
                 <h2 class="section-title">Nuestros Médicos en Acción</h2>
                 <p class="section-subtitle">
@@ -2653,7 +2666,7 @@
             
             <div class="stories-wrapper" id="storiesWrapper">
                 <!-- Story 1 -->
-                <div class="story-card" data-aos="fade-up" data-aos-delay="100" onclick="openLightbox(0)">
+                <div class="story-card scroll-animate delay-1"   onclick="openLightbox(0)">
                     <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251866/PXL_20250724_155241641.PORTRAIT_txoou7.jpg" 
                          alt="Médicos ICIGIFCA en formación" 
                          class="story-image">
@@ -2664,7 +2677,7 @@
                 </div>
                 
                 <!-- Story 2 -->
-                <div class="story-card" data-aos="fade-up" data-aos-delay="200" onclick="openLightbox(1)">
+                <div class="story-card scroll-animate delay-2"   onclick="openLightbox(1)">
                     <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251854/PXL_20250724_153618504.PORTRAIT_zsdeem.jpg" 
                          alt="Práctica clínica ICIGIFCA" 
                          class="story-image">
@@ -2675,7 +2688,7 @@
                 </div>
                 
                 <!-- Story 3 -->
-                <div class="story-card" data-aos="fade-up" data-aos-delay="300" onclick="openLightbox(2)">
+                <div class="story-card scroll-animate delay-3"   onclick="openLightbox(2)">
                     <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763251838/PXL_20250724_155202412.PORTRAIT_ra4nbx.jpg" 
                          alt="Trabajo en equipo ICIGIFCA" 
                          class="story-image">
@@ -2686,7 +2699,7 @@
                 </div>
                 
                 <!-- Story 4 -->
-                <div class="story-card" data-aos="fade-up" data-aos-delay="400" onclick="openLightbox(3)">
+                <div class="story-card scroll-animate delay-4"   onclick="openLightbox(3)">
                     <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763939484/PXL_20250724_155239046.PORTRAIT_lhkhse.jpg" 
                          alt="Sesión práctica ICIGIFCA" 
                          class="story-image">
@@ -2697,7 +2710,7 @@
                 </div>
                 
                 <!-- Story 5 -->
-                <div class="story-card" data-aos="fade-up" data-aos-delay="500" onclick="openLightbox(4)">
+                <div class="story-card scroll-animate"   onclick="openLightbox(4)">
                     <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763939467/PXL_20250724_142148471.PORTRAIT_avcliw.jpg" 
                          alt="Equipo médico ICIGIFCA" 
                          class="story-image">
@@ -2708,7 +2721,7 @@
                 </div>
                 
                 <!-- Story 6 -->
-                <div class="story-card" data-aos="fade-up" data-aos-delay="600" onclick="openLightbox(5)">
+                <div class="story-card scroll-animate"   onclick="openLightbox(5)">
                     <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763939459/PXL_20250724_140602715_pox8mn.jpg" 
                          alt="Procedimiento especializado ICIGIFCA" 
                          class="story-image">
@@ -2719,7 +2732,7 @@
                 </div>
                 
                 <!-- Story 7 -->
-                <div class="story-card" data-aos="fade-up" data-aos-delay="700" onclick="openLightbox(6)">
+                <div class="story-card scroll-animate"   onclick="openLightbox(6)">
                     <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763939448/PXL_20250724_135612291.PORTRAIT.ORIGINAL_ydz0nk.jpg" 
                          alt="Capacitación médica ICIGIFCA" 
                          class="story-image">
@@ -2730,7 +2743,7 @@
                 </div>
                 
                 <!-- Story 8 -->
-                <div class="story-card" data-aos="fade-up" data-aos-delay="800" onclick="openLightbox(7)">
+                <div class="story-card scroll-animate"   onclick="openLightbox(7)">
                     <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/v1763939286/PXL_20250724_133718585.PORTRAIT_rvg4y8.jpg" 
                          alt="Certificación ICIGIFCA" 
                          class="story-image">
@@ -2758,25 +2771,25 @@
     <section class="stats-section" id="stats">
         <div class="container">
             <div class="stats-grid">
-                <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="stat-card scroll-animate delay-1"  >
                     <div class="stat-number" data-target="27">0</div>
                     <div class="stat-label">Años de Experiencia</div>
                     <div class="stat-description">Transformando la medicina íntima</div>
                 </div>
                 
-                <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="stat-card scroll-animate delay-2"  >
                     <div class="stat-number" data-target="1500">0</div>
                     <div class="stat-label">Egresados</div>
                     <div class="stat-description">Médicos certificados en toda Latinoamérica</div>
                 </div>
                 
-                <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="stat-card scroll-animate delay-3"  >
                     <div class="stat-number" data-target="98">0</div>
                     <div class="stat-label">% Satisfacción</div>
                     <div class="stat-description">De nuestros estudiantes</div>
                 </div>
                 
-                <div class="stat-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="stat-card scroll-animate delay-4"  >
                     <div class="stat-number" data-target="15">0</div>
                     <div class="stat-label">Países</div>
                     <div class="stat-description">Presencia internacional</div>
@@ -2788,7 +2801,7 @@
     <!-- Timeline Section -->
     <section class="timeline-section" id="proceso">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header scroll-animate" >
                 <span class="section-label">Proceso de Formación</span>
                 <h2 class="section-title">Tu Camino Hacia la Excelencia</h2>
                 <p class="section-subtitle">
@@ -2798,7 +2811,7 @@
             
             <div class="timeline">
                 <!-- Timeline Item 1 -->
-                <div class="timeline-item" data-aos="fade-right" data-aos-delay="100">
+                <div class="timeline-item scroll-animate delay-1"  >
                     <div class="timeline-content">
                         <h3 class="timeline-title">Formación Teórica</h3>
                         <p class="timeline-description">
@@ -2812,7 +2825,7 @@
                 </div>
                 
                 <!-- Timeline Item 2 -->
-                <div class="timeline-item" data-aos="fade-left" data-aos-delay="200">
+                <div class="timeline-item scroll-animate delay-2"  >
                     <div class="timeline-content">
                         <h3 class="timeline-title">Práctica Clínica Hands-On</h3>
                         <p class="timeline-description">
@@ -2826,7 +2839,7 @@
                 </div>
                 
                 <!-- Timeline Item 3 -->
-                <div class="timeline-item" data-aos="fade-right" data-aos-delay="300">
+                <div class="timeline-item scroll-animate delay-3"  >
                     <div class="timeline-content">
                         <h3 class="timeline-title">Certificación</h3>
                         <p class="timeline-description">
@@ -2839,7 +2852,7 @@
                 </div>
                 
                 <!-- Timeline Item 4 -->
-                <div class="timeline-item" data-aos="fade-left" data-aos-delay="400">
+                <div class="timeline-item scroll-animate delay-4"  >
                     <div class="timeline-content">
                         <h3 class="timeline-title">Acompañamiento Continuo</h3>
                         <p class="timeline-description">
@@ -2857,7 +2870,7 @@
     <!-- FAQ Section -->
     <section class="faq-section" id="faq">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header scroll-animate" >
                 <span class="section-label">Preguntas Frecuentes</span>
                 <h2 class="section-title">¿Tienes Dudas?</h2>
                 <p class="section-subtitle">
@@ -2867,7 +2880,7 @@
             
             <div class="faq-container">
                 <!-- FAQ 1 -->
-                <div class="faq-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="faq-item scroll-animate delay-1"  >
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span>¿Cuál es la duración del programa?</span>
                         <div class="faq-icon">+</div>
@@ -2883,7 +2896,7 @@
                 </div>
                 
                 <!-- FAQ 2 -->
-                <div class="faq-item" data-aos="fade-up" data-aos-delay="150">
+                <div class="faq-item scroll-animate"  >
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span>¿Qué requisitos necesito para inscribirme?</span>
                         <div class="faq-icon">+</div>
@@ -2898,7 +2911,7 @@
                 </div>
                 
                 <!-- FAQ 3 - CONDICIÓN 70% -->
-                <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
+                <div class="faq-item scroll-animate delay-2"  >
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span>¿Cuál es la condición para acceder a las prácticas clínicas?</span>
                         <div class="faq-icon">+</div>
@@ -2915,7 +2928,7 @@
                 </div>
                 
                 <!-- FAQ 4 - SEDES -->
-                <div class="faq-item" data-aos="fade-up" data-aos-delay="250">
+                <div class="faq-item scroll-animate"  >
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span>¿Cuáles son las sedes disponibles para las prácticas?</span>
                         <div class="faq-icon">+</div>
@@ -2931,7 +2944,7 @@
                 </div>
                 
                 <!-- FAQ 5 - FULL IMMERSION -->
-                <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
+                <div class="faq-item scroll-animate delay-3"  >
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span>¿Cómo funciona el Full Immersion Training?</span>
                         <div class="faq-icon">+</div>
@@ -2948,7 +2961,7 @@
                 </div>
                 
                 <!-- FAQ 6 -->
-                <div class="faq-item" data-aos="fade-up" data-aos-delay="350">
+                <div class="faq-item scroll-animate"  >
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span>¿El certificado tiene validez internacional?</span>
                         <div class="faq-icon">+</div>
@@ -2964,7 +2977,7 @@
                 </div>
                 
                 <!-- FAQ 7 -->
-                <div class="faq-item" data-aos="fade-up" data-aos-delay="400">
+                <div class="faq-item scroll-animate delay-4"  >
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span>¿Qué pasa si no puedo asistir en la fecha asignada?</span>
                         <div class="faq-icon">+</div>
@@ -2980,7 +2993,7 @@
                 </div>
                 
                 <!-- FAQ 8 -->
-                <div class="faq-item" data-aos="fade-up" data-aos-delay="450">
+                <div class="faq-item scroll-animate"  >
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span>¿Ofrecen opciones de financiamiento?</span>
                         <div class="faq-icon">+</div>
@@ -2995,7 +3008,7 @@
                 </div>
                 
                 <!-- FAQ 9 -->
-                <div class="faq-item" data-aos="fade-up" data-aos-delay="500">
+                <div class="faq-item scroll-animate"  >
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span>¿Qué equipos y tecnología utilizan?</span>
                         <div class="faq-icon">+</div>
@@ -3016,7 +3029,7 @@
     <!-- Certifications Section -->
     <section class="certifications-section" id="certificaciones">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header scroll-animate" >
                 <span class="section-label">Certificaciones</span>
                 <h2 class="section-title">Respaldo y Reconocimiento</h2>
                 <p class="section-subtitle">
@@ -3025,7 +3038,7 @@
             </div>
             
             <div class="cert-grid">
-                <div class="cert-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="cert-card scroll-animate delay-1"  >
                     <div class="cert-icon">🎓</div>
                     <h3 class="cert-title">Aval Universitario</h3>
                     <p class="cert-description">
@@ -3034,7 +3047,7 @@
                     </p>
                 </div>
                 
-                <div class="cert-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="cert-card scroll-animate delay-2"  >
                     <div class="cert-icon">🏆</div>
                     <h3 class="cert-title">27 Años de Trayectoria</h3>
                     <p class="cert-description">
@@ -3043,7 +3056,7 @@
                     </p>
                 </div>
                 
-                <div class="cert-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="cert-card scroll-animate delay-3"  >
                     <div class="cert-icon">🌎</div>
                     <h3 class="cert-title">Presencia Internacional</h3>
                     <p class="cert-description">
@@ -3052,7 +3065,7 @@
                     </p>
                 </div>
                 
-                <div class="cert-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="cert-card scroll-animate delay-4"  >
                     <div class="cert-icon">📚</div>
                     <h3 class="cert-title">Revista Científica</h3>
                     <p class="cert-description">
@@ -3067,7 +3080,7 @@
     <!-- Contact Section -->
     <section class="contact-section section" id="contacto">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header scroll-animate" >
                 <span class="section-label">Contacto</span>
                 <h2 class="section-title">Solicita Información Personalizada</h2>
                 <p class="section-subtitle">
@@ -3077,7 +3090,7 @@
             </div>
 
             <div class="contact-content">
-                <div class="contact-form-container" data-aos="fade-right">
+                <div class="contact-form-container scroll-animate" >
                     <form id="contactForm" action="#" method="POST">
                         <div class="form-row">
                             <div class="form-group">
@@ -3142,7 +3155,7 @@
                     </form>
                 </div>
 
-                <div class="contact-info" data-aos="fade-left">
+                <div class="contact-info scroll-animate" >
                     <div class="contact-info-item">
                         <div class="contact-info-icon">📱</div>
                         <div class="contact-info-text">
@@ -3182,7 +3195,7 @@
     <!-- CTA Section -->
     <section class="cta-section" id="inscripcion">
         <div class="container">
-            <div class="cta-content" data-aos="fade-up">
+            <div class="cta-content scroll-animate" >
                 <h2 class="cta-title">Transforma Tu Práctica Médica Hoy</h2>
                 <p class="cta-subtitle">
                     Únete a más de 1,500 especialistas que han revolucionado su carrera con ICIGIFCA
@@ -3261,8 +3274,6 @@
     </div>
 
     <!-- AOS Script -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
     <script>
         // Initialize AOS - with fallback for delayed loading
         document.addEventListener('DOMContentLoaded', function() {
