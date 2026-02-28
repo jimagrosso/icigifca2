@@ -208,7 +208,7 @@ nav.scrolled{background:rgba(5,10,10,0.96)}
   padding:6px 14px;border:1px solid var(--border2);border-radius:100px;
   font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);font-weight:500;
   margin-bottom:36px;background:rgba(0,201,167,0.05);
-  animation:fadeUp .8s ease both;
+  animation:fadeUp .8s ease forwards;
 }
 .hero-eyebrow::before{content:'';width:6px;height:6px;background:var(--teal);border-radius:50%;animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
@@ -219,7 +219,7 @@ nav.scrolled{background:rgba(5,10,10,0.96)}
   font-weight:800;line-height:.95;
   color:#fff;letter-spacing:-2px;
   margin-bottom:32px;
-  animation:fadeUp .8s .12s ease both;
+  animation:fadeUp .8s .12s ease forwards;
 }
 .hero-title .line-teal{color:var(--teal)}
 .hero-title .line-outline{
@@ -229,9 +229,9 @@ nav.scrolled{background:rgba(5,10,10,0.96)}
 .hero-sub{
   font-size:17px;line-height:1.7;color:var(--muted2);
   max-width:520px;margin-bottom:52px;font-weight:300;
-  animation:fadeUp .8s .24s ease both;
+  animation:fadeUp .8s .24s ease forwards;
 }
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .8s .36s ease both}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .8s .36s ease forwards}
 .btn-primary{
   background:var(--teal);color:var(--ink);
   padding:16px 36px;font-family:'Inter',sans-serif;
@@ -257,7 +257,7 @@ nav.scrolled{background:rgba(5,10,10,0.96)}
   position:absolute;bottom:0;left:0;right:0;z-index:2;
   display:grid;grid-template-columns:repeat(4,1fr);
   border-top:1px solid var(--border);
-  animation:fadeIn 1s .5s ease both;
+  animation:fadeIn 1s .5s ease forwards;
 }
 .h-stat{
   padding:28px 40px;border-right:1px solid var(--border);
@@ -518,8 +518,8 @@ footer{
 /* ─── ANIMATIONS ─── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal{opacity:1;transform:none}
+
 
 /* ─── RESPONSIVE ─── */
 @media(max-width:1100px){

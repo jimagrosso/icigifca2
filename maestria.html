@@ -45,22 +45,22 @@ nav.scrolled{background:rgba(5,10,10,0.97);box-shadow:0 4px 40px rgba(0,0,0,0.4)
 .hero-grid-overlay{position:absolute;inset:0;opacity:.025;background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:60px 60px}
 
 .hero-content{position:relative;z-index:2;padding:80px 80px 110px;width:100%;max-width:1400px;margin:0 auto}
-.hero-breadcrumb{display:flex;align-items:center;gap:10px;margin-bottom:32px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);animation:fadeUp .7s ease both}
+.hero-breadcrumb{display:flex;align-items:center;gap:10px;margin-bottom:32px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);animation:fadeUp .7s ease forwards}
 .hero-breadcrumb a{color:var(--teal);text-decoration:none}
 .hero-breadcrumb span{opacity:.4}
 
 /* Gold badge for Maestría */
-.hero-badge-master{display:inline-flex;align-items:center;gap:10px;padding:7px 16px;border:1px solid var(--border-g);border-radius:100px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,0.07);margin-bottom:28px;animation:fadeUp .7s .1s ease both;font-weight:600}
+.hero-badge-master{display:inline-flex;align-items:center;gap:10px;padding:7px 16px;border:1px solid var(--border-g);border-radius:100px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,0.07);margin-bottom:28px;animation:fadeUp .7s .1s ease forwards;font-weight:600}
 .hero-badge-master::before{content:'';width:6px;height:6px;background:var(--gold);border-radius:50%;animation:pulseGold 2s infinite}
 @keyframes pulseGold{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 
-.hero-label{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;animation:fadeUp .7s .15s ease both;opacity:.8}
-.hero-title{font-family:'Syne',sans-serif;font-size:clamp(38px,5.5vw,76px);font-weight:800;line-height:.93;color:#fff;letter-spacing:-2px;margin-bottom:28px;animation:fadeUp .7s .22s ease both;max-width:860px}
+.hero-label{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;animation:fadeUp .7s .15s ease forwards;opacity:.8}
+.hero-title{font-family:'Syne',sans-serif;font-size:clamp(38px,5.5vw,76px);font-weight:800;line-height:.93;color:#fff;letter-spacing:-2px;margin-bottom:28px;animation:fadeUp .7s .22s ease forwards;max-width:860px}
 .hero-title .accent-teal{color:var(--teal)}
 .hero-title .accent-gold{color:var(--gold)}
-.hero-sub{font-size:17px;line-height:1.7;color:rgba(232,232,228,0.72);max-width:540px;margin-bottom:48px;font-weight:300;animation:fadeUp .7s .32s ease both}
-.hero-actions{display:flex;gap:12px;flex-wrap:wrap;animation:fadeUp .7s .42s ease both}
+.hero-sub{font-size:17px;line-height:1.7;color:rgba(232,232,228,0.72);max-width:540px;margin-bottom:48px;font-weight:300;animation:fadeUp .7s .32s ease forwards}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;animation:fadeUp .7s .42s ease forwards}
 .btn-primary{background:var(--teal);color:var(--ink);padding:16px 36px;font-family:'Inter',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:all .3s;border-radius:2px}
 .btn-primary:hover{background:#00E0BC;box-shadow:0 0 40px rgba(0,201,167,0.4);transform:translateY(-2px)}
 .btn-primary::after{content:'→';font-size:15px}
@@ -70,7 +70,7 @@ nav.scrolled{background:rgba(5,10,10,0.97);box-shadow:0 4px 40px rgba(0,0,0,0.4)
 .btn-gold-outline:hover{background:rgba(201,168,76,0.08)}
 
 /* Hero strip */
-.hero-strip{position:absolute;bottom:0;left:0;right:0;z-index:3;display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--border);background:rgba(5,10,10,0.75);backdrop-filter:blur(12px);animation:fadeIn 1s .5s ease both}
+.hero-strip{position:absolute;bottom:0;left:0;right:0;z-index:3;display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--border);background:rgba(5,10,10,0.75);backdrop-filter:blur(12px);animation:fadeIn 1s .5s ease forwards}
 .h-strip-item{padding:20px 32px;border-right:1px solid var(--border);display:flex;align-items:center;gap:12px;transition:background .3s}
 .h-strip-item:last-child{border-right:none}
 .h-strip-item:hover{background:rgba(255,255,255,0.03)}
@@ -86,8 +86,8 @@ nav.scrolled{background:rgba(5,10,10,0.97);box-shadow:0 4px 40px rgba(0,0,0,0.4)
 .eyebrow-gold::before{background:var(--gold)}
 .section-title{font-family:'Syne',sans-serif;font-size:clamp(28px,3.5vw,52px);font-weight:800;line-height:1.0;color:#fff;margin-bottom:20px;letter-spacing:-1px}
 .section-sub{font-size:16px;line-height:1.75;color:var(--muted2);font-weight:300}
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal{opacity:1;transform:none}
+
 
 /* ─── WHY MASTER ─── */
 .why-section{padding:120px 80px;max-width:1400px;margin:0 auto}
