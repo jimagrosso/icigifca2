@@ -183,11 +183,14 @@ nav.scrolled{background:rgba(5,10,10,0.96)}
 }
 /* Animated gradient mesh background */
 .hero-bg{
-  position:absolute;inset:0;
-  background:radial-gradient(ellipse 80% 60% at 60% 40%,rgba(0,201,167,0.12) 0%,transparent 60%),
-             radial-gradient(ellipse 50% 50% at 20% 80%,rgba(201,168,76,0.07) 0%,transparent 60%),
-             radial-gradient(ellipse 40% 40% at 80% 20%,rgba(0,201,167,0.08) 0%,transparent 50%),
-             var(--ink);
+  position:absolute;inset:0;overflow:hidden;
+  background:var(--ink);
+}
+.hero-bg::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(5,10,10,0.95) 0%,rgba(5,10,10,0.6) 40%,rgba(5,10,10,0.3) 100%),
+             linear-gradient(to right,rgba(5,10,10,0.7) 0%,transparent 60%);
+  z-index:1;
 }
 /* Animated orbs */
 .orb{position:absolute;border-radius:50%;filter:blur(80px);animation:float 8s ease-in-out infinite}
@@ -438,6 +441,23 @@ nav.scrolled{background:rgba(5,10,10,0.96)}
 .diff-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:12px}
 .diff-desc{font-size:13px;line-height:1.7;color:var(--muted);font-weight:300}
 
+/* ─── GALERÍA ─── */
+.galeria-section{padding:100px 80px;max-width:1400px;margin:0 auto}
+.galeria-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;grid-template-rows:260px 260px;gap:6px;margin-top:56px}
+.g-cell{overflow:hidden;position:relative}
+.g-cell img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease,filter .4s;filter:brightness(.75) saturate(.8)}
+.g-cell:hover img{transform:scale(1.05);filter:brightness(.9) saturate(1)}
+.g-cell::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(5,10,10,0.5) 0%,transparent 60%);pointer-events:none}
+.g-cell-tall{grid-row:span 2}
+.g-label{position:absolute;bottom:14px;left:16px;z-index:2;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.5);font-weight:500}
+.galeria-quote{background:var(--ink2);border-left:3px solid var(--teal);padding:28px 36px;margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
+.galeria-quote-text{font-size:14px;line-height:1.75;color:var(--muted2);font-weight:300;font-style:italic}
+.galeria-quote-text strong{color:var(--teal);font-style:normal}
+.galeria-quote-stat{text-align:center}
+.galeria-quote-stat .num{font-family:'Syne',sans-serif;font-size:40px;font-weight:800;color:#fff;line-height:1}
+.galeria-quote-stat .num span{color:var(--teal)}
+.galeria-quote-stat .lbl{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px}
+
 /* ─── AVALES ─── */
 .avales-section{
   padding:64px 80px;
@@ -522,6 +542,18 @@ footer{
 
 
 /* ─── RESPONSIVE ─── */
+/* gallery responsive */
+@media(max-width:1100px){
+  .galeria-grid{grid-template-columns:1fr 1fr;grid-template-rows:220px 220px 220px;}
+  .g-cell-tall{grid-row:span 1}
+  .galeria-section{padding:80px 40px}
+  .galeria-quote{grid-template-columns:1fr;gap:20px}
+}
+@media(max-width:768px){
+  .galeria-grid{grid-template-columns:1fr;}
+  .g-cell{height:220px}
+  .galeria-section{padding:60px 24px}
+}
 @media(max-width:1100px){
   .programs-grid{grid-template-columns:1fr}
   .director-wrap{grid-template-columns:1fr;padding:80px 40px}
@@ -644,7 +676,9 @@ footer{
 
 <!-- ═══ HERO ═══ -->
 <section class="hero">
-  <div class="hero-bg"></div>
+  <div class="hero-bg">
+    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/f_auto,q_auto,w_1600/v1772315854/IMG_8671_eiomn5.heic" alt="ICIGIFCA - Formación clínica en ginecología regenerativa" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;filter:brightness(.45) saturate(.85)">
+  </div>
   <div class="orb orb1"></div>
   <div class="orb orb2"></div>
   <div class="orb orb3"></div>
@@ -767,7 +801,9 @@ footer{
     <div class="dir-visual reveal">
       <div class="dir-card">
         <div class="dir-glyph">AR</div>
-        <div class="dir-avatar">AR</div>
+        <div class="dir-avatar" style="background:none;border:none;overflow:hidden;width:110px;height:110px">
+          <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/f_auto,q_auto,w_220,h_220,c_fill,g_face/v1772315803/IMG_8661_zbvlid.heic" alt="Dra. Ajakaida Renaud" style="width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid rgba(0,201,167,0.4)">
+        </div>
         <div class="dir-name">Dra. Ajakaida Renaud</div>
         <div class="dir-role">Directora Académica General · ICIGIFCA</div>
         <div class="dir-badges">
@@ -847,6 +883,53 @@ footer{
       </div>
     </div>
   </div>
+</div>
+
+<!-- ═══ GALERÍA ═══ -->
+<div style="background:var(--ink)">
+  <section class="galeria-section">
+    <div class="eyebrow reveal">Formación en Acción</div>
+    <h2 class="section-title reveal">Médicos que forman<br><span style="color:var(--teal)">a los mejores.</span></h2>
+
+    <div class="galeria-grid">
+      <!-- Foto grande izquierda -->
+      <div class="g-cell g-cell-tall reveal">
+        <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/f_auto,q_auto,w_900/v1772315889/IMG_4451_krngtv.heic" alt="Dra. Ajakaida supervisando entrenamiento clínico" loading="lazy">
+        <div class="g-label">Supervisión directa</div>
+      </div>
+      <!-- Fila superior derecha -->
+      <div class="g-cell reveal">
+        <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/f_auto,q_auto,w_700/v1772316033/IMG_3744_mwpv9j.heic" alt="Dra. Ajakaida con equipo médico" loading="lazy">
+        <div class="g-label">Equipo docente</div>
+      </div>
+      <div class="g-cell reveal">
+        <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/f_auto,q_auto,w_700/v1772315966/IMG_1169_sqkldg.heic" alt="Médicos con certificaciones" loading="lazy">
+        <div class="g-label">Certificaciones</div>
+      </div>
+      <!-- Fila inferior derecha -->
+      <div class="g-cell reveal">
+        <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/f_auto,q_auto,w_700/v1772316032/IMG_3517_qjsrk3.heic" alt="Dra. Ajakaida con doctoras" loading="lazy">
+        <div class="g-label">Cohorte activa</div>
+      </div>
+      <div class="g-cell reveal">
+        <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/f_auto,q_auto,w_700/v1772315921/IMG_3352_ybt2ap.heic" alt="Médicos mostrando títulos" loading="lazy">
+        <div class="g-label">Egresados</div>
+      </div>
+    </div>
+
+    <!-- Barra inferior con stats y frase -->
+    <div class="galeria-quote reveal">
+      <div class="galeria-quote-text">
+        "Nuestros médicos no solo aprenden — <strong>ejecutan procedimientos reales</strong> desde el primer día, con supervisión directa de expertos internacionales."
+        <div style="font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:10px;font-style:normal">— Dra. Ajakaida Renaud, Directora Académica</div>
+      </div>
+      <div style="display:flex;gap:32px;justify-content:center">
+        <div class="galeria-quote-stat"><div class="num">1,500<span>+</span></div><div class="lbl">médicos formados</div></div>
+        <div class="galeria-quote-stat"><div class="num">15</div><div class="lbl">países</div></div>
+        <div class="galeria-quote-stat"><div class="num">12<span>+</span></div><div class="lbl">años de trayectoria</div></div>
+      </div>
+    </div>
+  </section>
 </div>
 
 <!-- ═══ AVALES ═══ -->
