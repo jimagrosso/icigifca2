@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FUNDAREN — Fundación para el Bienestar y la Salud Integral de la Mujer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:#050A0A;color:#E8E8E4;overflow-x:hidden;cursor:none}
+
+:root{
+  --teal:#00C9A7;--teal-dim:rgba(0,201,167,0.08);--teal-glow:rgba(0,201,167,0.25);
+  --gold:#C9A84C;--gold-dim:rgba(201,168,76,0.08);
+  --rose:#E8B4C8;--rose-dim:rgba(232,180,200,0.08);
+  --ink:#050A0A;--ink2:#0D1515;--ink3:#141F1F;
+  --glass:rgba(255,255,255,0.04);
+  --border:rgba(255,255,255,0.07);--border-t:rgba(0,201,167,0.2);
+  --muted:rgba(232,232,228,0.4);--muted2:rgba(232,232,228,0.65);
+}
+
+/* CURSOR */
+.cursor{width:18px;height:18px;border:1px solid var(--teal);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform .15s,border-color .2s;transform:translate(-50%,-50%)}
+.cursor-dot{width:4px;height:4px;background:var(--teal);border-radius:50%;position:fixed;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:all .08s}
+a:hover ~ .cursor,.cursor.hover{transform:translate(-50%,-50%) scale(1.8);border-color:var(--rose)}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:500;padding:0 56px;height:68px;display:flex;align-items:center;justify-content:space-between;transition:background .3s,border-color .3s;background:rgba(5,10,10,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-back{display:flex;align-items:center;gap:8px;text-decoration:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);transition:color .2s;font-weight:500}
+.nav-back::before{content:'←';font-size:14px}
+.nav-back:hover{color:var(--teal)}
+.logo{text-decoration:none;text-align:center}
+.logo-main{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:4px;color:#fff;text-transform:uppercase}
+.logo-sub{font-size:7px;letter-spacing:2.5px;text-transform:uppercase;color:var(--rose);font-weight:500;margin-top:2px;text-align:center}
+.nav-right{width:160px;display:flex;justify-content:flex-end}
+.nav-cta{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;color:var(--ink);background:var(--teal);padding:10px 22px;text-decoration:none;transition:all .3s}
+.nav-cta:hover{background:#00E0BC}
+
+/* HERO */
+.hero{min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;overflow:hidden}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 20%;filter:brightness(.35) saturate(.7)}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(5,10,10,0.92) 40%,rgba(5,10,10,0.4) 100%),linear-gradient(to top,rgba(5,10,10,0.9) 0%,transparent 60%)}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none}
+.orb1{width:600px;height:600px;background:rgba(232,180,200,0.06);top:-100px;right:-100px}
+.orb2{width:400px;height:400px;background:rgba(0,201,167,0.04);bottom:0;left:10%}
+.hero-grid{position:absolute;inset:0;opacity:.025;background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:60px 60px}
+.hero-content{position:relative;z-index:2;padding:0 80px;width:100%;max-width:1400px;margin:0 auto;padding-top:68px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--rose);font-weight:600;margin-bottom:24px;margin-top:80px}
+.hero-eyebrow::before{content:'';width:24px;height:1px;background:var(--rose)}
+.hero-title{font-family:'Syne',sans-serif;font-size:clamp(52px,7vw,100px);font-weight:800;line-height:.9;color:#fff;letter-spacing:-3px;margin-bottom:8px}
+.hero-title .accent{color:var(--rose);display:block}
+.hero-tagline{font-family:'Syne',sans-serif;font-size:clamp(14px,1.5vw,18px);font-weight:400;color:var(--muted2);letter-spacing:.5px;margin-bottom:28px;max-width:560px;line-height:1.5;font-style:italic}
+.hero-desc{font-size:15px;color:var(--muted);font-weight:300;line-height:1.8;max-width:500px;margin-bottom:48px}
+.hero-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.btn-rose{background:var(--rose);color:#1a0a10;padding:16px 36px;font-family:'Inter',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:all .3s}
+.btn-rose:hover{background:#f0c8d8;box-shadow:0 0 40px rgba(232,180,200,0.4);transform:translateY(-2px)}
+.btn-ghost-rose{border:1px solid rgba(232,180,200,0.3);color:var(--rose);padding:16px 36px;font-family:'Inter',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:600;text-decoration:none;transition:all .3s}
+.btn-ghost-rose:hover{border-color:var(--rose);background:var(--rose-dim)}
+.hero-stats{display:flex;gap:48px;margin-top:64px;padding-top:48px;border-top:1px solid var(--border);flex-wrap:wrap}
+.h-stat-num{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:#fff;line-height:1}
+.h-stat-num span{color:var(--rose);font-size:22px}
+.h-stat-label{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:4px;font-weight:500}
+
+/* MARQUEE */
+.marquee-wrap{background:var(--ink2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:16px 0;overflow:hidden;white-space:nowrap}
+.marquee-inner{display:inline-flex;animation:marquee 30s linear infinite;gap:0}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee-item{display:inline-flex;align-items:center;gap:12px;padding:0 40px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:500}
+.marquee-item span{color:var(--rose);font-size:8px}
+
+/* SECTIONS COMMON */
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--teal);font-weight:600;margin-bottom:20px}
+.eyebrow::before{content:'';width:20px;height:1px;background:var(--teal)}
+.eyebrow-rose{color:var(--rose)}
+.eyebrow-rose::before{background:var(--rose)}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(30px,4vw,52px);font-weight:800;line-height:.95;color:#fff;letter-spacing:-1.5px;margin-bottom:20px}
+.section-sub{font-size:15px;color:var(--muted2);font-weight:300;line-height:1.7;max-width:600px}
+
+/* MISSION */
+.mission-section{padding:100px 80px;max-width:1400px;margin:0 auto}
+.mission-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.mission-img{position:relative}
+.mission-img img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center 15%;filter:brightness(.85)}
+.mission-img-accent{position:absolute;bottom:-24px;right:-24px;background:var(--rose-dim);border:1px solid rgba(232,180,200,0.2);padding:28px;width:200px}
+.mission-img-accent .num{font-family:'Syne',sans-serif;font-size:40px;font-weight:800;color:var(--rose);line-height:1}
+.mission-img-accent .lbl{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.mission-text{padding-left:20px}
+.mission-lead{font-size:17px;color:var(--muted2);font-weight:300;line-height:1.8;margin-bottom:28px}
+.mission-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:36px}
+.mission-card{background:var(--glass);border:1px solid var(--border);padding:20px}
+.mission-card-icon{font-size:18px;margin-bottom:10px}
+.mission-card h4{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:6px}
+.mission-card p{font-size:12px;color:var(--muted);line-height:1.5;font-weight:300}
+
+/* VALORES */
+.valores-section{background:var(--ink2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px}
+.valores-inner{max-width:1400px;margin:0 auto}
+.valores-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);margin-top:48px}
+.valor-item{background:var(--ink2);padding:40px 28px;transition:background .3s}
+.valor-item:hover{background:var(--ink3)}
+.valor-num{font-family:'Syne',sans-serif;font-size:40px;font-weight:800;color:rgba(255,255,255,0.06);line-height:1;margin-bottom:20px}
+.valor-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--rose);margin-bottom:8px}
+.valor-desc{font-size:12px;color:var(--muted);line-height:1.5;font-weight:300}
+
+/* IMPACTO */
+.impacto-section{padding:100px 80px}
+.impacto-inner{max-width:1400px;margin:0 auto}
+.impacto-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:56px}
+.impacto-card{background:var(--ink2);border:1px solid var(--border);padding:40px 28px;position:relative;overflow:hidden;transition:border-color .3s,background .3s}
+.impacto-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--rose),var(--gold))}
+.impacto-card:hover{border-color:rgba(232,180,200,0.2);background:var(--ink3)}
+.impacto-num{font-family:'Syne',sans-serif;font-size:44px;font-weight:800;color:#fff;line-height:1;margin-bottom:12px}
+.impacto-num span{color:var(--rose)}
+.impacto-lbl{font-size:12px;color:var(--muted);line-height:1.5;font-weight:300}
+
+/* MODELO */
+.modelo-section{background:var(--ink2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:100px 80px}
+.modelo-inner{max-width:1400px;margin:0 auto}
+.modelo-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:56px;position:relative}
+.modelo-flow::before{content:'';position:absolute;top:32px;left:12.5%;right:12.5%;height:1px;background:linear-gradient(90deg,var(--rose),var(--gold),var(--teal),var(--rose));opacity:.3;z-index:0}
+.modelo-step{padding:0 24px;position:relative;z-index:1}
+.modelo-step-num{width:64px;height:64px;border:1px solid var(--border);background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--rose);margin-bottom:24px;transition:background .3s,border-color .3s}
+.modelo-step:hover .modelo-step-num{background:var(--rose-dim);border-color:rgba(232,180,200,0.3)}
+.modelo-step h4{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:10px}
+.modelo-step p{font-size:12px;color:var(--muted);line-height:1.6;font-weight:300}
+.modelo-step-tag{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--rose);font-weight:600;margin-bottom:10px;display:block}
+
+/* PROGRAMAS */
+.programas-section{padding:100px 80px}
+.programas-inner{max-width:1400px;margin:0 auto}
+.programas-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:56px}
+.programa-card{background:var(--ink2);border:1px solid var(--border);padding:36px 28px;transition:all .3s;position:relative;overflow:hidden}
+.programa-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--rose-dim),transparent);opacity:0;transition:opacity .3s}
+.programa-card:hover{border-color:rgba(232,180,200,0.2);transform:translateY(-4px)}
+.programa-card:hover::after{opacity:1}
+.programa-icon{font-size:24px;margin-bottom:20px;display:block;position:relative;z-index:1}
+.programa-card h4{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:10px;position:relative;z-index:1}
+.programa-card p{font-size:12px;color:var(--muted);line-height:1.6;font-weight:300;position:relative;z-index:1}
+
+/* COMO AYUDAR */
+.ayudar-section{background:var(--ink2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:100px 80px}
+.ayudar-inner{max-width:1400px;margin:0 auto}
+.ayudar-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:56px}
+.ayudar-card{background:var(--ink);border:1px solid var(--border);padding:36px 24px;text-align:center;transition:all .3s;cursor:default}
+.ayudar-card:hover{border-color:var(--border-t);background:var(--teal-dim)}
+.ayudar-card-icon{font-size:28px;margin-bottom:16px;display:block}
+.ayudar-card h4{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:8px}
+.ayudar-card p{font-size:11px;color:var(--muted);line-height:1.5;font-weight:300}
+
+/* TESTIMONIOS */
+.testimonios-section{padding:100px 80px}
+.testimonios-inner{max-width:1400px;margin:0 auto}
+.testimonios-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:56px}
+.testimonio-card{background:var(--ink2);border:1px solid var(--border);padding:40px;position:relative;overflow:hidden;transition:border-color .3s}
+.testimonio-card:hover{border-color:rgba(232,180,200,0.2)}
+.testimonio-glyph{font-family:'Syne',sans-serif;font-size:120px;font-weight:800;color:rgba(232,180,200,0.05);position:absolute;top:-20px;left:16px;line-height:1;pointer-events:none;user-select:none}
+.testimonio-text{font-size:14px;line-height:1.8;color:var(--muted2);font-weight:300;font-style:italic;margin-bottom:28px;position:relative;z-index:1}
+.testimonio-author{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--rose);letter-spacing:.5px;position:relative;z-index:1}
+.testimonio-country{font-size:10px;color:var(--muted);margin-top:3px;letter-spacing:.5px}
+
+/* FAQ */
+.faq-section{background:var(--ink2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:100px 80px}
+.faq-inner{max-width:1000px;margin:0 auto}
+.faq-list{margin-top:56px}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-item:first-child{border-top:1px solid var(--border)}
+.faq-question{padding:24px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;transition:color .2s}
+.faq-question-text{font-family:'Syne',sans-serif;font-size:15px;font-weight:600;color:var(--muted2);transition:color .2s}
+.faq-item.open .faq-question-text{color:#fff}
+.faq-icon{width:28px;height:28px;border:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);transition:all .3s}
+.faq-item.open .faq-icon{border-color:rgba(232,180,200,0.3);color:var(--rose);transform:rotate(45deg)}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s}
+.faq-item.open .faq-answer{max-height:300px;padding-bottom:24px}
+.faq-answer-text{font-size:14px;color:var(--muted);line-height:1.8;font-weight:300}
+
+/* ALIANZAS */
+.alianzas-section{padding:72px 80px;max-width:1400px;margin:0 auto}
+.alianzas-row{display:flex;align-items:center;justify-content:center;gap:64px;flex-wrap:wrap;margin-top:48px}
+.alianza-item{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:rgba(255,255,255,0.18);text-align:center;line-height:1.3;letter-spacing:.5px;transition:color .3s;cursor:default;text-transform:uppercase}
+.alianza-item:hover{color:rgba(255,255,255,0.7)}
+.alianza-item small{display:block;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:400;margin-top:4px}
+
+/* CTA */
+.cta-section{position:relative;overflow:hidden;padding:140px 80px;text-align:center;background:var(--ink2)}
+.cta-section .hero-bg{position:absolute;inset:0}
+.cta-section .hero-bg img{filter:brightness(.2) saturate(.5)}
+.cta-section .hero-bg::after{background:linear-gradient(to top,rgba(5,10,10,0.95) 0%,rgba(5,10,10,0.7) 50%,rgba(5,10,10,0.85) 100%)}
+.cta-ring{position:absolute;border-radius:50%;border:1px solid rgba(232,180,200,0.08);pointer-events:none}
+.cta-ring1{width:500px;height:500px;top:50%;left:50%;transform:translate(-50%,-50%)}
+.cta-ring2{width:750px;height:750px;top:50%;left:50%;transform:translate(-50%,-50%)}
+.cta-ring3{width:1000px;height:1000px;top:50%;left:50%;transform:translate(-50%,-50%)}
+.cta-content{position:relative;z-index:2}
+.cta-tag{display:inline-block;border:1px solid rgba(232,180,200,0.2);padding:8px 20px;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--rose);margin-bottom:32px}
+.cta-headline{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,56px);font-weight:800;line-height:.95;letter-spacing:-2px;color:#fff;margin-bottom:16px}
+.cta-headline .accent{color:var(--rose)}
+.cta-sub{font-size:15px;color:var(--muted2);font-weight:300;max-width:520px;margin:0 auto 40px;line-height:1.7}
+.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+footer{background:var(--ink);border-top:1px solid var(--border);padding:64px 80px 32px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;max-width:1400px;margin:0 auto;padding-bottom:48px;border-bottom:1px solid var(--border)}
+.footer-brand-name{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:3px;color:#fff;margin-bottom:6px}
+.footer-brand-sub{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-bottom:16px;font-weight:500}
+.footer-brand-desc{font-size:12px;color:var(--muted);line-height:1.7;font-weight:300;margin-bottom:20px}
+.footer-social{display:flex;gap:10px}
+.footer-social a{width:34px;height:34px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);text-decoration:none;transition:all .3s}
+.footer-social a:hover{border-color:rgba(232,180,200,0.3);color:var(--rose)}
+.footer-col h5{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:20px}
+.footer-col a,.footer-col p{display:block;font-size:12px;color:var(--muted);text-decoration:none;line-height:1.5;margin-bottom:10px;font-weight:300;transition:color .2s}
+.footer-col a:hover{color:var(--teal)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:28px;max-width:1400px;margin:0 auto;font-size:11px;color:var(--muted);flex-wrap:wrap;gap:12px}
+.footer-bottom a{color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-bottom a:hover{color:var(--rose)}
+
+/* RESPONSIVE */
+@media(max-width:1200px){
+  .valores-grid,.impacto-grid{grid-template-columns:repeat(3,1fr)}
+  .modelo-flow{grid-template-columns:repeat(2,1fr)}
+  .modelo-flow::before{display:none}
+  .programas-grid{grid-template-columns:repeat(2,1fr)}
+  .ayudar-grid{grid-template-columns:repeat(3,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:1024px){
+  .mission-grid{grid-template-columns:1fr}
+  .mission-img{display:none}
+  .mission-text{padding-left:0}
+  .testimonios-grid{grid-template-columns:1fr}
+  nav{padding:0 24px}
+}
+@media(max-width:768px){
+  .hero-content{padding:0 24px;padding-top:68px}
+  .mission-section,.valores-section,.impacto-section,.modelo-section,.programas-section,.ayudar-section,.testimonios-section,.faq-section,.cta-section{padding-left:24px;padding-right:24px}
+  .alianzas-section{padding:60px 24px}
+  footer{padding:60px 24px 28px}
+  .valores-grid,.impacto-grid{grid-template-columns:1fr 1fr}
+  .modelo-flow{grid-template-columns:1fr}
+  .programas-grid{grid-template-columns:1fr}
+  .ayudar-grid{grid-template-columns:1fr 1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;text-align:center}
+  .hero-stats{gap:28px}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="index.html" class="nav-back">Volver al Instituto</a>
+  <div class="logo">
+    <div class="logo-main">FUNDAREN</div>
+    <div class="logo-sub">Bienestar Femenino</div>
+  </div>
+  <div class="nav-right">
+    <a href="https://wa.me/584125677557" class="nav-cta" target="_blank">Participar</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-bg">
+    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/f_auto,q_auto,w_1600/v1763939467/PXL_20250724_142148471.PORTRAIT_avcliw.jpg" alt="FUNDAREN">
+  </div>
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-content">
+    <div class="eyebrow eyebrow-rose">Fundación · Salud Integral Femenina</div>
+    <h1 class="hero-title">
+      FUNDAREN
+      <span class="accent">Para la Mujer.</span>
+    </h1>
+    <p class="hero-tagline">Fundación para el Bienestar y la Salud Integral de la Mujer</p>
+    <p class="hero-desc">Transformamos vidas mediante salud íntima, educación, atención preventiva y programas sociales financiados por los cursos y capacitaciones del Instituto ICIGIFCA.</p>
+    <div class="hero-actions">
+      <a href="https://wa.me/584125677557" class="btn-rose" target="_blank">Quiero Participar →</a>
+      <a href="#programas" class="btn-ghost-rose">Ver Programas</a>
+    </div>
+    <div class="hero-stats">
+      <div class="h-stat">
+        <div class="h-stat-num">27<span>+</span></div>
+        <div class="h-stat-label">Años de trayectoria</div>
+      </div>
+      <div class="h-stat">
+        <div class="h-stat-num">3,000<span>+</span></div>
+        <div class="h-stat-label">Mujeres beneficiadas</div>
+      </div>
+      <div class="h-stat">
+        <div class="h-stat-num">800<span>+</span></div>
+        <div class="h-stat-label">Consultas al año</div>
+      </div>
+      <div class="h-stat">
+        <div class="h-stat-num">5</div>
+        <div class="h-stat-label">Países con presencia</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-inner">
+    <span class="marquee-item"><span>◆</span> Salud Íntima Femenina</span>
+    <span class="marquee-item"><span>◆</span> Atención Preventiva</span>
+    <span class="marquee-item"><span>◆</span> Educación para la Mujer</span>
+    <span class="marquee-item"><span>◆</span> Impacto Social Real</span>
+    <span class="marquee-item"><span>◆</span> Acompañamiento Emocional</span>
+    <span class="marquee-item"><span>◆</span> Transformando Latinoamérica</span>
+    <span class="marquee-item"><span>◆</span> Salud Íntima Femenina</span>
+    <span class="marquee-item"><span>◆</span> Atención Preventiva</span>
+    <span class="marquee-item"><span>◆</span> Educación para la Mujer</span>
+    <span class="marquee-item"><span>◆</span> Impacto Social Real</span>
+    <span class="marquee-item"><span>◆</span> Acompañamiento Emocional</span>
+    <span class="marquee-item"><span>◆</span> Transformando Latinoamérica</span>
+  </div>
+</div>
+
+<!-- MISIÓN -->
+<section id="sobre">
+  <div class="mission-section">
+    <div class="mission-grid">
+      <div class="mission-img">
+        <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/f_auto,q_auto,w_700/v1763939484/PXL_20250724_155239046.PORTRAIT_lhkhse.jpg" alt="Misión FUNDAREN">
+        <div class="mission-img-accent">
+          <div class="num">1997</div>
+          <div class="lbl">Fundación año</div>
+        </div>
+      </div>
+      <div class="mission-text">
+        <div class="eyebrow eyebrow-rose">Sobre FUNDAREN</div>
+        <h2 class="section-title">Una fundación que<br>nace de la<br><span style="color:var(--rose)">medicina real.</span></h2>
+        <p class="mission-lead">FUNDAREN es una fundación creada por la Dra. Ajakaida Renaud para brindar salud íntima femenina, educación, prevención, acompañamiento emocional y oportunidades reales a mujeres vulnerables en Latinoamérica.</p>
+        <p style="font-size:14px;color:var(--muted);font-weight:300;line-height:1.8">Todos los programas se financian gracias a los diplomados, maestrías, cursos y capacitaciones impartidos por el Instituto ICIGIFCA. Cada médico que se forma, ayuda a cientos de mujeres.</p>
+        <div class="mission-cards">
+          <div class="mission-card">
+            <div class="mission-card-icon">🎯</div>
+            <h4>Misión</h4>
+            <p>Empoderar a la mujer a través de salud, prevención y educación integral.</p>
+          </div>
+          <div class="mission-card">
+            <div class="mission-card-icon">👁</div>
+            <h4>Visión</h4>
+            <p>Ser la fundación líder en bienestar femenino en Latinoamérica.</p>
+          </div>
+          <div class="mission-card">
+            <div class="mission-card-icon">🌍</div>
+            <h4>Alcance</h4>
+            <p>Presencia activa en 5 países de Latinoamérica y creciendo.</p>
+          </div>
+          <div class="mission-card">
+            <div class="mission-card-icon">💊</div>
+            <h4>Modelo</h4>
+            <p>Formación médica que se convierte en ayuda social directa.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALORES -->
+<div class="valores-section">
+  <div class="valores-inner">
+    <div class="eyebrow eyebrow-rose">Nuestros valores</div>
+    <h2 class="section-title">Lo que nos<br><span style="color:var(--rose)">define.</span></h2>
+    <div class="valores-grid">
+      <div class="valor-item">
+        <div class="valor-num">01</div>
+        <div class="valor-name">Empatía</div>
+        <div class="valor-desc">Escuchamos y comprendemos cada historia con respeto genuino.</div>
+      </div>
+      <div class="valor-item">
+        <div class="valor-num">02</div>
+        <div class="valor-name">Ciencia</div>
+        <div class="valor-desc">Cada programa está basado en evidencia médica actualizada.</div>
+      </div>
+      <div class="valor-item">
+        <div class="valor-num">03</div>
+        <div class="valor-name">Dignidad</div>
+        <div class="valor-desc">Toda mujer merece atención de calidad sin importar su condición.</div>
+      </div>
+      <div class="valor-item">
+        <div class="valor-num">04</div>
+        <div class="valor-name">Acceso</div>
+        <div class="valor-desc">La salud no puede ser un privilegio. Es un derecho de todas.</div>
+      </div>
+      <div class="valor-item">
+        <div class="valor-num">05</div>
+        <div class="valor-name">Impacto</div>
+        <div class="valor-desc">Medimos nuestro éxito en vidas transformadas, no en cifras.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IMPACTO -->
+<section id="impacto">
+  <div class="impacto-section">
+    <div class="impacto-inner">
+      <div class="eyebrow eyebrow-rose">27 años de trayectoria</div>
+      <h2 class="section-title">Nuestro<br><span style="color:var(--rose)">impacto.</span></h2>
+      <div class="impacto-grid">
+        <div class="impacto-card">
+          <div class="impacto-num">27<span>+</span></div>
+          <div class="impacto-lbl">Años de trayectoria médica respaldando la fundación</div>
+        </div>
+        <div class="impacto-card">
+          <div class="impacto-num">3,000<span>+</span></div>
+          <div class="impacto-lbl">Mujeres beneficiadas en consultas y programas gratuitos</div>
+        </div>
+        <div class="impacto-card">
+          <div class="impacto-num">800<span>+</span></div>
+          <div class="impacto-lbl">Consultas preventivas al año en comunidades vulnerables</div>
+        </div>
+        <div class="impacto-card">
+          <div class="impacto-num">450<span>+</span></div>
+          <div class="impacto-lbl">Alumnas que aportan activamente a programas sociales</div>
+        </div>
+        <div class="impacto-card">
+          <div class="impacto-num">5</div>
+          <div class="impacto-lbl">Países con presencia activa en Latinoamérica y creciendo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODELO -->
+<div class="modelo-section" id="funcionamiento">
+  <div class="modelo-inner">
+    <div class="eyebrow eyebrow-rose">Nuestro modelo</div>
+    <h2 class="section-title">Educación que se convierte<br>en <span style="color:var(--rose)">ayuda real.</span></h2>
+    <div class="modelo-flow">
+      <div class="modelo-step">
+        <div class="modelo-step-num">01</div>
+        <span class="modelo-step-tag">Formación</span>
+        <h4>Diplomados & Maestrías</h4>
+        <p>Cursos certificados que forman a médicos de élite en ginecología regenerativa.</p>
+      </div>
+      <div class="modelo-step">
+        <div class="modelo-step-num">02</div>
+        <span class="modelo-step-tag">Participación</span>
+        <h4>Jornadas Clínicas Reales</h4>
+        <p>Alumnas y médicos participan en jornadas sociales de atención directa.</p>
+      </div>
+      <div class="modelo-step">
+        <div class="modelo-step-num">03</div>
+        <span class="modelo-step-tag">Financiamiento</span>
+        <h4>Modelo Solidario</h4>
+        <p>Cada curso financia consultas, programas y atención para mujeres vulnerables.</p>
+      </div>
+      <div class="modelo-step">
+        <div class="modelo-step-num">04</div>
+        <span class="modelo-step-tag">Impacto</span>
+        <h4>Atención Directa</h4>
+        <p>Consultas especializadas, despistajes y acompañamiento emocional sin costo.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRAMAS -->
+<section id="programas">
+  <div class="programas-section">
+    <div class="programas-inner">
+      <div class="eyebrow eyebrow-rose">Programas sociales</div>
+      <h2 class="section-title">Diferentes formas<br>de <span style="color:var(--rose)">apoyar.</span></h2>
+      <div class="programas-grid">
+        <div class="programa-card">
+          <span class="programa-icon">🩺</span>
+          <h4>Atención Ginecológica Gratuita</h4>
+          <p>Consultas especializadas sin costo para mujeres en situación vulnerable.</p>
+        </div>
+        <div class="programa-card">
+          <span class="programa-icon">📅</span>
+          <h4>Jornadas de Prevención</h4>
+          <p>Despistajes masivos en comunidades con equipos médicos capacitados.</p>
+        </div>
+        <div class="programa-card">
+          <span class="programa-icon">🌸</span>
+          <h4>Salud Íntima Regenerativa</h4>
+          <p>Tratamientos avanzados de ginecología regenerativa a costo accesible.</p>
+        </div>
+        <div class="programa-card">
+          <span class="programa-icon">📚</span>
+          <h4>Charlas & Educación</h4>
+          <p>Talleres de salud femenina, prevención y autocuidado en comunidades.</p>
+        </div>
+        <div class="programa-card">
+          <span class="programa-icon">💬</span>
+          <h4>Acompañamiento Psicológico</h4>
+          <p>Apoyo emocional profesional para mujeres en momentos difíciles.</p>
+        </div>
+        <div class="programa-card">
+          <span class="programa-icon">🛡️</span>
+          <h4>Programa Mujer Segura</h4>
+          <p>Prevención, protección y atención integral a mujeres en riesgo.</p>
+        </div>
+        <div class="programa-card">
+          <span class="programa-icon">🏆</span>
+          <h4>Programa de Becas</h4>
+          <p>Formación médica gratuita para profesionales con talento y vocación social.</p>
+        </div>
+        <div class="programa-card">
+          <span class="programa-icon">🤝</span>
+          <h4>Red de Voluntarias</h4>
+          <p>Médicos y especialistas que donan su tiempo a comunidades vulnerables.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMO AYUDAR -->
+<div class="ayudar-section" id="ayudar">
+  <div class="ayudar-inner">
+    <div class="eyebrow">¿Cómo puedes ayudar?</div>
+    <h2 class="section-title">Tu apoyo hace<br><span style="color:var(--teal)">la diferencia.</span></h2>
+    <div class="ayudar-grid">
+      <div class="ayudar-card">
+        <span class="ayudar-card-icon">❤️</span>
+        <h4>Donaciones</h4>
+        <p>Contribuye directamente a nuestros programas sociales.</p>
+      </div>
+      <div class="ayudar-card">
+        <span class="ayudar-card-icon">👩‍⚕️</span>
+        <h4>Apadrinar Consulta</h4>
+        <p>Financia la atención médica especializada de una mujer.</p>
+      </div>
+      <div class="ayudar-card">
+        <span class="ayudar-card-icon">📋</span>
+        <h4>Financiar Jornada</h4>
+        <p>Apoya una jornada completa de prevención en comunidades.</p>
+      </div>
+      <div class="ayudar-card">
+        <span class="ayudar-card-icon">🩺</span>
+        <h4>Voluntario Médico</h4>
+        <p>Únete a nuestro equipo de profesionales comprometidos.</p>
+      </div>
+      <div class="ayudar-card">
+        <span class="ayudar-card-icon">🎓</span>
+        <h4>Cursos ICIGIFCA</h4>
+        <p>Tu formación como médico financia programas sociales reales.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:48px">
+      <a href="https://wa.me/584125677557" class="btn-rose" target="_blank">Quiero Participar Ahora →</a>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIOS -->
+<section id="testimonios">
+  <div class="testimonios-section">
+    <div class="testimonios-inner">
+      <div class="eyebrow eyebrow-rose">Voces reales</div>
+      <h2 class="section-title">Vidas que hemos<br><span style="color:var(--rose)">tocado.</span></h2>
+      <div class="testimonios-grid">
+        <div class="testimonio-card">
+          <div class="testimonio-glyph">"</div>
+          <p class="testimonio-text">Gracias a FUNDAREN tuve acceso a mi primera consulta ginecológica especializada. Nunca pensé que podría recibir atención de tanta calidad de manera gratuita.</p>
+          <div class="testimonio-author">María G.</div>
+          <div class="testimonio-country">Venezuela · Beneficiaria del programa</div>
+        </div>
+        <div class="testimonio-card">
+          <div class="testimonio-glyph">"</div>
+          <p class="testimonio-text">La Dra. Renaud cambió mi vida y mi salud íntima. Por primera vez me sentí escuchada y comprendida. FUNDAREN es esperanza real para las mujeres de nuestra región.</p>
+          <div class="testimonio-author">Carmen R.</div>
+          <div class="testimonio-country">República Dominicana · Paciente</div>
+        </div>
+        <div class="testimonio-card">
+          <div class="testimonio-glyph">"</div>
+          <p class="testimonio-text">Como alumna del Instituto pude participar en jornadas donde atendimos a mujeres vulnerables. Fue la experiencia más gratificante y transformadora de mi carrera médica.</p>
+          <div class="testimonio-author">Dra. Ana L.</div>
+          <div class="testimonio-country">México · Egresada ICIGIFCA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<div class="faq-section" id="faq">
+  <div class="faq-inner">
+    <div class="eyebrow">Preguntas frecuentes</div>
+    <h2 class="section-title">Resolvemos tus<br><span style="color:var(--teal)">dudas.</span></h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-question">
+          <span class="faq-question-text">¿Quiénes pueden recibir ayuda de FUNDAREN?</span>
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Todas las mujeres en situación de vulnerabilidad que necesiten atención ginecológica, prevención o apoyo emocional. No discriminamos por edad, condición económica o procedencia geográfica.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">
+          <span class="faq-question-text">¿Cómo se financian los programas?</span>
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Los programas se financian principalmente a través de los cursos, diplomados y maestrías impartidos por el Instituto ICIGIFCA. También recibimos donaciones y apoyo de aliados estratégicos.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">
+          <span class="faq-question-text">¿Qué tipo de atención médica brindan?</span>
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Ofrecemos consultas ginecológicas completas, despistajes preventivos, tratamientos de salud íntima regenerativa, acompañamiento psicológico y programas educativos en comunidades.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">
+          <span class="faq-question-text">¿Cómo puedo participar como voluntario médico?</span>
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Contáctanos a través de WhatsApp. Buscamos profesionales comprometidos con la salud femenina y el servicio social. Tenemos jornadas regulares en diferentes ciudades y países.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">
+          <span class="faq-question-text">¿Dónde están ubicados?</span>
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Nuestra sede principal está en Barquisimeto, Venezuela (Carrera 4 entre calles 6 y 7, Nueva Segovia, Estado Lara). También tenemos presencia activa en República Dominicana, México, El Salvador y Panamá.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ALIANZAS -->
+<div style="background:var(--ink);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="alianzas-section">
+    <div style="text-align:center">
+      <div class="eyebrow" style="justify-content:center;margin-bottom:0">Respaldada por</div>
+    </div>
+    <div class="alianzas-row">
+      <div class="alianza-item">ICIGIFCA<small>Instituto Formador</small></div>
+      <div class="alianza-item">GinecoSpa<small>Centro Médico Aliado</small></div>
+      <div class="alianza-item">SOGIRE<small>Asociación Científica</small></div>
+      <div class="alianza-item">Ajakaida Renaud Institute<small>Centro de Referencia</small></div>
+      <div class="alianza-item">Clínicas Asociadas<small>Red de Atención</small></div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section" id="contacto">
+  <div class="hero-bg">
+    <img src="https://res.cloudinary.com/dzq9lldhw/image/upload/f_auto,q_auto,w_1600/v1763251837/PXL_20250724_155205084.PORTRAIT.ORIGINAL_ek08kr.jpg" alt="">
+  </div>
+  <div class="cta-ring cta-ring1"></div>
+  <div class="cta-ring cta-ring2"></div>
+  <div class="cta-ring cta-ring3"></div>
+  <div class="cta-content">
+    <div class="cta-tag">Ayuda Real · Impacto Medible</div>
+    <h2 class="cta-headline">Una mujer apoyada<br>transforma <span class="accent">toda una familia.</span></h2>
+    <p class="cta-sub">No es caridad. Es un modelo sostenible donde la excelencia médica genera bienestar social real para las mujeres que más lo necesitan.</p>
+    <div class="cta-btns">
+      <a href="https://wa.me/584125677557" class="btn-rose" target="_blank">Quiero Participar →</a>
+      <a href="index.html" class="btn-ghost-rose">Conocer ICIGIFCA</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">FUNDAREN</div>
+      <div class="footer-brand-sub">Bienestar y Salud Integral de la Mujer</div>
+      <p class="footer-brand-desc">Transformando vidas desde 1997 a través de salud, educación y acompañamiento para la mujer latinoamericana.</p>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/ginecospaccs" target="_blank" title="Instagram">ig</a>
+        <a href="https://wa.me/584125677557" target="_blank" title="WhatsApp">wa</a>
+        <a href="https://www.instagram.com/instituto_ginecoregenerativa/" target="_blank" title="ICIGIFCA Instagram">ig</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Programas</h5>
+      <a href="#programas">Atención Gratuita</a>
+      <a href="#programas">Jornadas Prevención</a>
+      <a href="#programas">Salud Regenerativa</a>
+      <a href="#programas">Becas</a>
+    </div>
+    <div class="footer-col">
+      <h5>Ayudar</h5>
+      <a href="#ayudar">Donaciones</a>
+      <a href="#ayudar">Apadrinar Consulta</a>
+      <a href="#ayudar">Voluntario Médico</a>
+      <a href="index.html">Cursos ICIGIFCA</a>
+    </div>
+    <div class="footer-col">
+      <h5>Contacto</h5>
+      <p>Barquisimeto, Carrera 4 entre calles 6 y 7, Nueva Segovia, Estado Lara, Venezuela</p>
+      <a href="https://wa.me/584125677557" target="_blank">+58 412 567 7557</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 FUNDAREN · Fundación para el Bienestar y la Salud Integral de la Mujer</span>
+    <span>Parte del ecosistema <a href="index.html">ICIGIFCA</a></span>
+  </div>
+</footer>
+
+<script>
+// Cursor
+const cursor = document.getElementById('cursor');
+const cursorDot = document.getElementById('cursorDot');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+  cursorDot.style.left = e.clientX + 'px';
+  cursorDot.style.top = e.clientY + 'px';
+});
+document.querySelectorAll('a,button').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+});
+
+// Scroll nav bg
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  nav.style.background = window.scrollY > 50
+    ? 'rgba(5,10,10,0.98)'
+    : 'rgba(5,10,10,0.85)';
+});
+
+// FAQ accordion
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.querySelector('.faq-question').addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+});
+
+// Reveal on scroll
+const revealEls = document.querySelectorAll('.impacto-card,.programa-card,.testimonio-card,.valor-item,.ayudar-card,.modelo-step,.mission-card');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+revealEls.forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(24px)';
+  el.style.transition = 'opacity .5s ease, transform .5s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
