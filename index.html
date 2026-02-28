@@ -105,7 +105,73 @@ nav.scrolled{background:rgba(5,10,10,0.96)}
 .btn-apply:hover{background:#00E0BC;box-shadow:0 0 24px rgba(0,201,167,0.35);transform:translateY(-1px)}
 .btn-apply::after{content:'→'}
 
-/* ─── HERO ─── */
+/* ─── HAMBURGER ─── */
+.hamburger{
+  display:none;flex-direction:column;justify-content:center;gap:5px;
+  cursor:pointer;padding:8px;background:none;border:none;z-index:600;
+}
+.hamburger span{
+  display:block;width:22px;height:2px;background:#fff;
+  border-radius:2px;transition:all .3s;
+}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ─── MOBILE DRAWER ─── */
+.mobile-menu{
+  position:fixed;top:68px;left:0;right:0;bottom:0;
+  background:rgba(5,10,10,0.98);backdrop-filter:blur(20px);
+  z-index:490;overflow-y:auto;
+  transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);
+  padding:20px 0 60px;
+  border-top:1px solid var(--border);
+}
+.mobile-menu.open{transform:translateX(0)}
+
+.m-section-label{
+  font-size:8px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--teal);padding:20px 28px 8px;font-weight:600;
+}
+.m-link{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 28px;text-decoration:none;
+  font-size:15px;font-weight:600;color:#fff;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  font-family:'Syne',sans-serif;letter-spacing:.5px;
+  transition:background .2s,color .2s;
+}
+.m-link:hover,.m-link:active{background:rgba(0,201,167,0.06);color:var(--teal)}
+.m-link-arrow{color:var(--teal);font-size:14px;opacity:.7}
+.m-sub-link{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 28px 12px 20px;text-decoration:none;
+  font-size:13px;color:var(--muted2);font-weight:400;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  transition:background .2s,color .2s;
+}
+.m-sub-link:hover,.m-sub-link:active{background:rgba(0,201,167,0.05);color:#fff}
+.m-sub-icon{width:32px;height:32px;background:rgba(0,201,167,0.08);border:1px solid var(--border-t);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.m-sub-title{font-size:13px;font-weight:600;color:#fff;display:block;margin-bottom:1px}
+.m-sub-desc{font-size:10px;color:var(--muted);display:block}
+.m-divider{height:1px;background:var(--border);margin:8px 0}
+.m-cta{
+  margin:24px 28px 0;
+  background:var(--teal);color:var(--ink);
+  padding:16px 28px;display:flex;align-items:center;justify-content:center;gap:10px;
+  font-family:'Inter',sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;
+  font-weight:700;text-decoration:none;border-radius:2px;transition:background .2s;
+}
+.m-cta:hover,.m-cta:active{background:#00E0BC}
+.m-cta::after{content:'→';font-size:14px}
+.m-phone{
+  margin:12px 28px 0;padding:14px 20px;
+  border:1px solid var(--border);
+  font-size:12px;color:var(--muted);text-align:center;
+}
+.m-phone span{color:var(--gold);font-weight:600;font-size:13px}
+
+
 .hero{
   min-height:100vh;position:relative;display:flex;align-items:center;
   overflow:hidden;padding-top:68px;
@@ -458,6 +524,8 @@ footer{
   nav{padding:0 24px}
   .nav-center{display:none}
   .nav-phone{display:none}
+  .nav-right .btn-apply{display:none}
+  .hamburger{display:flex}
   .hero-stats{grid-template-columns:1fr 1fr}
 }
 @media(max-width:768px){
@@ -525,8 +593,49 @@ footer{
   <div class="nav-right">
     <div class="nav-phone">Admisiones: <span>+58 412 000 0000</span></div>
     <a href="#contacto" class="btn-apply">Aplicar Ahora</a>
+    <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- ═══ MOBILE MENU ═══ -->
+<div class="mobile-menu" id="mobileMenu">
+  <!-- PROGRAMAS -->
+  <div class="m-section-label">Programas</div>
+  <a href="diplomado.html" class="m-sub-link">
+    <div class="m-sub-icon">📋</div>
+    <div><span class="m-sub-title">Diplomado Superior</span><span class="m-sub-desc">Certificación universitaria híbrida</span></div>
+  </a>
+  <a href="maestria.html" class="m-sub-link">
+    <div class="m-sub-icon">⭐</div>
+    <div><span class="m-sub-title">Maestría Internacional</span><span class="m-sub-desc">170 hrs · Título universitario internacional</span></div>
+  </a>
+  <a href="#programas" class="m-sub-link">
+    <div class="m-sub-icon">🔬</div>
+    <div><span class="m-sub-title">Fellowship Clínico</span><span class="m-sub-desc">Entrenamiento intensivo presencial</span></div>
+  </a>
+
+  <div class="m-divider"></div>
+
+  <!-- INSTITUTO -->
+  <div class="m-section-label">Instituto</div>
+  <a href="#director" class="m-link">Dirección Académica <span class="m-link-arrow">→</span></a>
+  <a href="#diferenciadores" class="m-link">Por qué ICIGIFCA <span class="m-link-arrow">→</span></a>
+  <a href="#avales" class="m-link">Avales y Acreditación <span class="m-link-arrow">→</span></a>
+
+  <div class="m-divider"></div>
+
+  <!-- ACADÉMICO -->
+  <div class="m-section-label">Académico</div>
+  <a href="#programas" class="m-link">Programa Académico <span class="m-link-arrow">→</span></a>
+  <a href="#contacto" class="m-link">Inversión <span class="m-link-arrow">→</span></a>
+  <a href="#contacto" class="m-link">Contacto <span class="m-link-arrow">→</span></a>
+
+  <!-- CTA -->
+  <a href="#contacto" class="m-cta">Aplicar Ahora</a>
+  <div class="m-phone">Admisiones: <span>+58 412 000 0000</span></div>
+</div>
 
 <!-- ═══ HERO ═══ -->
 <section class="hero">
@@ -816,7 +925,34 @@ footer{
     document.getElementById('navbar').classList.toggle('scrolled', scrollY > 40);
   });
 
-  // ── DROPDOWN: click to open/close (works on all browsers) ──
+  // ── HAMBURGER MENU ──
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  hamburger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+
+  // Close mobile menu when clicking a link inside it
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!mobileMenu.contains(e.target) && !hamburger.contains(e.target)) {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
   document.querySelectorAll('.nav-item > button').forEach(btn => {
     btn.addEventListener('click', function(e) {
       e.stopPropagation();
