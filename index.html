@@ -75,6 +75,7 @@ nav.scrolled{background:rgba(5,10,10,0.96)}
   display:flex;align-items:flex-start;gap:12px;
   padding:14px 20px;text-decoration:none;
   border-bottom:1px solid var(--border);transition:background .2s;
+  position:relative;z-index:700;pointer-events:auto;cursor:pointer;
 }
 .nav-drop a:last-child{border-bottom:none}
 .nav-drop a:hover{background:var(--glass)}
@@ -813,6 +814,53 @@ footer{
   // Navbar scroll
   window.addEventListener('scroll', () => {
     document.getElementById('navbar').classList.toggle('scrolled', scrollY > 40);
+  });
+
+  // ── DROPDOWN: click to open/close (works on all browsers) ──
+  document.querySelectorAll('.nav-item > button').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const item = this.closest('.nav-item');
+      const drop = item.querySelector('.nav-drop');
+      const isOpen = item.classList.contains('open');
+
+      // Close all dropdowns first
+      document.querySelectorAll('.nav-item.open').forEach(el => {
+        el.classList.remove('open');
+        el.querySelector('.nav-drop').style.opacity = '';
+        el.querySelector('.nav-drop').style.visibility = '';
+        el.querySelector('.nav-drop').style.transform = '';
+      });
+
+      // Open this one if it was closed
+      if (!isOpen) {
+        item.classList.add('open');
+        drop.style.opacity = '1';
+        drop.style.visibility = 'visible';
+        drop.style.transform = 'translateY(0)';
+      }
+    });
+  });
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item.open').forEach(el => {
+      el.classList.remove('open');
+      el.querySelector('.nav-drop').style.opacity = '';
+      el.querySelector('.nav-drop').style.visibility = '';
+      el.querySelector('.nav-drop').style.transform = '';
+    });
+  });
+
+  // Ensure dropdown links navigate correctly
+  document.querySelectorAll('.nav-drop a').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const href = this.getAttribute('href');
+      if (href && !href.startsWith('#')) {
+        window.location.href = href;
+      }
+    });
   });
 
   // Animated stat counters
