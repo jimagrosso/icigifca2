@@ -654,7 +654,7 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
 <script>
 const SUPABASE_URL = 'https://ejuvegzsuxcgazmeieed.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqdXZlZ3pzdXhjZ2F6bWVpZWVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMTcwNzMsImV4cCI6MjA4Nzg5MzA3M30.sGfE9AJUzL_gZQf8PIWgcslPwifCRDvFIDHHgzQbYDY';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabase = (window.supabase || (() => { throw new Error('Supabase no cargó'); })()).createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
 
@@ -741,8 +741,8 @@ function showIncompleteProfileBanner() {
 }
 
 async function logout() {
-  await supabase.auth.signOut();
-  window.location.href = 'login.html';
+  try { await supabase.auth.signOut(); } catch(e) {}
+  window.location.replace('login.html');
 }
 
 // ── Section nav ─────────────────────────────────────────
