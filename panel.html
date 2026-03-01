@@ -738,18 +738,19 @@ async function init() {
     pais:                profile?.pais || '—',
     telefono:            profile?.telefono || '—',
     perfil_profesional:  profile?.perfil_profesional || (isGoogle ? 'Pendiente completar' : '—'),
-    paid:                profile?.paid || false,
+    paid:                profile?.paid === true,
     isGoogle,
     profileIncomplete:   !profile?.cedula
   };
 
-  // Si es Google y no tiene perfil → crear perfil mínimo
+  // Si es Google y no tiene perfil → crear perfil mínimo (sin tocar paid)
   if (isGoogle && !profile) {
     await supabase.from('profiles').upsert({
       id: authUser.id,
       nombre_completo: displayName,
-      cedula: '—', pais: '—', telefono: '—',
-      perfil_profesional: 'Pendiente', paid: false
+      cedula: '', pais: '', telefono: '',
+      perfil_profesional: 'Pendiente'
+      // NO incluir paid aquí para no sobreescribir
     });
   }
 
