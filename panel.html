@@ -292,11 +292,11 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
           <div class="section-title" style="font-size:15px">Módulos del programa</div>
         </div>
         <div class="modules-grid">
-          <div class="module-card preview">
+          <div class="module-card" id="dashModulo1Card">
             <div class="module-num">Módulo 01</div>
             <div class="module-title">Introducción y fundamentos</div>
             <div class="module-desc">Bases anatómicas, fisiológicas y científicas de la ginecología regenerativa moderna.</div>
-            <button class="module-btn open" onclick="alert('Demo del Módulo 1 — Próximamente disponible en fase 2.')">▶ Ver preview</button>
+            <div id="dashModulo1Btn"></div>
           </div>
           <div class="module-card locked">
             <div class="module-lock">🔒</div>
@@ -797,15 +797,23 @@ function showSection(id, el) {
 
 // ── Módulo 1: botón dinámico según paid ─────────────────
 function renderModulo1(paid) {
+  // En sección Módulos
   const btn = document.getElementById('modulo1Btn');
   const card = document.getElementById('modulo1Card');
-  if (!btn) return;
+  // En dashboard
+  const dashBtn = document.getElementById('dashModulo1Btn');
+  const dashCard = document.getElementById('dashModulo1Card');
+
   if (paid) {
-    card.classList.add('preview');
-    btn.innerHTML = `<button class="module-btn open" onclick="alert('Módulo 1 desbloqueado. Contenido disponible próximamente.')">▶ Acceder al módulo</button>`;
+    if (card) { card.classList.remove('locked'); card.classList.add('preview'); }
+    if (btn) btn.innerHTML = `<button class="module-btn open" onclick="alert('¡Módulo 1 desbloqueado! Contenido disponible próximamente.')">▶ Acceder al módulo</button>`;
+    if (dashCard) { dashCard.classList.remove('locked'); dashCard.classList.add('preview'); }
+    if (dashBtn) dashBtn.innerHTML = `<button class="module-btn open" onclick="alert('¡Módulo 1 desbloqueado! Contenido disponible próximamente.')">▶ Acceder al módulo</button>`;
   } else {
-    card.classList.add('locked');
-    btn.innerHTML = `<button class="module-btn pay" onclick="window.location.href='https://buy.stripe.com/8x2dRaaVFczjb9O5Wy5c40t'">🔒 Activar con primer pago</button>`;
+    if (card) { card.classList.remove('preview'); card.classList.add('locked'); }
+    if (btn) btn.innerHTML = `<button class="module-btn pay" onclick="window.location.href='pagos.html'">🔒 Activar con primer pago</button>`;
+    if (dashCard) { dashCard.classList.remove('preview'); dashCard.classList.add('locked'); }
+    if (dashBtn) dashBtn.innerHTML = `<div class="module-lock">🔒</div><button class="module-btn pay" onclick="window.location.href='pagos.html'">Activar Módulo 1 →</button>`;
   }
 }
 
