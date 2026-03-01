@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solicitar Acceso al Foro — ICIGIFCA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;font-family:'DM Sans',sans-serif;background:#080E0E;color:#E8E8E4;display:flex;flex-direction:column}
+:root{
+  --teal:#00C9A7;--teal-dim:rgba(0,201,167,0.08);--teal-border:rgba(0,201,167,0.2);
+  --gold:#C9A84C;--gold-dim:rgba(201,168,76,0.08);--gold-border:rgba(201,168,76,0.25);
+  --ink:#080E0E;--ink2:#0D1515;--ink3:#141F1F;--ink4:#1A2828;
+  --border:rgba(255,255,255,0.07);--muted:rgba(232,232,228,0.38);--muted2:rgba(232,232,228,0.65);
+}
+.topbar{height:56px;background:var(--ink2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0}
+.logo{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:3px;color:#fff;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--teal)}
+.btn-back{color:var(--muted);font-size:12px;text-decoration:none;transition:color .2s}
+.btn-back:hover{color:#fff}
+
+.page{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:48px 24px}
+.card{background:var(--ink2);border:1px solid var(--teal-border);width:100%;max-width:580px;padding:40px}
+
+.card-icon{font-size:32px;margin-bottom:16px}
+.card-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:8px}
+.card-desc{font-size:13px;color:var(--muted2);line-height:1.7;margin-bottom:28px;border-bottom:1px solid var(--border);padding-bottom:20px}
+
+.form-row{margin-bottom:16px}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+@media(max-width:500px){.form-row-2{grid-template-columns:1fr}}
+.form-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
+.form-input{width:100%;background:var(--ink3);border:1px solid var(--border);color:#fff;padding:11px 14px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border .2s}
+.form-input:focus{border-color:var(--teal-border)}
+.form-input::placeholder{color:var(--muted)}
+.form-select{width:100%;background:var(--ink3);border:1px solid var(--border);color:#fff;padding:11px 14px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;cursor:pointer;appearance:none}
+.form-select option{background:var(--ink3)}
+.form-textarea{width:100%;background:var(--ink3);border:1px solid var(--border);color:#fff;padding:11px 14px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;min-height:100px;transition:border .2s}
+.form-textarea:focus{border-color:var(--teal-border)}
+.form-textarea::placeholder{color:var(--muted)}
+
+.aviso{background:var(--gold-dim);border:1px solid var(--gold-border);padding:14px 16px;margin-bottom:24px;font-size:12px;color:var(--muted2);line-height:1.6}
+.aviso strong{color:var(--gold)}
+
+.btn-enviar{width:100%;padding:13px;background:var(--teal);border:none;color:#080E0E;font-size:12px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;letter-spacing:2px;text-transform:uppercase;margin-top:8px}
+.btn-enviar:hover{background:#00E0BC}
+.btn-enviar:disabled{opacity:.5;cursor:not-allowed}
+
+/* SUCCESS STATE */
+.success-state{display:none;text-align:center;padding:20px 0}
+.success-icon{font-size:48px;margin-bottom:16px}
+.success-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;margin-bottom:8px}
+.success-desc{font-size:13px;color:var(--muted2);line-height:1.7;margin-bottom:24px}
+.btn-foro{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal);color:#080E0E;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:all .2s}
+.btn-foro:hover{background:#00E0BC}
+
+/* YA REGISTRADO */
+.ya-registrado{display:none;text-align:center;padding:20px 0}
+
+.toast{position:fixed;bottom:24px;right:24px;background:var(--ink3);border:1px solid var(--border);padding:12px 20px;font-size:13px;color:var(--muted2);z-index:300;transform:translateY(80px);opacity:0;transition:all .3s}
+.toast.show{transform:translateY(0);opacity:1}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="logo">ICIGI<span>IFCA</span></a>
+  <a href="foro.html" class="btn-back">← Volver al foro</a>
+</div>
+
+<div class="page">
+  <div class="card">
+
+    <!-- FORMULARIO -->
+    <div id="formView">
+      <div class="card-icon">🩺</div>
+      <div class="card-title">Solicitar acceso al Foro Clínico</div>
+      <div class="card-desc">El Foro Clínico ICIGIFCA es una comunidad exclusiva para médicos y profesionales verificados en ginecología regenerativa. Completa tu información profesional y nuestro equipo revisará tu solicitud en 24–48 horas hábiles.<br><br>Los estudiantes activos del Diplomado o Maestría tienen acceso automático.</div>
+
+      <div class="aviso">
+        <strong>⚠️ Nota:</strong> Esta solicitud requiere que estés registrado en el campus. Si aún no tienes cuenta, <a href="registro.html" style="color:var(--gold);text-decoration:underline">regístrate primero</a>.
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">Nombre completo *</label>
+        <input type="text" class="form-input" id="solNombre" placeholder="Dr/a. Nombre Apellido">
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">Correo electrónico *</label>
+        <input type="email" class="form-input" id="solEmail" placeholder="correo@hospital.com">
+      </div>
+
+      <div class="form-row-2">
+        <div>
+          <label class="form-label">Especialidad *</label>
+          <select class="form-select" id="solEspecialidad">
+            <option value="">Seleccionar...</option>
+            <option>Ginecología y Obstetricia</option>
+            <option>Ginecología Regenerativa</option>
+            <option>Medicina Estética</option>
+            <option>Urología</option>
+            <option>Endocrinología</option>
+            <option>Medicina General</option>
+            <option>Cirugía General</option>
+            <option>Otra especialidad médica</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Años de experiencia *</label>
+          <select class="form-select" id="solAnos">
+            <option value="">Seleccionar...</option>
+            <option>Menos de 2 años</option>
+            <option>2 a 5 años</option>
+            <option>5 a 10 años</option>
+            <option>Más de 10 años</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">Institución / Hospital / Clínica *</label>
+        <input type="text" class="form-input" id="solInstitucion" placeholder="Hospital Central, Clínica XYZ...">
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">¿Por qué deseas unirte al foro? *</label>
+        <textarea class="form-textarea" id="solMotivo" placeholder="Cuéntanos brevemente tu interés en ginecología regenerativa y qué esperas aportar a la comunidad..."></textarea>
+      </div>
+
+      <button class="btn-enviar" id="btnEnviar" onclick="enviarSolicitud()">Enviar solicitud →</button>
+    </div>
+
+    <!-- ÉXITO -->
+    <div class="success-state" id="successView">
+      <div class="success-icon">✅</div>
+      <div class="success-title">Solicitud enviada</div>
+      <div class="success-desc">Tu solicitud ha sido recibida. Nuestro equipo la revisará en un plazo de 24–48 horas hábiles. Te notificaremos por correo cuando sea aprobada.<br><br>Mientras tanto, puedes explorar el foro como visitante.</div>
+      <a href="foro.html" class="btn-foro">Ver el foro →</a>
+    </div>
+
+    <!-- YA TIENE SOLICITUD -->
+    <div class="ya-registrado" id="yaRegistrado">
+      <div class="success-icon">⏳</div>
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff;margin-bottom:8px">Solicitud en revisión</div>
+      <div style="font-size:13px;color:var(--muted2);margin-bottom:20px">Ya enviaste una solicitud de acceso. Estamos revisando tu información.</div>
+      <a href="foro.html" class="btn-foro">Ver el foro →</a>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://ejuvegzsuxcgazmeieed.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqdXZlZ3pzdXhjZ2F6bWVpZWVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMTcwNzMsImV4cCI6MjA4Nzg5MzA3M30.sGfE9AJUzL_gZQf8PIWgcslPwifCRDvFIDHHgzQbYDY';
+var sb = null;
+var currentUser = null;
+function getSb(){if(!sb)sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);return sb;}
+
+window.addEventListener('load', async () => {
+  const { data: { session } } = await getSb().auth.getSession();
+  if (!session) { window.location.replace('login.html'); return; }
+  currentUser = session.user;
+
+  // Pre-llenar datos del usuario
+  const { data: profile } = await getSb().from('profiles').select('*').eq('id', currentUser.id).single();
+  if (profile?.paid || profile?.forum_approved) {
+    window.location.replace('foro.html'); return;
+  }
+
+  document.getElementById('solNombre').value = profile?.nombre_completo || currentUser.user_metadata?.full_name || '';
+  document.getElementById('solEmail').value = currentUser.email || '';
+  if (profile?.perfil_profesional && profile.perfil_profesional !== 'Pendiente') {
+    document.getElementById('solEspecialidad').value = profile.perfil_profesional;
+  }
+
+  // Verificar si ya tiene solicitud
+  const { data: req } = await getSb().from('forum_access_requests').select('id').eq('user_id', currentUser.id).single();
+  if (req) {
+    document.getElementById('formView').style.display = 'none';
+    document.getElementById('yaRegistrado').style.display = 'block';
+  }
+});
+
+async function enviarSolicitud() {
+  const nombre = document.getElementById('solNombre').value.trim();
+  const email = document.getElementById('solEmail').value.trim();
+  const especialidad = document.getElementById('solEspecialidad').value;
+  const anos = document.getElementById('solAnos').value;
+  const institucion = document.getElementById('solInstitucion').value.trim();
+  const motivo = document.getElementById('solMotivo').value.trim();
+
+  if (!nombre || !email || !especialidad || !anos || !institucion || !motivo) {
+    toast('Por favor completa todos los campos'); return;
+  }
+
+  const btn = document.getElementById('btnEnviar');
+  btn.disabled = true; btn.textContent = 'Enviando...';
+
+  const { error } = await getSb().from('forum_access_requests').insert({
+    user_id: currentUser.id,
+    nombre, email, especialidad,
+    anos_experiencia: anos,
+    institucion, motivo
+  });
+
+  btn.disabled = false; btn.textContent = 'Enviar solicitud →';
+
+  if (error) { toast('Error al enviar. Intenta de nuevo.'); return; }
+
+  document.getElementById('formView').style.display = 'none';
+  document.getElementById('successView').style.display = 'block';
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>

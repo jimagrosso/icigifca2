@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foro Clínico — ICIGIFCA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;font-family:'DM Sans',sans-serif;background:#080E0E;color:#E8E8E4}
+:root{
+  --teal:#00C9A7;--teal-dim:rgba(0,201,167,0.08);--teal-border:rgba(0,201,167,0.2);
+  --gold:#C9A84C;--gold-dim:rgba(201,168,76,0.08);--gold-border:rgba(201,168,76,0.25);
+  --ink:#080E0E;--ink2:#0D1515;--ink3:#141F1F;--ink4:#1A2828;
+  --border:rgba(255,255,255,0.07);--muted:rgba(232,232,228,0.38);--muted2:rgba(232,232,228,0.65);
+}
+
+/* TOPBAR */
+.topbar{height:56px;background:var(--ink2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:100}
+.logo{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:3px;color:#fff;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--teal)}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.btn-back{color:var(--muted);font-size:12px;text-decoration:none;transition:color .2s}
+.btn-back:hover{color:#fff}
+.btn-nuevo{padding:8px 18px;background:var(--teal);color:#080E0E;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s}
+.btn-nuevo:hover{background:#00E0BC}
+.user-pill{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted2)}
+.user-avatar{width:28px;height:28px;border-radius:50%;background:var(--teal-dim);border:1px solid var(--teal-border);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--teal)}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 56px);max-width:1280px;margin:0 auto;padding:0 24px}
+@media(max-width:800px){.layout{grid-template-columns:1fr}}
+
+/* SIDEBAR */
+.sidebar{padding:28px 0 28px 0;border-right:1px solid var(--border)}
+.sidebar-section{margin-bottom:28px}
+.sidebar-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;padding:0 16px}
+.cat-item{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;cursor:pointer;font-size:13px;color:var(--muted2);transition:all .15s;border-left:2px solid transparent}
+.cat-item:hover{background:var(--ink3);color:#fff}
+.cat-item.active{background:var(--teal-dim);border-left-color:var(--teal);color:var(--teal)}
+.cat-count{font-size:10px;background:var(--ink4);padding:2px 7px;color:var(--muted)}
+.cat-item.active .cat-count{background:var(--teal-dim);color:var(--teal)}
+.sidebar-stats{padding:16px;background:var(--ink2);border:1px solid var(--border);margin:0 16px}
+.stat-row{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);padding:4px 0;border-bottom:1px solid var(--border)}
+.stat-row:last-child{border-bottom:none}
+.stat-row span{color:var(--teal);font-weight:600}
+
+/* MAIN */
+.main{padding:28px 0 28px 28px;overflow-y:auto}
+@media(max-width:800px){.main{padding:20px 0}}
+
+/* HEADER FORO */
+.foro-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+.foro-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff}
+.foro-sub{font-size:12px;color:var(--muted);margin-top:4px}
+.search-wrap{display:flex;gap:8px;align-items:center}
+.search-input{background:var(--ink3);border:1px solid var(--border);color:#fff;padding:9px 14px;font-size:12px;font-family:'DM Sans',sans-serif;width:220px;outline:none;transition:border .2s}
+.search-input:focus{border-color:var(--teal-border)}
+.search-input::placeholder{color:var(--muted)}
+
+/* FILTROS */
+.filtros{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.filtro-btn{padding:6px 14px;border:1px solid var(--border);background:transparent;color:var(--muted2);font-size:11px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;letter-spacing:.5px}
+.filtro-btn:hover{border-color:var(--teal-border);color:var(--teal)}
+.filtro-btn.active{border-color:var(--teal);color:var(--teal);background:var(--teal-dim)}
+
+/* POST CARD */
+.posts-list{display:flex;flex-direction:column;gap:2px}
+.post-card{background:var(--ink2);border:1px solid var(--border);padding:18px 20px;display:grid;grid-template-columns:auto 1fr auto;gap:14px;cursor:pointer;transition:all .15s;text-decoration:none}
+.post-card:hover{border-color:var(--teal-border);background:var(--ink3)}
+.post-card.pinned{border-left:2px solid var(--gold)}
+
+.post-votes{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:36px}
+.vote-btn{background:none;border:1px solid var(--border);color:var(--muted);width:28px;height:24px;cursor:pointer;font-size:12px;transition:all .2s}
+.vote-btn:hover{border-color:var(--teal);color:var(--teal)}
+.vote-count{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--muted2)}
+
+.post-content{min-width:0}
+.post-meta{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.post-cat{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border:1px solid var(--teal-border);color:var(--teal)}
+.post-cat.caso{border-color:var(--gold-border);color:var(--gold)}
+.post-cat.pregunta{border-color:rgba(100,180,255,0.3);color:#64B4FF}
+.post-cat.debate{border-color:rgba(200,100,255,0.3);color:#C864FF}
+.post-pinned-badge{font-size:9px;color:var(--gold);letter-spacing:1px;text-transform:uppercase}
+.post-titulo{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.post-preview{font-size:12px;color:var(--muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:8px}
+.post-footer{display:flex;align-items:center;gap:14px;font-size:11px;color:var(--muted)}
+.post-autor{color:var(--muted2)}
+.post-tag-img{font-size:10px;background:var(--ink4);padding:2px 7px;color:var(--muted)}
+
+.post-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:60px}
+.replies-count{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--muted2);text-align:center}
+.replies-label{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.post-time{font-size:10px;color:var(--muted);white-space:nowrap}
+.has-img{width:8px;height:8px;background:var(--gold);border-radius:50%;flex-shrink:0}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty-icon{font-size:40px;margin-bottom:12px;opacity:.5}
+.empty-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--muted2);margin-bottom:6px}
+
+/* LOADING */
+.loading-post{background:var(--ink2);border:1px solid var(--border);padding:18px 20px;margin-bottom:2px;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.lp-line{height:12px;background:var(--ink4);margin-bottom:8px}
+.lp-line.short{width:40%}
+.lp-line.med{width:65%}
+
+/* MODAL NUEVO POST */
+.modal-overlay{position:fixed;inset:0;background:rgba(8,14,14,0.85);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--ink2);border:1px solid var(--teal-border);width:100%;max-width:620px;max-height:90vh;overflow-y:auto}
+.modal-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#fff;letter-spacing:1px;text-transform:uppercase}
+.modal-close{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;transition:color .2s}
+.modal-close:hover{color:#fff}
+.modal-body{padding:24px}
+.form-row{margin-bottom:16px}
+.form-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
+.form-input{width:100%;background:var(--ink3);border:1px solid var(--border);color:#fff;padding:10px 14px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border .2s}
+.form-input:focus{border-color:var(--teal-border)}
+.form-input::placeholder{color:var(--muted)}
+.form-select{width:100%;background:var(--ink3);border:1px solid var(--border);color:#fff;padding:10px 14px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;cursor:pointer;appearance:none}
+.form-select option{background:var(--ink3)}
+.form-textarea{width:100%;background:var(--ink3);border:1px solid var(--border);color:#fff;padding:10px 14px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;min-height:140px;transition:border .2s}
+.form-textarea:focus{border-color:var(--teal-border)}
+.form-textarea::placeholder{color:var(--muted)}
+.form-file-area{border:1px dashed var(--border);padding:20px;text-align:center;cursor:pointer;transition:all .2s}
+.form-file-area:hover{border-color:var(--teal-border);background:var(--teal-dim)}
+.form-file-area input{display:none}
+.form-file-text{font-size:12px;color:var(--muted)}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end}
+.btn-cancel{padding:9px 20px;background:transparent;border:1px solid var(--border);color:var(--muted2);font-size:11px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;letter-spacing:1px;text-transform:uppercase}
+.btn-cancel:hover{border-color:var(--muted2)}
+.btn-submit{padding:9px 24px;background:var(--teal);border:none;color:#080E0E;font-size:11px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;letter-spacing:1.5px;text-transform:uppercase}
+.btn-submit:hover{background:#00E0BC}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed}
+
+/* ACCESO BLOQUEADO */
+.acceso-bloqueado{background:var(--gold-dim);border:1px solid var(--gold-border);padding:20px 24px;margin-bottom:24px;display:none}
+.ab-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--gold);margin-bottom:6px}
+.ab-desc{font-size:12px;color:var(--muted2);line-height:1.6;margin-bottom:12px}
+.btn-solicitar{padding:8px 20px;background:var(--gold);color:#080E0E;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;display:inline-block;transition:all .2s}
+.btn-solicitar:hover{background:#e0bc6b}
+
+/* SOLICITUD PENDIENTE */
+.solicitud-pendiente{background:var(--teal-dim);border:1px solid var(--teal-border);padding:16px 20px;margin-bottom:20px;display:none;font-size:12px;color:var(--teal)}
+
+/* IMAGEN PREVIEW */
+.img-preview{margin-top:10px;display:none}
+.img-preview img{max-width:100%;max-height:160px;border:1px solid var(--border)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--ink3);border:1px solid var(--teal-border);padding:12px 20px;font-size:13px;color:var(--teal);z-index:300;transform:translateY(80px);opacity:0;transition:all .3s}
+.toast.show{transform:translateY(0);opacity:1}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <a href="index.html" class="logo">ICIGI<span>IFCA</span></a>
+  <div class="topbar-right">
+    <a href="panel.html" class="btn-back">← Campus</a>
+    <div class="user-pill">
+      <div class="user-avatar" id="userAvatar">?</div>
+      <span id="userName">...</span>
+    </div>
+    <button class="btn-nuevo" id="btnNuevoPost" onclick="abrirModal()">+ Nueva publicación</button>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Categorías</div>
+      <div class="cat-item active" onclick="filtrarCategoria('todas', this)">
+        Todos los temas <span class="cat-count" id="countTodas">0</span>
+      </div>
+      <div class="cat-item" onclick="filtrarCategoria('Caso Clínico', this)">
+        🔬 Caso Clínico <span class="cat-count" id="countCaso">0</span>
+      </div>
+      <div class="cat-item" onclick="filtrarCategoria('Pregunta', this)">
+        ❓ Preguntas <span class="cat-count" id="countPregunta">0</span>
+      </div>
+      <div class="cat-item" onclick="filtrarCategoria('Debate', this)">
+        💬 Debate <span class="cat-count" id="countDebate">0</span>
+      </div>
+      <div class="cat-item" onclick="filtrarCategoria('General', this)">
+        📋 General <span class="cat-count" id="countGeneral">0</span>
+      </div>
+      <div class="cat-item" onclick="filtrarCategoria('Investigación', this)">
+        📚 Investigación <span class="cat-count" id="countInvest">0</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Comunidad</div>
+      <div class="sidebar-stats">
+        <div class="stat-row">Publicaciones <span id="statPosts">0</span></div>
+        <div class="stat-row">Respuestas <span id="statReplies">0</span></div>
+        <div class="stat-row">Miembros <span id="statMembers">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- Acceso bloqueado (para no aprobados) -->
+    <div class="acceso-bloqueado" id="accesoDiv">
+      <div class="ab-title">🔒 Acceso pendiente de aprobación</div>
+      <div class="ab-desc">El foro clínico es exclusivo para médicos y profesionales verificados. Puedes ver las publicaciones, pero para participar necesitas verificar tus credenciales profesionales.</div>
+      <a href="foro-solicitud.html" class="btn-solicitar">Solicitar acceso profesional →</a>
+    </div>
+
+    <!-- Solicitud pendiente -->
+    <div class="solicitud-pendiente" id="solicitudDiv">
+      ⏳ Tu solicitud de acceso profesional está siendo revisada. Te notificaremos pronto.
+    </div>
+
+    <div class="foro-header">
+      <div>
+        <div class="foro-title">Foro Clínico ICIGIFCA</div>
+        <div class="foro-sub">Comunidad de ginecología regenerativa · Casos, preguntas y debate clínico</div>
+      </div>
+      <div class="search-wrap">
+        <input type="text" class="search-input" placeholder="Buscar en el foro..." id="searchInput" oninput="buscar(this.value)">
+      </div>
+    </div>
+
+    <div class="filtros">
+      <button class="filtro-btn active" onclick="filtrarOrden('reciente', this)">Más reciente</button>
+      <button class="filtro-btn" onclick="filtrarOrden('vistas', this)">Más visto</button>
+      <button class="filtro-btn" onclick="filtrarOrden('respuestas', this)">Más respondido</button>
+    </div>
+
+    <div id="postsList" class="posts-list">
+      <!-- Loading skeletons -->
+      <div class="loading-post"><div class="lp-line short"></div><div class="lp-line med"></div><div class="lp-line short"></div></div>
+      <div class="loading-post"><div class="lp-line short"></div><div class="lp-line"></div><div class="lp-line short"></div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL NUEVO POST -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Nueva Publicación</div>
+      <button class="modal-close" onclick="cerrarModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label class="form-label">Categoría</label>
+        <select class="form-select" id="postCategoria">
+          <option value="Caso Clínico">🔬 Caso Clínico</option>
+          <option value="Pregunta">❓ Pregunta</option>
+          <option value="Debate">💬 Debate</option>
+          <option value="General" selected>📋 General</option>
+          <option value="Investigación">📚 Investigación</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Título *</label>
+        <input type="text" class="form-input" id="postTitulo" placeholder="Describe brevemente tu caso o pregunta...">
+      </div>
+      <div class="form-row">
+        <label class="form-label">Contenido *</label>
+        <textarea class="form-textarea" id="postContenido" placeholder="Presenta tu caso clínico, pregunta o tema de discusión. Incluye contexto relevante como edad del paciente, historia clínica, hallazgos, etc."></textarea>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Imagen (opcional)</label>
+        <div class="form-file-area" onclick="document.getElementById('postImagen').click()">
+          <input type="file" id="postImagen" accept="image/*" onchange="previewImagen(this)">
+          <div class="form-file-text">📷 Haz clic para adjuntar una imagen clínica<br><small style="color:var(--muted)">JPG, PNG · Máx 5MB</small></div>
+        </div>
+        <div class="img-preview" id="imgPreview">
+          <img id="imgPreviewImg" src="">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
+      <button class="btn-submit" id="btnSubmit" onclick="publicar()">Publicar →</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://ejuvegzsuxcgazmeieed.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqdXZlZ3pzdXhjZ2F6bWVpZWVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMTcwNzMsImV4cCI6MjA4Nzg5MzA3M30.sGfE9AJUzL_gZQf8PIWgcslPwifCRDvFIDHHgzQbYDY';
+
+var sb = null;
+var currentUser = null;
+var puedePostear = false;
+var allPosts = [];
+var filtroCategoria = 'todas';
+var filtroOrden = 'reciente';
+var imagenBase64 = null;
+
+function getSb() {
+  if (!sb) sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  return sb;
+}
+
+window.addEventListener('load', init);
+
+async function init() {
+  const { data: { session } } = await getSb().auth.getSession();
+
+  if (session) {
+    currentUser = session.user;
+    const firstName = currentUser.user_metadata?.full_name?.split(' ')[0] || currentUser.email.split('@')[0];
+    document.getElementById('userName').textContent = firstName;
+    document.getElementById('userAvatar').textContent = firstName.charAt(0).toUpperCase();
+
+    // Verificar acceso al foro
+    const { data: profile } = await getSb().from('profiles').select('paid, forum_approved').eq('id', currentUser.id).single();
+
+    if (profile?.paid || profile?.forum_approved) {
+      // Acceso completo
+      puedePostear = true;
+    } else {
+      // Verificar si tiene solicitud pendiente
+      const { data: req } = await getSb().from('forum_access_requests').select('aprobado').eq('user_id', currentUser.id).single();
+      if (req) {
+        document.getElementById('solicitudDiv').style.display = 'block';
+      } else {
+        document.getElementById('accesoDiv').style.display = 'block';
+      }
+      document.getElementById('btnNuevoPost').disabled = true;
+      document.getElementById('btnNuevoPost').style.opacity = '0.4';
+    }
+  } else {
+    // No logueado — puede ver pero no postear
+    document.getElementById('userName').textContent = 'Visitante';
+    document.getElementById('userAvatar').textContent = '?';
+    document.getElementById('accesoDiv').style.display = 'block';
+    document.getElementById('btnNuevoPost').disabled = true;
+    document.getElementById('btnNuevoPost').style.opacity = '0.4';
+  }
+
+  await cargarPosts();
+  await cargarStats();
+}
+
+async function cargarPosts() {
+  const { data: posts, error } = await getSb()
+    .from('forum_posts')
+    .select('*, forum_replies(count)')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    document.getElementById('postsList').innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-title">Error al cargar el foro</div></div>';
+    return;
+  }
+
+  allPosts = posts || [];
+  actualizarContadores();
+  renderPosts();
+}
+
+async function cargarStats() {
+  const { count: countPosts } = await getSb().from('forum_posts').select('*', { count: 'exact', head: true });
+  const { count: countReplies } = await getSb().from('forum_replies').select('*', { count: 'exact', head: true });
+  document.getElementById('statPosts').textContent = countPosts || 0;
+  document.getElementById('statReplies').textContent = countReplies || 0;
+}
+
+function actualizarContadores() {
+  document.getElementById('countTodas').textContent = allPosts.length;
+  document.getElementById('countCaso').textContent = allPosts.filter(p => p.categoria === 'Caso Clínico').length;
+  document.getElementById('countPregunta').textContent = allPosts.filter(p => p.categoria === 'Pregunta').length;
+  document.getElementById('countDebate').textContent = allPosts.filter(p => p.categoria === 'Debate').length;
+  document.getElementById('countGeneral').textContent = allPosts.filter(p => p.categoria === 'General').length;
+  document.getElementById('countInvest').textContent = allPosts.filter(p => p.categoria === 'Investigación').length;
+}
+
+function renderPosts(busqueda = '') {
+  let posts = [...allPosts];
+
+  // Filtro categoría
+  if (filtroCategoria !== 'todas') posts = posts.filter(p => p.categoria === filtroCategoria);
+
+  // Filtro búsqueda
+  if (busqueda) {
+    const q = busqueda.toLowerCase();
+    posts = posts.filter(p => p.titulo.toLowerCase().includes(q) || p.contenido.toLowerCase().includes(q));
+  }
+
+  // Orden
+  if (filtroOrden === 'vistas') posts.sort((a, b) => b.vistas - a.vistas);
+  else if (filtroOrden === 'respuestas') posts.sort((a, b) => (b.forum_replies?.[0]?.count || 0) - (a.forum_replies?.[0]?.count || 0));
+
+  const list = document.getElementById('postsList');
+
+  if (posts.length === 0) {
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-title">No hay publicaciones aún</div><p style="font-size:12px;color:var(--muted);margin-top:6px">Sé el primero en compartir un caso o hacer una pregunta</p></div>`;
+    return;
+  }
+
+  const catClass = { 'Caso Clínico': 'caso', 'Pregunta': 'pregunta', 'Debate': 'debate' };
+  const timeAgo = (iso) => {
+    const diff = Date.now() - new Date(iso).getTime();
+    const m = Math.floor(diff / 60000);
+    if (m < 60) return `${m}m`;
+    const h = Math.floor(m / 60);
+    if (h < 24) return `${h}h`;
+    return `${Math.floor(h / 24)}d`;
+  };
+
+  list.innerHTML = posts.map(p => {
+    const replies = p.forum_replies?.[0]?.count || 0;
+    const catCls = catClass[p.categoria] || '';
+    const hasImg = p.imagen_url ? '<span class="has-img" title="Tiene imagen"></span>' : '';
+    return `
+      <a class="post-card" href="foro-tema.html?id=${p.id}">
+        <div class="post-votes">
+          <div class="vote-count">↑</div>
+        </div>
+        <div class="post-content">
+          <div class="post-meta">
+            <span class="post-cat ${catCls}">${p.categoria}</span>
+            ${hasImg}
+          </div>
+          <div class="post-titulo">${escHtml(p.titulo)}</div>
+          <div class="post-preview">${escHtml(p.contenido)}</div>
+          <div class="post-footer">
+            <span class="post-autor">Dr/a. ${escHtml(p.autor_nombre || 'Anónimo')}</span>
+            ${p.autor_especialidad ? `· <span>${escHtml(p.autor_especialidad)}</span>` : ''}
+            · ${timeAgo(p.created_at)}
+          </div>
+        </div>
+        <div class="post-right">
+          <div class="replies-count">${replies}</div>
+          <div class="replies-label">respuestas</div>
+        </div>
+      </a>`;
+  }).join('');
+}
+
+function escHtml(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function filtrarCategoria(cat, el) {
+  filtroCategoria = cat;
+  document.querySelectorAll('.cat-item').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+  renderPosts(document.getElementById('searchInput').value);
+}
+
+function filtrarOrden(orden, el) {
+  filtroOrden = orden;
+  document.querySelectorAll('.filtro-btn').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+  renderPosts(document.getElementById('searchInput').value);
+}
+
+function buscar(q) { renderPosts(q); }
+
+function abrirModal() {
+  if (!puedePostear) {
+    if (!currentUser) { window.location.href = 'login.html'; return; }
+    toast('Necesitas acceso aprobado para publicar');
+    return;
+  }
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function cerrarModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.getElementById('postTitulo').value = '';
+  document.getElementById('postContenido').value = '';
+  document.getElementById('imgPreview').style.display = 'none';
+  imagenBase64 = null;
+}
+
+function previewImagen(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { toast('La imagen no puede superar 5MB'); return; }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    imagenBase64 = e.target.result;
+    document.getElementById('imgPreviewImg').src = imagenBase64;
+    document.getElementById('imgPreview').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function publicar() {
+  const titulo = document.getElementById('postTitulo').value.trim();
+  const contenido = document.getElementById('postContenido').value.trim();
+  const categoria = document.getElementById('postCategoria').value;
+
+  if (!titulo || !contenido) { toast('Completa el título y el contenido'); return; }
+
+  const btn = document.getElementById('btnSubmit');
+  btn.disabled = true;
+  btn.textContent = 'Publicando...';
+
+  const { data: profile } = await getSb().from('profiles').select('nombre_completo, perfil_profesional').eq('id', currentUser.id).single();
+  const nombre = profile?.nombre_completo || currentUser.user_metadata?.full_name || currentUser.email.split('@')[0];
+  const especialidad = profile?.perfil_profesional || '';
+
+  const { error } = await getSb().from('forum_posts').insert({
+    user_id: currentUser.id,
+    autor_nombre: nombre,
+    autor_especialidad: especialidad,
+    categoria,
+    titulo,
+    contenido,
+    imagen_url: imagenBase64 || null
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'Publicar →';
+
+  if (error) { toast('Error al publicar. Intenta de nuevo.'); return; }
+
+  toast('✅ Publicación creada');
+  cerrarModal();
+  await cargarPosts();
+  await cargarStats();
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
