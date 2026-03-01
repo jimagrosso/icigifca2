@@ -3,106 +3,201 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Activar matrícula — Campus ICIGIFCA</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Activar Matrícula — ICIGIFCA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:#050A0A;color:#E8E8E4;min-height:100vh;display:flex;flex-direction:column}
-:root{--teal:#00C9A7;--teal-dim:rgba(0,201,167,0.08);--gold:#C9A84C;--gold-dim:rgba(201,168,76,0.08);--ink:#050A0A;--ink2:#0D1515;--ink3:#141F1F;--border:rgba(255,255,255,0.07);--border-t:rgba(0,201,167,0.2);--gold-border:rgba(201,168,76,0.25);--muted:rgba(232,232,228,0.4);--muted2:rgba(232,232,228,0.65)}
-nav{padding:0 56px;height:64px;display:flex;align-items:center;justify-content:space-between;background:var(--ink2);border-bottom:1px solid var(--border)}
-.nav-logo{text-decoration:none}
-.nav-logo-main{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;letter-spacing:4px;color:#fff;text-transform:uppercase}
-.nav-logo-sub{font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);font-weight:500;margin-top:1px}
-.nav-back{font-size:11px;color:var(--muted);text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:6px}
-.nav-back:hover{color:var(--teal)}
+html,body{min-height:100%;font-family:'DM Sans',sans-serif;background:#080E0E;color:#E8E8E4}
+:root{
+  --teal:#00C9A7;--teal-dim:rgba(0,201,167,0.08);--teal-border:rgba(0,201,167,0.2);
+  --gold:#C9A84C;--gold-dim:rgba(201,168,76,0.08);--gold-border:rgba(201,168,76,0.25);
+  --ink:#080E0E;--ink2:#0D1515;--ink3:#141F1F;
+  --border:rgba(255,255,255,0.07);
+  --muted:rgba(232,232,228,0.38);--muted2:rgba(232,232,228,0.62);
+  --wa:#25D366;
+}
 
-.page{flex:1;padding:64px 56px;max-width:900px;margin:0 auto;width:100%}
-.eyebrow{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px}
-.eyebrow::before{content:'';width:20px;height:1px;background:var(--gold)}
-h1{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,52px);font-weight:800;color:#fff;letter-spacing:-1.5px;line-height:.95;margin-bottom:16px}
-h1 span{color:var(--gold)}
-.sub{font-size:15px;color:var(--muted2);font-weight:300;line-height:1.7;margin-bottom:56px;max-width:500px}
+/* TOP BAR */
+.topbar{height:56px;background:var(--ink2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:sticky;top:0;z-index:100}
+.logo{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;letter-spacing:3px;color:#fff;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--teal)}
+.btn-back{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;text-decoration:none;letter-spacing:.5px;transition:color .2s}
+.btn-back:hover{color:#fff}
 
-.phase-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(201,168,76,0.08);border:1px solid var(--gold-border);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:40px}
-.phase-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:blink 1.5s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+/* PAGE */
+.page{max-width:860px;margin:0 auto;padding:60px 24px 80px}
 
-.coming-card{background:var(--ink2);border:1px solid var(--border);padding:48px;text-align:center;margin-bottom:40px}
-.coming-icon{font-size:48px;margin-bottom:20px}
-.coming-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:10px}
-.coming-desc{font-size:13px;color:var(--muted);line-height:1.7;max-width:420px;margin:0 auto 28px}
-.btn-wa{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;background:#25D366;color:#fff;font-family:'Inter',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;text-decoration:none;transition:all .2s}
-.btn-wa:hover{background:#1da851;transform:translateY(-2px)}
-.btn-back{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;background:transparent;border:1px solid var(--border);color:var(--muted2);font-family:'Inter',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;text-decoration:none;margin-top:16px;transition:all .2s}
-.btn-back:hover{border-color:var(--teal);color:var(--teal)}
+/* HEADER */
+.page-header{margin-bottom:48px;animation:fadeUp .5s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.page-tag{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--teal);margin-bottom:12px}
+.page-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#fff;line-height:1.15;margin-bottom:12px}
+.page-desc{font-size:14px;color:var(--muted2);line-height:1.7;max-width:520px}
 
-.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
-.plan-card{background:var(--ink2);border:1px solid var(--border);padding:28px;position:relative}
-.plan-card.featured{border-color:var(--gold-border);background:var(--gold-dim)}
-.plan-tag{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;font-weight:600}
-.plan-card.featured .plan-tag{color:var(--gold)}
-.plan-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff;margin-bottom:8px}
-.plan-price{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#fff;margin-bottom:4px}
-.plan-price span{font-size:13px;color:var(--muted);font-weight:300}
-.plan-desc{font-size:11px;color:var(--muted);line-height:1.6;margin-top:8px}
-.plan-lock{position:absolute;top:16px;right:16px;font-size:12px;color:var(--muted)}
+/* MÓDULO INFO */
+.modulo-info{display:flex;align-items:center;gap:16px;background:var(--teal-dim);border:1px solid var(--teal-border);padding:18px 22px;margin-bottom:40px;animation:fadeUp .5s .1s ease both;flex-wrap:wrap}
+.modulo-num{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:2px;color:var(--teal);text-transform:uppercase;white-space:nowrap}
+.modulo-sep{width:1px;height:32px;background:var(--teal-border);flex-shrink:0}
+.modulo-name{font-size:14px;color:#fff;font-weight:500}
+.modulo-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.modulo-lock{margin-left:auto;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);background:rgba(0,201,167,0.1);border:1px solid var(--teal-border);padding:5px 12px;white-space:nowrap}
 
-@media(max-width:900px){nav{padding:0 20px}.page{padding:32px 20px}.plans-grid{grid-template-columns:1fr}}
+/* GRID */
+.opciones-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;animation:fadeUp .5s .15s ease both}
+@media(max-width:620px){.opciones-grid{grid-template-columns:1fr}}
+
+/* CARDS */
+.opcion-card{background:var(--ink2);border:1px solid var(--border);padding:32px 28px;display:flex;flex-direction:column;transition:border-color .2s,transform .2s}
+.opcion-card:hover{border-color:rgba(255,255,255,0.15);transform:translateY(-2px)}
+.opcion-card.stripe-card{border-top:2px solid var(--teal)}
+.opcion-card.whatsapp-card{border-top:2px solid var(--wa)}
+.opcion-icon{font-size:28px;margin-bottom:16px}
+.opcion-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.stripe-card .opcion-label{color:var(--teal)}
+.whatsapp-card .opcion-label{color:var(--wa)}
+.opcion-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:#fff;margin-bottom:8px}
+.opcion-desc{font-size:12px;color:var(--muted);line-height:1.7;flex:1;margin-bottom:24px}
+.metodos-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.metodo-tag{font-size:10px;padding:4px 10px;border:1px solid var(--border);color:var(--muted2);letter-spacing:.3px}
+
+/* BOTONES */
+.btn-stripe{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px;background:var(--teal);color:#080E0E;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;transition:all .2s}
+.btn-stripe:hover{background:#00E0BC;box-shadow:0 0 28px rgba(0,201,167,0.3)}
+.btn-wa{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px;background:var(--wa);color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;transition:all .2s}
+.btn-wa:hover{background:#1ebe5d;box-shadow:0 0 28px rgba(37,211,102,0.3)}
+
+/* NOTA MANUAL */
+.nota-manual{margin-top:16px;padding:14px 18px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-size:11px;color:var(--muted);line-height:1.7}
+.nota-manual strong{color:var(--muted2)}
+
+/* GARANTÍA */
+.garantia{margin-top:40px;padding:20px 24px;background:var(--gold-dim);border:1px solid var(--gold-border);display:flex;gap:16px;align-items:flex-start;animation:fadeUp .5s .25s ease both}
+.garantia-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.garantia-text{font-size:12px;color:var(--muted2);line-height:1.7}
+.garantia-text strong{color:var(--gold);font-weight:600}
+
+/* SEGURIDAD */
+.seguridad{margin-top:40px;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;animation:fadeUp .5s .3s ease both}
+.seg-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted)}
 </style>
 </head>
 <body>
-<nav>
-  <a href="index.html" class="nav-logo">
-    <div class="nav-logo-main">ICIGIFCA</div>
-    <div class="nav-logo-sub">Campus Digital</div>
+
+<div class="topbar">
+  <a href="index.html" class="logo">ICIGI<span>IFCA</span></a>
+  <a href="panel.html" class="btn-back">
+    ← Volver al campus
   </a>
-  <a href="panel.html" class="nav-back">← Volver al campus</a>
-</nav>
+</div>
 
 <div class="page">
-  <div class="eyebrow">Activación de matrícula</div>
-  <h1>Activa tu acceso<br>al campus <span>completo.</span></h1>
-  <p class="sub">Desbloquea todos los módulos, videos, quiz, material de apoyo y el calendario académico con tu primer pago.</p>
 
-  <div class="phase-badge">
-    <div class="phase-dot"></div>
-    Fase 1 — Sistema de pagos próximamente
+  <div class="page-header">
+    <div class="page-tag">Activación de matrícula</div>
+    <h1 class="page-title">Accede al Módulo 1<br>y comienza tu formación</h1>
+    <p class="page-desc">Elige el método de pago que prefieras. Tu acceso se activa de forma inmediata al confirmar el pago.</p>
   </div>
 
-  <div class="coming-card">
-    <div class="coming-icon">🔐</div>
-    <div class="coming-title">Pasarela de pago en configuración</div>
-    <div class="coming-desc">Estamos finalizando la integración del sistema de pagos seguro. Por ahora, contáctanos directamente por WhatsApp para activar tu matrícula de forma inmediata.</div>
-    <a href="https://wa.me/584125677557?text=Hola,%20quiero%20activar%20mi%20matrícula%20en%20el%20campus%20ICIGIFCA" class="btn-wa" target="_blank">
-      💬 Activar matrícula por WhatsApp
-    </a>
-    <br>
-    <a href="panel.html" class="btn-back">← Volver al campus</a>
+  <div class="modulo-info">
+    <div class="modulo-num">Módulo 01</div>
+    <div class="modulo-sep"></div>
+    <div>
+      <div class="modulo-name">Introducción y Fundamentos</div>
+      <div class="modulo-sub">Bases anatómicas · Fisiología regenerativa · Historia clínica especializada</div>
+    </div>
+    <div class="modulo-lock">🔓 Se desbloquea al pagar</div>
   </div>
 
-  <div class="plans-grid">
-    <div class="plan-card">
-      <div class="plan-lock">🔒</div>
-      <div class="plan-tag">Acceso básico</div>
-      <div class="plan-name">Diplomado Superior</div>
-      <div class="plan-price">USD <span>Consultar</span></div>
-      <div class="plan-desc">Certificación universitaria híbrida. 80+ horas teórico-prácticas.</div>
+  <div class="opciones-grid">
+
+    <!-- STRIPE -->
+    <div class="opcion-card stripe-card">
+      <div class="opcion-icon">💳</div>
+      <div class="opcion-label">Pago inmediato · Automático</div>
+      <h2 class="opcion-title">Tarjeta / Pago digital</h2>
+      <p class="opcion-desc">Procesado de forma segura por Stripe. Tu acceso al Módulo 1 se activa de forma automática al completar el pago — sin esperas.</p>
+      <div class="metodos-list">
+        <span class="metodo-tag">Visa</span>
+        <span class="metodo-tag">Mastercard</span>
+        <span class="metodo-tag">Amex</span>
+        <span class="metodo-tag">Apple Pay</span>
+        <span class="metodo-tag">Google Pay</span>
+      </div>
+      <a href="https://buy.stripe.com/8x2dRaaVFczjb9O5Wy5c40t" class="btn-stripe" target="_blank" rel="noopener">
+        💳 &nbsp;Pagar con Stripe
+      </a>
     </div>
-    <div class="plan-card featured">
-      <div class="plan-lock">🔒</div>
-      <div class="plan-tag">⭐ Más elegido</div>
-      <div class="plan-name">Maestría Internacional</div>
-      <div class="plan-price">USD <span>Consultar</span></div>
-      <div class="plan-desc">170 horas. Título universitario internacional avalado.</div>
+
+    <!-- WHATSAPP MANUAL -->
+    <div class="opcion-card whatsapp-card">
+      <div class="opcion-icon">💬</div>
+      <div class="opcion-label">Pago manual · Flexible</div>
+      <h2 class="opcion-title">Zelle · Bolívares · Pesos</h2>
+      <p class="opcion-desc">Realiza tu transferencia por el método que prefieras y repórtala por WhatsApp. El equipo ICIGIFCA activa tu acceso en menos de 24 horas hábiles.</p>
+      <div class="metodos-list">
+        <span class="metodo-tag">Zelle</span>
+        <span class="metodo-tag">Bolívares</span>
+        <span class="metodo-tag">Pesos COP</span>
+        <span class="metodo-tag">Pesos MXN</span>
+        <span class="metodo-tag">Transferencia</span>
+      </div>
+      <a id="btnWhatsapp" href="https://wa.me/584145134603" class="btn-wa" target="_blank" rel="noopener">
+        💬 &nbsp;Reportar pago por WhatsApp
+      </a>
+      <div class="nota-manual">
+        ⏱ <strong>Activación en 24h hábiles.</strong> Envía tu comprobante al equipo por WhatsApp y recibirás confirmación de acceso.
+      </div>
     </div>
-    <div class="plan-card">
-      <div class="plan-lock">🔒</div>
-      <div class="plan-tag">Alta especialización</div>
-      <div class="plan-name">Fellowship Clínico</div>
-      <div class="plan-price">USD <span>Consultar</span></div>
-      <div class="plan-desc">Entrenamiento presencial intensivo. +150 pacientes reales.</div>
+
+  </div>
+
+  <div class="garantia">
+    <div class="garantia-icon">🛡</div>
+    <div class="garantia-text">
+      <strong>Acceso garantizado.</strong> Una vez confirmado tu pago, el Módulo 1 queda desbloqueado permanentemente en tu perfil. Stripe activa el acceso de forma instantánea y automática. Los pagos manuales son verificados por el equipo ICIGIFCA en horario hábil.
     </div>
   </div>
+
+  <div class="seguridad">
+    <div class="seg-item">🔒 Pago 100% seguro</div>
+    <div class="seg-item">⚡ Activación inmediata vía Stripe</div>
+    <div class="seg-item">💬 Soporte por WhatsApp</div>
+    <div class="seg-item">📋 Registro permanente en tu perfil</div>
+  </div>
+
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://ejuvegzsuxcgazmeieed.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqdXZlZ3pzdXhjZ2F6bWVpZWVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMTcwNzMsImV4cCI6MjA4Nzg5MzA3M30.sGfE9AJUzL_gZQf8PIWgcslPwifCRDvFIDHHgzQbYDY';
+const WA_NUMBER = '584145134603';
+
+async function init() {
+  if (!window.supabase) return;
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+
+  const user = session.user;
+  const nombre = user.user_metadata?.nombre_completo || user.user_metadata?.full_name || user.email.split('@')[0];
+  const correo = user.email;
+
+  const mensaje = encodeURIComponent(
+    `Hola ICIGIFCA 👋\n\n` +
+    `Quiero reportar mi pago para activar el *Módulo 1* del campus virtual.\n\n` +
+    `📋 *Mis datos:*\n` +
+    `• Nombre: ${nombre}\n` +
+    `• Correo: ${correo}\n\n` +
+    `💰 *Método de pago:* [Zelle / Bolívares / Pesos / otro]\n` +
+    `📎 [Adjunto comprobante]\n\n` +
+    `Quedo pendiente de confirmación. Gracias.`
+  );
+
+  document.getElementById('btnWhatsapp').href = `https://wa.me/${WA_NUMBER}?text=${mensaje}`;
+}
+
+window.addEventListener('load', init);
+</script>
 </body>
 </html>
