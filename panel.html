@@ -20,6 +20,11 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
   --sidebar:200px;
 }
 
+/* ─── PROFILE INCOMPLETE BANNER ──────────────────── */
+.profile-banner{background:rgba(201,168,76,0.08);border-bottom:1px solid rgba(201,168,76,0.2);padding:10px 24px;font-size:12px;color:var(--gold);display:none;align-items:center;gap:10px;flex-shrink:0}
+.profile-banner a{color:#fff;font-weight:600;text-decoration:none;padding:4px 12px;border:1px solid rgba(201,168,76,0.4);margin-left:auto;font-size:10px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
+.profile-banner a:hover{background:rgba(201,168,76,0.1)}
+
 /* ─── TOP BAR ──────────────────────────────────────── */
 .topbar{
   height:56px;background:var(--ink2);border-bottom:1px solid var(--border);
@@ -177,6 +182,12 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
 </style>
 </head>
 <body>
+
+<!-- INCOMPLETE PROFILE BANNER -->
+<div class="profile-banner" id="profileBanner">
+  ⚡ Completaste tu registro con Google. Agrega tu especialidad y datos para un acceso completo.
+  <a href="#" onclick="showSection('perfil',null);document.getElementById('profileBanner').style.display='none';return false">Completar perfil →</a>
+</div>
 
 <!-- TOP BAR -->
 <div class="topbar">
@@ -664,19 +675,43 @@ async function init() {
     .eq('id', authUser.id)
     .single();
 
+  // Para usuarios de Google que aún no tienen perfil completo
+  const isGoogle = authUser.app_metadata?.provider === 'google';
+  const displayName = profile?.nombre_completo
+    || authUser.user_metadata?.full_name
+    || authUser.user_metadata?.nombre_completo
+    || authUser.email.split('@')[0];
+
   const u = {
     id:                  authUser.id,
     correo:              authUser.email,
-    nombre_completo:     profile?.nombre_completo || authUser.user_metadata?.nombre_completo || authUser.email.split('@')[0],
+    nombre_completo:     displayName,
     cedula:              profile?.cedula || '—',
     pais:                profile?.pais || '—',
     telefono:            profile?.telefono || '—',
-    perfil_profesional:  profile?.perfil_profesional || '—',
+    perfil_profesional:  profile?.perfil_profesional || (isGoogle ? 'Pendiente completar' : '—'),
     paid:                profile?.paid || false,
+    isGoogle,
+    profileIncomplete:   !profile?.cedula
   };
+
+  // Si es Google y no tiene perfil → crear perfil mínimo
+  if (isGoogle && !profile) {
+    await supabase.from('profiles').upsert({
+      id: authUser.id,
+      nombre_completo: displayName,
+      cedula: '—', pais: '—', telefono: '—',
+      perfil_profesional: 'Pendiente', paid: false
+    });
+  }
 
   currentUser = u;
   populateUI(u);
+
+  // Mostrar banner si el perfil está incompleto
+  if (u.profileIncomplete && isGoogle) {
+    showIncompleteProfileBanner();
+  }
 }
 
 function populateUI(u) {
@@ -698,6 +733,11 @@ function populateUI(u) {
     document.getElementById('statusBadge').style.borderColor = 'var(--teal-border)';
     document.getElementById('statusBadge').style.color       = 'var(--teal)';
   }
+}
+
+function showIncompleteProfileBanner() {
+  const banner = document.getElementById('profileBanner');
+  if (banner) banner.style.display = 'flex';
 }
 
 async function logout() {
