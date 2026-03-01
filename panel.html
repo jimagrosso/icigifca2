@@ -695,17 +695,18 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL = 'https://ejuvegzsuxcgazmeieed.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_iSYiJpecbqoVf-QCJ3AxFQ_vbdoV4t2';
-let supabase = null;
-let currentUser = null;
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqdXZlZ3pzdXhjZ2F6bWVpZWVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMTcwNzMsImV4cCI6MjA4Nzg5MzA3M30.sGfE9AJUzL_gZQf8PIWgcslPwifCRDvFIDHHgzQbYDY';
+var _sb = null;
+var currentUser = null;
+
+function getSupabase() {
+  if (!_sb) _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  return _sb;
+}
 
 async function init() {
-  // Esperar a que Supabase cargue
-  if (!window.supabase) {
-    console.error('Supabase CDN no cargó');
-    return;
-  }
-  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  if (!window.supabase) { console.error('Supabase CDN no cargó'); return; }
+  var supabase = getSupabase();
 
   // 1. Verificar sesión activa
   const { data: { session } } = await supabase.auth.getSession();
@@ -791,7 +792,7 @@ function showIncompleteProfileBanner() {
 }
 
 async function logout() {
-  try { await supabase.auth.signOut(); } catch(e) {}
+  try { await getSupabase().auth.signOut(); } catch(e) {}
   window.location.replace('login.html');
 }
 
@@ -834,7 +835,7 @@ async function cargarPagos() {
   const contenedor = document.getElementById('pagosContent');
   if (!contenedor) return;
 
-  const { data: pagos, error } = await supabase
+  const { data: pagos, error } = await getSupabase()
     .from('payments')
     .select('*')
     .eq('user_id', currentUser.id)
