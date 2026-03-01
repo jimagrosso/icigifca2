@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activar matrícula — Campus ICIGIFCA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#050A0A;color:#E8E8E4;min-height:100vh;display:flex;flex-direction:column}
+:root{--teal:#00C9A7;--teal-dim:rgba(0,201,167,0.08);--gold:#C9A84C;--gold-dim:rgba(201,168,76,0.08);--ink:#050A0A;--ink2:#0D1515;--ink3:#141F1F;--border:rgba(255,255,255,0.07);--border-t:rgba(0,201,167,0.2);--gold-border:rgba(201,168,76,0.25);--muted:rgba(232,232,228,0.4);--muted2:rgba(232,232,228,0.65)}
+nav{padding:0 56px;height:64px;display:flex;align-items:center;justify-content:space-between;background:var(--ink2);border-bottom:1px solid var(--border)}
+.nav-logo{text-decoration:none}
+.nav-logo-main{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;letter-spacing:4px;color:#fff;text-transform:uppercase}
+.nav-logo-sub{font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);font-weight:500;margin-top:1px}
+.nav-back{font-size:11px;color:var(--muted);text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:6px}
+.nav-back:hover{color:var(--teal)}
+
+.page{flex:1;padding:64px 56px;max-width:900px;margin:0 auto;width:100%}
+.eyebrow{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:'';width:20px;height:1px;background:var(--gold)}
+h1{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,52px);font-weight:800;color:#fff;letter-spacing:-1.5px;line-height:.95;margin-bottom:16px}
+h1 span{color:var(--gold)}
+.sub{font-size:15px;color:var(--muted2);font-weight:300;line-height:1.7;margin-bottom:56px;max-width:500px}
+
+.phase-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(201,168,76,0.08);border:1px solid var(--gold-border);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:40px}
+.phase-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+.coming-card{background:var(--ink2);border:1px solid var(--border);padding:48px;text-align:center;margin-bottom:40px}
+.coming-icon{font-size:48px;margin-bottom:20px}
+.coming-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:10px}
+.coming-desc{font-size:13px;color:var(--muted);line-height:1.7;max-width:420px;margin:0 auto 28px}
+.btn-wa{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;background:#25D366;color:#fff;font-family:'Inter',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;text-decoration:none;transition:all .2s}
+.btn-wa:hover{background:#1da851;transform:translateY(-2px)}
+.btn-back{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;background:transparent;border:1px solid var(--border);color:var(--muted2);font-family:'Inter',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;text-decoration:none;margin-top:16px;transition:all .2s}
+.btn-back:hover{border-color:var(--teal);color:var(--teal)}
+
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+.plan-card{background:var(--ink2);border:1px solid var(--border);padding:28px;position:relative}
+.plan-card.featured{border-color:var(--gold-border);background:var(--gold-dim)}
+.plan-tag{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;font-weight:600}
+.plan-card.featured .plan-tag{color:var(--gold)}
+.plan-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff;margin-bottom:8px}
+.plan-price{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#fff;margin-bottom:4px}
+.plan-price span{font-size:13px;color:var(--muted);font-weight:300}
+.plan-desc{font-size:11px;color:var(--muted);line-height:1.6;margin-top:8px}
+.plan-lock{position:absolute;top:16px;right:16px;font-size:12px;color:var(--muted)}
+
+@media(max-width:900px){nav{padding:0 20px}.page{padding:32px 20px}.plans-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-main">ICIGIFCA</div>
+    <div class="nav-logo-sub">Campus Digital</div>
+  </a>
+  <a href="panel.html" class="nav-back">← Volver al campus</a>
+</nav>
+
+<div class="page">
+  <div class="eyebrow">Activación de matrícula</div>
+  <h1>Activa tu acceso<br>al campus <span>completo.</span></h1>
+  <p class="sub">Desbloquea todos los módulos, videos, quiz, material de apoyo y el calendario académico con tu primer pago.</p>
+
+  <div class="phase-badge">
+    <div class="phase-dot"></div>
+    Fase 1 — Sistema de pagos próximamente
+  </div>
+
+  <div class="coming-card">
+    <div class="coming-icon">🔐</div>
+    <div class="coming-title">Pasarela de pago en configuración</div>
+    <div class="coming-desc">Estamos finalizando la integración del sistema de pagos seguro. Por ahora, contáctanos directamente por WhatsApp para activar tu matrícula de forma inmediata.</div>
+    <a href="https://wa.me/584125677557?text=Hola,%20quiero%20activar%20mi%20matrícula%20en%20el%20campus%20ICIGIFCA" class="btn-wa" target="_blank">
+      💬 Activar matrícula por WhatsApp
+    </a>
+    <br>
+    <a href="panel.html" class="btn-back">← Volver al campus</a>
+  </div>
+
+  <div class="plans-grid">
+    <div class="plan-card">
+      <div class="plan-lock">🔒</div>
+      <div class="plan-tag">Acceso básico</div>
+      <div class="plan-name">Diplomado Superior</div>
+      <div class="plan-price">USD <span>Consultar</span></div>
+      <div class="plan-desc">Certificación universitaria híbrida. 80+ horas teórico-prácticas.</div>
+    </div>
+    <div class="plan-card featured">
+      <div class="plan-lock">🔒</div>
+      <div class="plan-tag">⭐ Más elegido</div>
+      <div class="plan-name">Maestría Internacional</div>
+      <div class="plan-price">USD <span>Consultar</span></div>
+      <div class="plan-desc">170 horas. Título universitario internacional avalado.</div>
+    </div>
+    <div class="plan-card">
+      <div class="plan-lock">🔒</div>
+      <div class="plan-tag">Alta especialización</div>
+      <div class="plan-name">Fellowship Clínico</div>
+      <div class="plan-price">USD <span>Consultar</span></div>
+      <div class="plan-desc">Entrenamiento presencial intensivo. +150 pacientes reales.</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

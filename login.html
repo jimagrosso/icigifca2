@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iniciar sesión — Campus ICIGIFCA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#050A0A;color:#E8E8E4;min-height:100vh;display:flex;flex-direction:column}
+:root{
+  --teal:#00C9A7;--teal-dim:rgba(0,201,167,0.08);
+  --gold:#C9A84C;
+  --ink:#050A0A;--ink2:#0D1515;--ink3:#141F1F;
+  --border:rgba(255,255,255,0.07);--border-t:rgba(0,201,167,0.2);
+  --muted:rgba(232,232,228,0.4);--muted2:rgba(232,232,228,0.65);
+  --error:#E05555;
+}
+nav{padding:0 56px;height:64px;display:flex;align-items:center;justify-content:space-between;background:var(--ink);border-bottom:1px solid var(--border);flex-shrink:0}
+.nav-logo{text-decoration:none}
+.nav-logo-main{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;letter-spacing:4px;color:#fff;text-transform:uppercase}
+.nav-logo-sub{font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);font-weight:500;margin-top:1px}
+.nav-link{font-size:11px;letter-spacing:1px;color:var(--muted);text-decoration:none;transition:color .2s}
+.nav-link:hover{color:#fff}
+.nav-link span{color:var(--teal)}
+
+.page{flex:1;display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 64px)}
+
+/* LEFT */
+.left-panel{background:var(--ink2);border-right:1px solid var(--border);padding:64px 56px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.left-panel::before{content:'';position:absolute;bottom:-200px;left:-200px;width:500px;height:500px;background:radial-gradient(circle,rgba(201,168,76,0.05),transparent 70%);pointer-events:none}
+.eyebrow{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:'';width:20px;height:1px;background:var(--gold)}
+.left-title{font-family:'Syne',sans-serif;font-size:clamp(28px,3vw,46px);font-weight:800;line-height:.95;color:#fff;letter-spacing:-1.5px;margin-bottom:20px}
+.left-title span{color:var(--gold)}
+.left-desc{font-size:14px;color:var(--muted2);font-weight:300;line-height:1.8;max-width:400px;margin-bottom:48px}
+.quote-block{border-left:2px solid var(--gold);padding:16px 20px;background:rgba(201,168,76,0.05)}
+.quote-text{font-size:13px;color:var(--muted2);line-height:1.7;font-style:italic;margin-bottom:8px}
+.quote-author{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:600}
+
+/* RIGHT */
+.right-panel{padding:48px 56px;display:flex;align-items:center;justify-content:center}
+.form-wrap{width:100%;max-width:420px}
+.form-head{margin-bottom:36px}
+.form-head h2{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:6px}
+.form-head p{font-size:13px;color:var(--muted);font-weight:300}
+.form-head p a{color:var(--teal);text-decoration:none}
+.form-head p a:hover{text-decoration:underline}
+
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.form-label{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:500}
+.form-input{background:var(--ink2);border:1px solid var(--border);color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:300;padding:13px 14px;transition:border-color .2s,background .2s;outline:none;width:100%}
+.form-input:focus{border-color:var(--teal);background:var(--ink3)}
+.form-input::placeholder{color:var(--muted)}
+.form-input.invalid{border-color:var(--error)!important}
+
+.password-wrap{position:relative}
+.password-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:4px;transition:color .2s}
+.password-toggle:hover{color:var(--teal)}
+
+.alert{padding:14px 16px;margin-bottom:20px;font-size:13px;align-items:flex-start;gap:10px;line-height:1.5;border-left:3px solid;display:none}
+.alert.error{background:rgba(224,85,85,0.08);border-color:var(--error);color:#f08080;display:flex}
+
+.btn-submit{width:100%;background:var(--teal);color:var(--ink);padding:15px;font-family:'Inter',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:800;border:none;cursor:pointer;transition:all .3s;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-submit:hover:not(:disabled){background:#00E0BC;box-shadow:0 0 32px rgba(0,201,167,0.3)}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed}
+.spinner{width:16px;height:16px;border:2px solid rgba(5,10,10,0.3);border-top-color:var(--ink);border-radius:50%;animation:spin .6s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.divider{text-align:center;margin:24px 0;position:relative}
+.divider::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--border)}
+.divider span{position:relative;background:var(--ink);padding:0 14px;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+
+.btn-register{width:100%;background:transparent;color:var(--muted2);padding:13px;font-family:'Inter',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;border:1px solid var(--border);cursor:pointer;transition:all .2s;text-decoration:none;display:flex;align-items:center;justify-content:center}
+.btn-register:hover{border-color:var(--teal);color:var(--teal)}
+
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .page{grid-template-columns:1fr}
+  .left-panel{display:none}
+  .right-panel{padding:32px 20px;align-items:flex-start;padding-top:48px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-main">ICIGIFCA</div>
+    <div class="nav-logo-sub">Campus Digital</div>
+  </a>
+  <a href="registro.html" class="nav-link">¿No tienes cuenta? <span>Registrarse</span></a>
+</nav>
+
+<div class="page">
+  <div class="left-panel">
+    <div class="eyebrow">Campus Digital</div>
+    <h1 class="left-title">Tu espacio<br>de formación<br><span>avanzada.</span></h1>
+    <p class="left-desc">Accede a tus módulos, videos clínicos, material de apoyo y más. Todo en un campus diseñado para la excelencia médica.</p>
+    <div class="quote-block">
+      <p class="quote-text">"La ginecología regenerativa no es el futuro — es el presente para quienes se forman hoy."</p>
+      <div class="quote-author">Dra. Ajakaida Renaud · Directora ICIGIFCA</div>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <div class="form-wrap">
+      <div class="form-head">
+        <h2>Iniciar sesión</h2>
+        <p>¿No tienes cuenta? <a href="registro.html">Regístrate gratis</a></p>
+      </div>
+
+      <div class="alert error" id="alertError">⚠ <span id="alertErrorText"></span></div>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label class="form-label">Correo electrónico</label>
+          <input type="email" class="form-input" id="correo" placeholder="doctora@email.com" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Contraseña</label>
+          <div class="password-wrap">
+            <input type="password" class="form-input" id="password" placeholder="Tu contraseña" required autocomplete="current-password">
+            <button type="button" class="password-toggle" onclick="togglePwd()">👁</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnSubmit">
+          <span id="btnText">Entrar al campus</span>
+          <div class="spinner" id="spinner"></div>
+        </button>
+      </form>
+
+      <div class="divider"><span>o</span></div>
+      <a href="registro.html" class="btn-register">Crear cuenta nueva</a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://ejuvegzsuxcgazmeieed.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_iSYiJpecbqoVf-QCJ3AxFQ_vbdoV4t2';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function togglePwd() {
+  const input = document.getElementById('password');
+  const btn = document.querySelector('.password-toggle');
+  input.type = input.type === 'password' ? 'text' : 'password';
+  btn.textContent = input.type === 'password' ? '👁' : '🙈';
+}
+
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const correo   = document.getElementById('correo').value.trim();
+  const password = document.getElementById('password').value;
+  const alertEl  = document.getElementById('alertError');
+  const btn      = document.getElementById('btnSubmit');
+  const spinner  = document.getElementById('spinner');
+  const btnText  = document.getElementById('btnText');
+
+  if (!correo || !password) {
+    document.getElementById('alertErrorText').textContent = 'Completa todos los campos';
+    alertEl.style.display = 'flex'; return;
+  }
+
+  alertEl.style.display = 'none';
+  btn.disabled = true; spinner.style.display = 'block'; btnText.textContent = 'Verificando...';
+
+  const { error } = await supabase.auth.signInWithPassword({ email: correo, password });
+
+  if (error) {
+    const msg = error.message.includes('Invalid') ? 'Correo o contraseña incorrectos' : error.message;
+    document.getElementById('alertErrorText').textContent = msg;
+    alertEl.style.display = 'flex';
+    btn.disabled = false; spinner.style.display = 'none'; btnText.textContent = 'Entrar al campus';
+    return;
+  }
+
+  window.location.href = 'panel.html';
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus — ICIGIFCA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:flex;flex-direction:column}
+
+:root{
+  --teal:#00C9A7;--teal-dim:rgba(0,201,167,0.08);--teal-border:rgba(0,201,167,0.2);
+  --gold:#C9A84C;--gold-dim:rgba(201,168,76,0.08);--gold-border:rgba(201,168,76,0.25);
+  --ink:#080E0E;--ink2:#0D1515;--ink3:#141F1F;--ink4:#1A2828;
+  --border:rgba(255,255,255,0.07);
+  --muted:rgba(232,232,228,0.38);--muted2:rgba(232,232,228,0.62);
+  --locked:#1A2020;
+  --sidebar:200px;
+}
+
+/* ─── TOP BAR ──────────────────────────────────────── */
+.topbar{
+  height:56px;background:var(--ink2);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px 0 0;flex-shrink:0;z-index:100;
+}
+.topbar-left{display:flex;align-items:center;height:100%}
+.sidebar-logo{width:var(--sidebar);height:100%;display:flex;align-items:center;padding:0 20px;border-right:1px solid var(--border);flex-shrink:0;text-decoration:none}
+.logo-main{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;letter-spacing:3px;color:#fff;text-transform:uppercase}
+.logo-sub{font-size:6px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-top:1px}
+.topbar-greeting{padding-left:24px;font-size:13px;color:var(--muted2)}
+.topbar-greeting strong{color:#fff;font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.status-badge{padding:5px 12px;background:rgba(201,168,76,0.1);border:1px solid var(--gold-border);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:600;white-space:nowrap}
+.btn-logout{padding:7px 16px;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.btn-logout:hover{border-color:#E05555;color:#E05555}
+
+/* ─── LAYOUT ───────────────────────────────────────── */
+.layout{flex:1;display:flex;overflow:hidden;min-height:0}
+
+/* ─── SIDEBAR ──────────────────────────────────────── */
+.sidebar{width:var(--sidebar);background:var(--ink2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.sidebar-section{padding:20px 0 8px}
+.sidebar-section-label{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:0 16px;margin-bottom:4px;font-weight:600}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:12px;font-weight:400;color:var(--muted2);cursor:pointer;transition:all .15s;border-left:2px solid transparent;text-decoration:none}
+.nav-item:hover{background:var(--ink3);color:#fff}
+.nav-item.active{background:var(--teal-dim);color:var(--teal);border-left-color:var(--teal);font-weight:500}
+.nav-icon{font-size:14px;width:18px;text-align:center;flex-shrink:0}
+.sidebar-footer{margin-top:auto;padding:16px;border-top:1px solid var(--border)}
+.sidebar-footer-text{font-size:10px;color:var(--muted);line-height:1.5}
+.sidebar-footer-text span{color:var(--gold)}
+
+/* ─── MAIN CONTENT ─────────────────────────────────── */
+.main{flex:1;overflow-y:auto;display:flex;gap:0;min-width:0}
+.content-area{flex:1;padding:28px;min-width:0;overflow-y:auto}
+.right-sticky{width:260px;flex-shrink:0;border-left:1px solid var(--border);background:var(--ink2)}
+
+/* ─── SECTION HEADER ───────────────────────────────── */
+.section-header{margin-bottom:20px}
+.section-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;letter-spacing:-.3px;margin-bottom:4px}
+.section-sub{font-size:12px;color:var(--muted);font-weight:300}
+
+/* ─── PROGRESS BAR ─────────────────────────────────── */
+.progress-strip{background:var(--ink3);border:1px solid var(--border);padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:20px}
+.progress-label{font-size:11px;color:var(--muted);font-weight:400;white-space:nowrap}
+.progress-bar-bg{flex:1;height:4px;background:rgba(255,255,255,0.07);border-radius:2px}
+.progress-bar-fill{height:100%;width:8%;background:var(--teal);border-radius:2px;transition:width .5s}
+.progress-pct{font-size:11px;font-weight:600;color:var(--teal);white-space:nowrap}
+
+/* ─── MODULE CARDS ─────────────────────────────────── */
+.modules-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
+.module-card{background:var(--ink3);border:1px solid var(--border);padding:20px;position:relative;transition:border-color .2s}
+.module-card:hover{border-color:rgba(255,255,255,0.13)}
+.module-card.preview{border-color:var(--teal-border);background:var(--teal-dim)}
+.module-card.locked{opacity:.75}
+.module-num{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:600}
+.module-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;line-height:1.3}
+.module-desc{font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:16px;font-weight:300}
+.module-lock{position:absolute;top:16px;right:16px;font-size:14px;opacity:.6}
+.module-btn{padding:8px 14px;font-family:'Inter',sans-serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.module-btn.open{background:var(--teal);color:var(--ink)}
+.module-btn.open:hover{background:#00E0BC}
+.module-btn.pay{background:transparent;color:var(--gold);border:1px solid var(--gold-border);cursor:pointer}
+.module-btn.pay:hover{background:var(--gold-dim)}
+
+/* ─── VIDEOS ───────────────────────────────────────── */
+.videos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
+.video-tile{background:var(--ink3);border:1px solid var(--border);overflow:hidden;position:relative}
+.video-thumb{aspect-ratio:16/9;background:var(--ink4);display:flex;align-items:center;justify-content:center;position:relative}
+.video-thumb-locked{position:absolute;inset:0;background:rgba(8,14,14,0.6);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.video-thumb-locked .lock{font-size:20px;opacity:.5}
+.video-play{width:44px;height:44px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:transform .2s}
+.video-play:hover{transform:scale(1.1)}
+.video-info{padding:12px}
+.video-title{font-size:11px;font-weight:600;color:#fff;margin-bottom:3px}
+.video-meta{font-size:10px;color:var(--muted)}
+
+/* ─── QUIZ ─────────────────────────────────────────── */
+.quiz-list{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.quiz-item{background:var(--ink3);border:1px solid var(--border);padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.quiz-info{}
+.quiz-title{font-size:12px;font-weight:600;color:#fff;margin-bottom:2px}
+.quiz-meta{font-size:10px;color:var(--muted)}
+.quiz-btn{padding:7px 16px;font-family:'Inter',sans-serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;border:none;cursor:pointer;flex-shrink:0}
+.quiz-btn.open{background:var(--teal);color:var(--ink)}
+.quiz-btn.open:hover{background:#00E0BC}
+.quiz-btn.locked-btn{background:transparent;border:1px solid var(--border);color:var(--muted);cursor:default;opacity:.6}
+
+/* ─── MATERIAL ─────────────────────────────────────── */
+.material-list{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.material-item{background:var(--ink3);border:1px solid var(--border);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.material-icon{font-size:20px;flex-shrink:0}
+.material-info{flex:1;min-width:0}
+.material-title{font-size:12px;font-weight:600;color:#fff;margin-bottom:2px}
+.material-meta{font-size:10px;color:var(--muted)}
+.material-btn{padding:7px 16px;font-family:'Inter',sans-serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;border:none;cursor:pointer;flex-shrink:0;text-decoration:none;display:inline-flex;align-items:center}
+.material-btn.open{background:transparent;color:var(--teal);border:1px solid var(--teal-border)}
+.material-btn.open:hover{background:var(--teal-dim)}
+.material-btn.locked-btn{background:transparent;border:1px solid var(--border);color:var(--muted);cursor:default;opacity:.6}
+
+/* ─── CALENDAR EMPTY ───────────────────────────────── */
+.calendar-empty{background:var(--ink3);border:1px solid var(--border);padding:48px 24px;text-align:center;margin-bottom:28px}
+.calendar-icon{font-size:32px;margin-bottom:12px;opacity:.4}
+.calendar-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--muted2);margin-bottom:6px}
+.calendar-desc{font-size:11px;color:var(--muted);line-height:1.6}
+
+/* ─── PROFILE ──────────────────────────────────────── */
+.profile-card{background:var(--ink3);border:1px solid var(--border);padding:24px;margin-bottom:16px}
+.profile-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.profile-avatar{width:52px;height:52px;background:var(--teal-dim);border:1px solid var(--teal-border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--teal);flex-shrink:0}
+.profile-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff;margin-bottom:3px}
+.profile-role{font-size:11px;color:var(--muted);font-weight:300}
+.profile-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.profile-field label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px;font-weight:600}
+.profile-field p{font-size:12px;color:var(--muted2);font-weight:400}
+
+/* ─── STICKY RIGHT PANEL ───────────────────────────── */
+.sticky-cta{padding:20px;border-bottom:1px solid var(--border)}
+.cta-label{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:600}
+.cta-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff;margin-bottom:6px;line-height:1.2}
+.cta-desc{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:16px;font-weight:300}
+.cta-features{display:flex;flex-direction:column;gap:7px;margin-bottom:20px}
+.cta-feature{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted2)}
+.cta-feature::before{content:'✓';color:var(--teal);font-size:10px;font-weight:700;flex-shrink:0}
+.btn-pago{display:block;width:100%;background:var(--gold);color:#0A0A0A;padding:14px;font-family:'Inter',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:800;border:none;cursor:pointer;transition:all .3s;text-align:center;text-decoration:none}
+.btn-pago:hover{background:#dbb85c;box-shadow:0 0 28px rgba(201,168,76,0.3)}
+.cta-secure{font-size:9px;color:var(--muted);text-align:center;margin-top:10px;letter-spacing:.5px}
+
+.right-stats{padding:20px}
+.right-stat{padding:12px 0;border-bottom:1px solid var(--border)}
+.right-stat:last-child{border-bottom:none}
+.right-stat-num{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;line-height:1}
+.right-stat-num span{color:var(--teal);font-size:14px}
+.right-stat-label{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+
+/* ─── SECTIONS VISIBILITY ──────────────────────────── */
+.section-panel{display:none}
+.section-panel.active{display:block}
+
+/* ─── SUPPORT ──────────────────────────────────────── */
+.support-card{background:var(--ink3);border:1px solid var(--border);padding:24px;margin-bottom:16px}
+.support-card h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:8px}
+.support-card p{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:14px;font-weight:300}
+.btn-wa{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:#25D366;color:#fff;font-family:'Inter',sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;text-decoration:none;transition:all .2s}
+.btn-wa:hover{background:#1da851}
+
+@media(max-width:1100px){.right-sticky{display:none}}
+@media(max-width:820px){
+  :root{--sidebar:0px}
+  .sidebar{display:none}
+  .topbar{padding:0 16px}
+  .content-area{padding:16px}
+  .modules-grid,.videos-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="index.html" class="sidebar-logo">
+      <div>
+        <div class="logo-main">ICIGIFCA</div>
+        <div class="logo-sub">Campus Digital</div>
+      </div>
+    </a>
+    <div class="topbar-greeting">Bienvenida, <strong id="topbarName">…</strong></div>
+  </div>
+  <div class="topbar-right">
+    <div class="status-badge" id="statusBadge">Registrado — Acceso limitado</div>
+    <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Principal</div>
+      <a class="nav-item active" onclick="showSection('dashboard',this)" href="#">
+        <span class="nav-icon">⊞</span> Dashboard
+      </a>
+      <a class="nav-item" onclick="showSection('modulos',this)" href="#">
+        <span class="nav-icon">📚</span> Módulos
+      </a>
+      <a class="nav-item" onclick="showSection('videos',this)" href="#">
+        <span class="nav-icon">🎬</span> Videos
+      </a>
+      <a class="nav-item" onclick="showSection('quiz',this)" href="#">
+        <span class="nav-icon">✏️</span> Quiz
+      </a>
+      <a class="nav-item" onclick="showSection('material',this)" href="#">
+        <span class="nav-icon">📄</span> Material de apoyo
+      </a>
+      <a class="nav-item" onclick="showSection('calendario',this)" href="#">
+        <span class="nav-icon">📅</span> Calendario
+      </a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Cuenta</div>
+      <a class="nav-item" onclick="showSection('perfil',this)" href="#">
+        <span class="nav-icon">👤</span> Perfil
+      </a>
+      <a class="nav-item" onclick="showSection('soporte',this)" href="#">
+        <span class="nav-icon">💬</span> Soporte
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-text">Plan actual: <span>Acceso básico</span><br>Activa tu matrícula para acceso completo.</div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="content-area">
+
+      <!-- ══ DASHBOARD ══ -->
+      <div class="section-panel active" id="sec-dashboard">
+        <div class="section-header">
+          <div class="section-title">Dashboard</div>
+          <div class="section-sub">Resumen de tu acceso al campus</div>
+        </div>
+        <div class="progress-strip">
+          <div class="progress-label">Progreso del programa</div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+          <div class="progress-pct">8% completado</div>
+        </div>
+
+        <!-- Módulos preview -->
+        <div class="section-header" style="margin-top:8px">
+          <div class="section-title" style="font-size:15px">Módulos del programa</div>
+        </div>
+        <div class="modules-grid">
+          <div class="module-card preview">
+            <div class="module-num">Módulo 01</div>
+            <div class="module-title">Introducción y fundamentos</div>
+            <div class="module-desc">Bases anatómicas, fisiológicas y científicas de la ginecología regenerativa moderna.</div>
+            <button class="module-btn open" onclick="alert('Demo del Módulo 1 — Próximamente disponible en fase 2.')">▶ Ver preview</button>
+          </div>
+          <div class="module-card locked">
+            <div class="module-lock">🔒</div>
+            <div class="module-num">Módulo 02</div>
+            <div class="module-title">Tecnologías regenerativas</div>
+            <div class="module-desc">Láser CO₂, radiofrecuencia, PRP y tecnologías de vanguardia aplicadas a ginecología.</div>
+            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+          </div>
+          <div class="module-card locked">
+            <div class="module-lock">🔒</div>
+            <div class="module-num">Módulo 03</div>
+            <div class="module-title">Protocolos clínicos</div>
+            <div class="module-desc">Diseño y ejecución de protocolos para atrofia, disfunción y estética ginecológica.</div>
+            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+          </div>
+          <div class="module-card locked">
+            <div class="module-lock">🔒</div>
+            <div class="module-num">Módulo 04</div>
+            <div class="module-title">Casos clínicos</div>
+            <div class="module-desc">Análisis de casos reales con resolución guiada por docentes especializados.</div>
+            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+          </div>
+          <div class="module-card locked">
+            <div class="module-lock">🔒</div>
+            <div class="module-num">Módulo 05</div>
+            <div class="module-title">Prácticas / Full Immersion</div>
+            <div class="module-desc">Rotación presencial intensiva en Venezuela, R. Dominicana, Perú o México.</div>
+            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+          </div>
+          <div class="module-card locked">
+            <div class="module-lock">🔒</div>
+            <div class="module-num">Módulo 06</div>
+            <div class="module-title">Evaluación y certificación</div>
+            <div class="module-desc">Evaluación final, defensa de caso y emisión de título universitario internacional.</div>
+            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ MÓDULOS ══ -->
+      <div class="section-panel" id="sec-modulos">
+        <div class="section-header">
+          <div class="section-title">Módulos del Programa</div>
+          <div class="section-sub">6 módulos · Solo Módulo 1 disponible en fase de registro</div>
+        </div>
+        <div class="modules-grid">
+          <div class="module-card preview">
+            <div class="module-num">Módulo 01</div>
+            <div class="module-title">Introducción y fundamentos</div>
+            <div class="module-desc">Bases anatómicas, fisiológicas y científicas de la ginecología regenerativa. Incluye historia clínica especializada y diagnóstico integral.</div>
+            <button class="module-btn open" onclick="alert('Demo del Módulo 1 — Próximamente disponible.')">▶ Ver preview</button>
+          </div>
+          <div class="module-card locked">
+            <div class="module-lock">🔒</div>
+            <div class="module-num">Módulo 02</div>
+            <div class="module-title">Tecnologías regenerativas</div>
+            <div class="module-desc">Láser CO₂ fraccionado, radiofrecuencia monopolar y bipolar, PRP ginecológico. Fundamentos y aplicaciones clínicas.</div>
+            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+          </div>
+          <div class="module-card locked">
+            <div class="module-lock">🔒</div>
+            <div class="module-num">Módulo 03</div>
+            <div class="module-title">Protocolos clínicos</div>
+            <div class="module-desc">Atrofia vulvovaginal, síndrome genitourinario, disfunciones sexuales femeninas. Diseño personalizado de protocolos.</div>
+            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+          </div>
+          <div class="module-card locked">
+            <div class="module-lock">🔒</div>
+            <div class="module-num">Módulo 04</div>
+            <div class="module-title">Casos clínicos</div>
+            <div class="module-desc">+40 casos reales con presentación, evolución y análisis crítico. Formato interactivo con discusión docente.</div>
+            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+          </div>
+          <div class="module-card locked">
+            <div class="module-lock">🔒</div>
+            <div class="module-num">Módulo 05</div>
+            <div class="module-title">Prácticas / Full Immersion</div>
+            <div class="module-desc">Entrenamiento presencial intensivo. +150 pacientes reales bajo supervisión directa de expertos internacionales.</div>
+            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+          </div>
+          <div class="module-card locked">
+            <div class="module-lock">🔒</div>
+            <div class="module-num">Módulo 06</div>
+            <div class="module-title">Evaluación y certificación</div>
+            <div class="module-desc">Evaluación final teórico-práctica, defensa de caso clínico y emisión del título universitario internacional.</div>
+            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ VIDEOS ══ -->
+      <div class="section-panel" id="sec-videos">
+        <div class="section-header">
+          <div class="section-title">Biblioteca de Videos</div>
+          <div class="section-sub">1 video de demo disponible · Resto se activan con matrícula</div>
+        </div>
+        <div class="videos-grid">
+          <div class="video-tile">
+            <div class="video-thumb">
+              <div style="color:var(--muted);font-size:11px;text-align:center;padding:16px;position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(8,14,14,0.8));font-weight:300">Introducción al programa · 8 min</div>
+              <div class="video-play">▶</div>
+            </div>
+            <div class="video-info">
+              <div class="video-title">Bienvenida — Dra. Ajakaida Renaud</div>
+              <div class="video-meta">Módulo 1 · 8:24 min · Demo gratuito</div>
+            </div>
+          </div>
+          <div class="video-tile" style="opacity:.65">
+            <div class="video-thumb">
+              <div class="video-thumb-locked">
+                <div class="lock">🔒</div>
+                <div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div>
+              </div>
+            </div>
+            <div class="video-info">
+              <div class="video-title">Anatomía regenerativa aplicada</div>
+              <div class="video-meta">Módulo 1 · 22 min</div>
+            </div>
+          </div>
+          <div class="video-tile" style="opacity:.65">
+            <div class="video-thumb">
+              <div class="video-thumb-locked">
+                <div class="lock">🔒</div>
+                <div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div>
+              </div>
+            </div>
+            <div class="video-info">
+              <div class="video-title">Procedimiento láser CO₂ · Demostración</div>
+              <div class="video-meta">Módulo 2 · 34 min</div>
+            </div>
+          </div>
+          <div class="video-tile" style="opacity:.65">
+            <div class="video-thumb">
+              <div class="video-thumb-locked">
+                <div class="lock">🔒</div>
+                <div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div>
+              </div>
+            </div>
+            <div class="video-info">
+              <div class="video-title">Aplicación clínica de PRP ginecológico</div>
+              <div class="video-meta">Módulo 2 · 28 min</div>
+            </div>
+          </div>
+          <div class="video-tile" style="opacity:.65">
+            <div class="video-thumb">
+              <div class="video-thumb-locked">
+                <div class="lock">🔒</div>
+                <div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div>
+              </div>
+            </div>
+            <div class="video-info">
+              <div class="video-title">Masterclass: Caso clínico completo</div>
+              <div class="video-meta">Módulo 4 · 48 min</div>
+            </div>
+          </div>
+          <div class="video-tile" style="opacity:.65">
+            <div class="video-thumb">
+              <div class="video-thumb-locked">
+                <div class="lock">🔒</div>
+                <div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div>
+              </div>
+            </div>
+            <div class="video-info">
+              <div class="video-title">Piso pélvico · Radiofrecuencia monopolar</div>
+              <div class="video-meta">Módulo 3 · 31 min</div>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center;padding:16px 0">
+          <button class="module-btn pay" style="padding:12px 28px" onclick="window.location.href='pagos.html'">🔒 Desbloquear toda la biblioteca → Activar matrícula</button>
+        </div>
+      </div>
+
+      <!-- ══ QUIZ ══ -->
+      <div class="section-panel" id="sec-quiz">
+        <div class="section-header">
+          <div class="section-title">Evaluaciones y Quiz</div>
+          <div class="section-sub">1 quiz demo disponible · Activa matrícula para todos</div>
+        </div>
+        <div class="quiz-list">
+          <div class="quiz-item" style="border-color:var(--teal-border)">
+            <div class="quiz-info">
+              <div class="quiz-title">Quiz de diagnóstico inicial</div>
+              <div class="quiz-meta">10 preguntas · Sin límite de tiempo · Demo gratuito</div>
+            </div>
+            <button class="quiz-btn open" onclick="alert('Quiz demo — Próximamente disponible en fase 2.')">Iniciar quiz</button>
+          </div>
+          <div class="quiz-item" style="opacity:.65">
+            <div class="quiz-info">
+              <div class="quiz-title">Evaluación Módulo 1 — Fundamentos</div>
+              <div class="quiz-meta">25 preguntas · 30 min · Certificable</div>
+            </div>
+            <button class="quiz-btn locked-btn">🔒 Bloqueado</button>
+          </div>
+          <div class="quiz-item" style="opacity:.65">
+            <div class="quiz-info">
+              <div class="quiz-title">Evaluación Módulo 2 — Tecnologías</div>
+              <div class="quiz-meta">30 preguntas · 40 min · Certificable</div>
+            </div>
+            <button class="quiz-btn locked-btn">🔒 Bloqueado</button>
+          </div>
+          <div class="quiz-item" style="opacity:.65">
+            <div class="quiz-info">
+              <div class="quiz-title">Evaluación Módulo 3 — Protocolos</div>
+              <div class="quiz-meta">28 preguntas · 35 min · Certificable</div>
+            </div>
+            <button class="quiz-btn locked-btn">🔒 Bloqueado</button>
+          </div>
+          <div class="quiz-item" style="opacity:.65">
+            <div class="quiz-info">
+              <div class="quiz-title">Examen final integrativo</div>
+              <div class="quiz-meta">60 preguntas · 90 min · Requerido para certificación</div>
+            </div>
+            <button class="quiz-btn locked-btn">🔒 Bloqueado</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ MATERIAL ══ -->
+      <div class="section-panel" id="sec-material">
+        <div class="section-header">
+          <div class="section-title">Material de apoyo</div>
+          <div class="section-sub">Guías, protocolos y recursos descargables</div>
+        </div>
+        <div class="material-list">
+          <div class="material-item" style="border-color:var(--teal-border)">
+            <div class="material-icon">📋</div>
+            <div class="material-info">
+              <div class="material-title">Guía de bienvenida al campus ICIGIFCA</div>
+              <div class="material-meta">PDF · 12 páginas · Acceso gratuito</div>
+            </div>
+            <a href="#" class="material-btn open" onclick="alert('PDF de bienvenida — Próximamente disponible.')">Descargar</a>
+          </div>
+          <div class="material-item" style="opacity:.65">
+            <div class="material-icon">📗</div>
+            <div class="material-info">
+              <div class="material-title">Manual de protocolos clínicos Vol. I</div>
+              <div class="material-meta">PDF · 87 páginas · Módulo 3</div>
+            </div>
+            <button class="material-btn locked-btn">🔒 Bloqueado</button>
+          </div>
+          <div class="material-item" style="opacity:.65">
+            <div class="material-icon">📙</div>
+            <div class="material-info">
+              <div class="material-title">Atlas de procedimientos regenerativos</div>
+              <div class="material-meta">PDF · 124 páginas · Módulo 2</div>
+            </div>
+            <button class="material-btn locked-btn">🔒 Bloqueado</button>
+          </div>
+          <div class="material-item" style="opacity:.65">
+            <div class="material-icon">📊</div>
+            <div class="material-info">
+              <div class="material-title">Plantillas de historia clínica ginecológica</div>
+              <div class="material-meta">DOCX + PDF · Uso clínico directo</div>
+            </div>
+            <button class="material-btn locked-btn">🔒 Bloqueado</button>
+          </div>
+          <div class="material-item" style="opacity:.65">
+            <div class="material-icon">🔬</div>
+            <div class="material-info">
+              <div class="material-title">Bibliografía científica seleccionada</div>
+              <div class="material-meta">42 artículos indexados · Actualizado 2024</div>
+            </div>
+            <button class="material-btn locked-btn">🔒 Bloqueado</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ CALENDARIO ══ -->
+      <div class="section-panel" id="sec-calendario">
+        <div class="section-header">
+          <div class="section-title">Calendario académico</div>
+          <div class="section-sub">Fechas de módulos, webinars y prácticas clínicas</div>
+        </div>
+        <div class="calendar-empty">
+          <div class="calendar-icon">📅</div>
+          <div class="calendar-title">Fechas se habilitan al activar matrícula</div>
+          <div class="calendar-desc">Una vez que actives tu acceso, verás el calendario completo de módulos,<br>webinars en vivo con docentes y fechas de prácticas clínicas presenciales.</div>
+        </div>
+      </div>
+
+      <!-- ══ PERFIL ══ -->
+      <div class="section-panel" id="sec-perfil">
+        <div class="section-header">
+          <div class="section-title">Mi perfil</div>
+          <div class="section-sub">Información de tu cuenta</div>
+        </div>
+        <div class="profile-card">
+          <div class="profile-header">
+            <div class="profile-avatar" id="profileInitial">–</div>
+            <div>
+              <div class="profile-name" id="profileName">–</div>
+              <div class="profile-role" id="profileRole">–</div>
+            </div>
+          </div>
+          <div class="profile-fields">
+            <div class="profile-field">
+              <label>Correo electrónico</label>
+              <p id="profileEmail">–</p>
+            </div>
+            <div class="profile-field">
+              <label>Teléfono</label>
+              <p id="profileTel">–</p>
+            </div>
+            <div class="profile-field">
+              <label>País</label>
+              <p id="profilePais">–</p>
+            </div>
+            <div class="profile-field">
+              <label>Cédula / Pasaporte</label>
+              <p id="profileCedula">–</p>
+            </div>
+            <div class="profile-field">
+              <label>Especialidad</label>
+              <p id="profileEspec">–</p>
+            </div>
+            <div class="profile-field">
+              <label>Estado de cuenta</label>
+              <p id="profilePaid" style="color:var(--gold)">Acceso básico</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ SOPORTE ══ -->
+      <div class="section-panel" id="sec-soporte">
+        <div class="section-header">
+          <div class="section-title">Soporte</div>
+          <div class="section-sub">Estamos para ayudarte</div>
+        </div>
+        <div class="support-card">
+          <h3>Contacto directo vía WhatsApp</h3>
+          <p>Para dudas sobre tu registro, acceso al campus, información de módulos o proceso de matrícula, escríbenos directamente a nuestro número de admisiones.</p>
+          <a href="https://wa.me/584125677557" class="btn-wa" target="_blank">💬 Escribir por WhatsApp</a>
+        </div>
+        <div class="support-card">
+          <h3>Preguntas frecuentes</h3>
+          <p>¿Cuándo se habilitan los módulos? Al activar tu matrícula con el primer pago verás acceso inmediato a todos los módulos, videos y material de apoyo.</p>
+          <p style="margin-top:10px">¿Puedo cambiar de programa después de registrarme? Sí, contáctanos por WhatsApp y un asesor te guiará.</p>
+        </div>
+      </div>
+
+    </div><!-- /content-area -->
+
+    <!-- STICKY RIGHT -->
+    <div class="right-sticky">
+      <div class="sticky-cta">
+        <div class="cta-label">Fase 1 · Acceso completo</div>
+        <div class="cta-title">Activar acceso al campus</div>
+        <div class="cta-desc">Desbloquea todos los módulos, videos, quiz y material de apoyo con tu primer pago.</div>
+        <div class="cta-features">
+          <div class="cta-feature">6 módulos clínico-científicos</div>
+          <div class="cta-feature">Biblioteca completa de videos</div>
+          <div class="cta-feature">Evaluaciones certificables</div>
+          <div class="cta-feature">Material descargable completo</div>
+          <div class="cta-feature">Acceso al calendario académico</div>
+        </div>
+        <a href="pagos.html" class="btn-pago">Primer pago →</a>
+        <div class="cta-secure">🔒 Pago seguro · Soporte incluido</div>
+      </div>
+      <div class="right-stats">
+        <div class="right-stat">
+          <div class="right-stat-num">1,500<span>+</span></div>
+          <div class="right-stat-label">Médicos certificados</div>
+        </div>
+        <div class="right-stat">
+          <div class="right-stat-num">15</div>
+          <div class="right-stat-label">Países</div>
+        </div>
+        <div class="right-stat">
+          <div class="right-stat-num">27<span>+</span></div>
+          <div class="right-stat-label">Años de trayectoria</div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://ejuvegzsuxcgazmeieed.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_iSYiJpecbqoVf-QCJ3AxFQ_vbdoV4t2';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+
+async function init() {
+  // 1. Verificar sesión activa
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+  const authUser = session.user;
+
+  // 2. Obtener perfil de la tabla profiles
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', authUser.id)
+    .single();
+
+  const u = {
+    id:                  authUser.id,
+    correo:              authUser.email,
+    nombre_completo:     profile?.nombre_completo || authUser.user_metadata?.nombre_completo || authUser.email.split('@')[0],
+    cedula:              profile?.cedula || '—',
+    pais:                profile?.pais || '—',
+    telefono:            profile?.telefono || '—',
+    perfil_profesional:  profile?.perfil_profesional || '—',
+    paid:                profile?.paid || false,
+  };
+
+  currentUser = u;
+  populateUI(u);
+}
+
+function populateUI(u) {
+  const firstName = u.nombre_completo.split(' ')[0];
+  document.getElementById('topbarName').textContent    = u.nombre_completo;
+  document.getElementById('profileInitial').textContent = firstName.charAt(0).toUpperCase();
+  document.getElementById('profileName').textContent   = u.nombre_completo;
+  document.getElementById('profileRole').textContent   = u.perfil_profesional;
+  document.getElementById('profileEmail').textContent  = u.correo;
+  document.getElementById('profileTel').textContent    = u.telefono;
+  document.getElementById('profilePais').textContent   = u.pais;
+  document.getElementById('profileCedula').textContent = u.cedula;
+  document.getElementById('profileEspec').textContent  = u.perfil_profesional;
+  if (u.paid) {
+    document.getElementById('profilePaid').textContent = '✅ Matrícula activa';
+    document.getElementById('profilePaid').style.color = 'var(--teal)';
+    document.getElementById('statusBadge').textContent = 'Acceso completo';
+    document.getElementById('statusBadge').style.background  = 'rgba(0,201,167,0.1)';
+    document.getElementById('statusBadge').style.borderColor = 'var(--teal-border)';
+    document.getElementById('statusBadge').style.color       = 'var(--teal)';
+  }
+}
+
+async function logout() {
+  await supabase.auth.signOut();
+  window.location.href = 'login.html';
+}
+
+// ── Section nav ─────────────────────────────────────────
+function showSection(id, el) {
+  document.querySelectorAll('.section-panel').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+  document.querySelector('.content-area').scrollTop = 0;
+}
+
+init();
+</script>
+</body>
+</html>
