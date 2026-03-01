@@ -806,9 +806,9 @@ function renderModulo1(paid) {
 
   if (paid) {
     if (card) { card.classList.remove('locked'); card.classList.add('preview'); }
-    if (btn) btn.innerHTML = `<button class="module-btn open" onclick="alert('¡Módulo 1 desbloqueado! Contenido disponible próximamente.')">▶ Acceder al módulo</button>`;
+    if (btn) btn.innerHTML = `<button class="module-btn open" onclick="window.location.href='diplomado-modulo1.html'">▶ Acceder al módulo</button>`;
     if (dashCard) { dashCard.classList.remove('locked'); dashCard.classList.add('preview'); }
-    if (dashBtn) dashBtn.innerHTML = `<button class="module-btn open" onclick="alert('¡Módulo 1 desbloqueado! Contenido disponible próximamente.')">▶ Acceder al módulo</button>`;
+    if (dashBtn) dashBtn.innerHTML = `<button class="module-btn open" onclick="window.location.href='diplomado-modulo1.html'">▶ Acceder al módulo</button>`;
   } else {
     if (card) { card.classList.remove('preview'); card.classList.add('locked'); }
     if (btn) btn.innerHTML = `<button class="module-btn pay" onclick="window.location.href='pagos.html'">🔒 Activar con primer pago</button>`;
