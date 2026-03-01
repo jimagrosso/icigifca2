@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pago Exitoso — ICIGIFCA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:flex;align-items:center;justify-content:center}
+:root{--teal:#00C9A7;--gold:#C9A84C}
+
+.wrap{text-align:center;padding:40px 24px;max-width:440px}
+
+.icon-wrap{width:80px;height:80px;border-radius:50%;background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;animation:pop .5s ease}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.check{font-size:36px}
+
+h1{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:10px}
+p{font-size:13px;color:rgba(232,232,228,0.6);line-height:1.7;margin-bottom:28px}
+
+.spinner-wrap{display:flex;align-items:center;justify-content:center;gap:10px;font-size:12px;color:var(--teal);letter-spacing:1px;text-transform:uppercase}
+.spinner{width:16px;height:16px;border:2px solid rgba(0,201,167,0.2);border-top-color:var(--teal);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.modulo-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);color:var(--gold);font-size:11px;letter-spacing:1px;padding:8px 16px;text-transform:uppercase;margin-bottom:28px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="icon-wrap"><span class="check">✓</span></div>
+  <h1>¡Pago exitoso!</h1>
+  <div class="modulo-badge">🔓 Módulo 1 — Desbloqueado</div>
+  <p>Tu matrícula ha sido activada. Ahora tienes acceso al <strong>Módulo 1: Introducción y Fundamentos</strong>. Serás redirigido al campus en unos segundos.</p>
+  <div class="spinner-wrap">
+    <div class="spinner"></div> Activando acceso...
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://ejuvegzsuxcgazmeieed.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqdXZlZ3pzdXhjZ2F6bWVpZWVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMTcwNzMsImV4cCI6MjA4Nzg5MzA3M30.sGfE9AJUzL_gZQf8PIWgcslPwifCRDvFIDHHgzQbYDY';
+
+async function activarPago() {
+  if (!window.supabase) { window.location.replace('panel.html'); return; }
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // 1. Obtener sesión
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.replace('login.html'); return; }
+
+  const userId = session.user.id;
+  const ahora = new Date();
+  const proximaFecha = new Date(ahora);
+  proximaFecha.setDate(proximaFecha.getDate() + 30); // próximo pago en 30 días
+
+  // 2. Marcar paid=true en profiles
+  await sb.from('profiles').update({ paid: true }).eq('id', userId);
+
+  // 3. Registrar pago en tabla payments
+  const { error } = await sb.from('payments').insert({
+    user_id: userId,
+    monto: 0, // Stripe no devuelve monto aquí, se puede actualizar con webhook
+    metodo: 'stripe',
+    fecha_pago: ahora.toISOString(),
+    proxima_fecha: proximaFecha.toISOString(),
+    modulo_desbloqueado: 1,
+    notas: 'Pago inicial — Módulo 1: Introducción y Fundamentos'
+  });
+
+  if (error) console.warn('Error registrando pago:', error.message);
+
+  // 4. Redirigir al panel después de 2 segundos
+  setTimeout(() => window.location.replace('panel.html'), 2000);
+}
+
+// Esperar a que cargue Supabase
+window.addEventListener('load', activarPago);
+</script>
+</body>
+</html>
