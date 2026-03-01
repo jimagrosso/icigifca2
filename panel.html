@@ -292,11 +292,14 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
           <div class="section-title" style="font-size:15px">Módulos del programa</div>
         </div>
         <div class="modules-grid">
-          <div class="module-card" id="dashModulo1Card">
+          <div class="module-card locked" id="dashModulo1Card">
+            <div class="module-lock" id="dashModulo1Lock">🔒</div>
             <div class="module-num">Módulo 01</div>
             <div class="module-title">Introducción y fundamentos</div>
             <div class="module-desc">Bases anatómicas, fisiológicas y científicas de la ginecología regenerativa moderna.</div>
-            <div id="dashModulo1Btn"></div>
+            <div id="dashModulo1Btn">
+              <button class="module-btn pay" onclick="window.location.href='pagos.html'">Activar Módulo 1 →</button>
+            </div>
           </div>
           <div class="module-card locked">
             <div class="module-lock">🔒</div>
@@ -808,12 +811,14 @@ function renderModulo1(paid) {
     if (card) { card.classList.remove('locked'); card.classList.add('preview'); }
     if (btn) btn.innerHTML = `<button class="module-btn open" onclick="window.location.href='diplomado-modulo1.html'">▶ Acceder al módulo</button>`;
     if (dashCard) { dashCard.classList.remove('locked'); dashCard.classList.add('preview'); }
+    const dashLock = document.getElementById('dashModulo1Lock');
+    if (dashLock) dashLock.style.display = 'none';
     if (dashBtn) dashBtn.innerHTML = `<button class="module-btn open" onclick="window.location.href='diplomado-modulo1.html'">▶ Acceder al módulo</button>`;
   } else {
     if (card) { card.classList.remove('preview'); card.classList.add('locked'); }
     if (btn) btn.innerHTML = `<button class="module-btn pay" onclick="window.location.href='pagos.html'">🔒 Activar con primer pago</button>`;
     if (dashCard) { dashCard.classList.remove('preview'); dashCard.classList.add('locked'); }
-    if (dashBtn) dashBtn.innerHTML = `<div class="module-lock">🔒</div><button class="module-btn pay" onclick="window.location.href='pagos.html'">Activar Módulo 1 →</button>`;
+    if (dashBtn) dashBtn.innerHTML = `<button class="module-btn pay" onclick="window.location.href='pagos.html'">Activar Módulo 1 →</button>`;
   }
 }
 
