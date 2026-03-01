@@ -196,11 +196,11 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     alertEl.style.display = 'flex'; return;
   }
 
+  const supabase = getSupabase(); if (!supabase) return;
   alertEl.style.display = 'none';
   btn.disabled = true; spinner.style.display = 'block'; btnText.textContent = 'Verificando...';
 
-  const sb2 = getSupabase(); if (!sb2) return;
-  const { error } = await sb2.auth.signInWithPassword({ email: correo, password });
+  const { error } = await supabase.auth.signInWithPassword({ email: correo, password });
 
   if (error) {
     const msg = error.message.includes('Invalid') ? 'Correo o contraseña incorrectos' : error.message;

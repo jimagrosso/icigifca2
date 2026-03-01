@@ -326,6 +326,7 @@ document.getElementById('regForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   if (!validate()) return;
 
+  const supabase = getSupabase(); if (!supabase) return;
   const btn = document.getElementById('btnSubmit');
   document.getElementById('alertError').style.display = 'none';
   btn.disabled = true;
