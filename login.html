@@ -153,15 +153,19 @@ nav{padding:0 56px;height:64px;display:flex;align-items:center;justify-content:s
 <script>
 const SUPABASE_URL = 'https://ejuvegzsuxcgazmeieed.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqdXZlZ3pzdXhjZ2F6bWVpZWVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMTcwNzMsImV4cCI6MjA4Nzg5MzA3M30.sGfE9AJUzL_gZQf8PIWgcslPwifCRDvFIDHHgzQbYDY';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+function getSupabase() {
+  if (!window.supabase) { alert('Error: librería Supabase no cargó. Verifica tu conexión a internet.'); return null; }
+  return window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+}
 
 async function loginGoogle() {
+  const sb = getSupabase(); if (!sb) return;
   const btn = document.getElementById('btnGoogle');
   btn.disabled = true;
   btn.textContent = 'Redirigiendo...';
-  const { error } = await supabase.auth.signInWithOAuth({
+  const { error } = await sb.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: window.location.origin + '/panel.html' }
+    options: { redirectTo: 'https://icigifca.net/panel.html' }
   });
   if (error) {
     document.getElementById('alertErrorText').textContent = error.message;
@@ -195,7 +199,8 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   alertEl.style.display = 'none';
   btn.disabled = true; spinner.style.display = 'block'; btnText.textContent = 'Verificando...';
 
-  const { error } = await supabase.auth.signInWithPassword({ email: correo, password });
+  const sb2 = getSupabase(); if (!sb2) return;
+  const { error } = await sb2.auth.signInWithPassword({ email: correo, password });
 
   if (error) {
     const msg = error.message.includes('Invalid') ? 'Correo o contraseña incorrectos' : error.message;
