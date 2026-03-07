@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICIGIFCA · Panel de Administración</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:#00C9A7;--teal-dim:#008F77;--teal-bg:rgba(0,201,167,0.08);
+  --gold:#C9A84C;--ink:#050A0A;--ink2:#0D1515;--ink3:#141F1F;
+  --border:rgba(255,255,255,0.07);--border-t:rgba(0,201,167,0.18);
+  --muted:rgba(232,232,228,0.4);--muted2:rgba(232,232,228,0.65);
+  --red:#ff4757;--amber:#ffa502;--green:#2ed573;
+  --sidebar:244px;
+}
+html,body{height:100%;font-family:'Inter',sans-serif;background:var(--ink);color:#E8E8E4;overflow:hidden}
+.app{display:flex;height:100vh}
+.sidebar{width:var(--sidebar);flex-shrink:0;background:var(--ink2);border-right:1px solid var(--border);display:flex;flex-direction:column;}
+.sb-logo{padding:20px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.sb-mark{width:34px;height:34px;background:var(--teal);border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:12px;color:var(--ink);flex-shrink:0}
+.sb-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#fff}
+.sb-sub{font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:1px}
+.sb-nav{flex:1;padding:12px 0;overflow-y:auto}
+.sb-grp{font-size:7.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);padding:14px 18px 5px;font-weight:700}
+.sb-item{display:flex;align-items:center;gap:9px;padding:9px 18px;cursor:pointer;font-size:11.5px;color:var(--muted2);font-weight:500;transition:all .15s;border-left:2px solid transparent;}
+.sb-item:hover{color:#fff;background:rgba(255,255,255,0.025)}
+.sb-item.active{color:var(--teal);background:rgba(0,201,167,0.05);border-left-color:var(--teal)}
+.sb-ico{font-size:13px;width:18px;text-align:center;flex-shrink:0}
+.sb-pill{margin-left:auto;color:#fff;font-size:8px;font-weight:700;padding:2px 6px;border-radius:100px;line-height:1.5}
+.sb-pill.red{background:var(--red)}
+.sb-pill.teal{background:var(--teal);color:var(--ink)}
+.sb-pill.muted{background:rgba(255,255,255,0.08);color:var(--muted)}
+.sb-foot{padding:14px 18px;border-top:1px solid var(--border);display:flex;align-items:center;gap:9px;}
+.sb-dot{width:7px;height:7px;background:var(--green);border-radius:50%;flex-shrink:0}
+.sb-info{flex:1;min-width:0}
+.sb-uname{font-size:11px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-urole{font-size:8px;color:var(--teal);letter-spacing:1px;text-transform:uppercase}
+.sb-out{font-size:16px;color:var(--muted);cursor:pointer;transition:color .2s;padding:2px}
+.sb-out:hover{color:var(--red)}
+.main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.topbar{padding:0 28px;height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--ink);}
+.tb-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff}
+.tb-right{display:flex;align-items:center;gap:10px}
+.btn{padding:7px 16px;font-family:'Inter',sans-serif;font-size:10.5px;letter-spacing:.8px;text-transform:uppercase;font-weight:600;border:none;cursor:pointer;border-radius:2px;transition:all .18s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.btn-teal{background:var(--teal);color:var(--ink)}
+.btn-teal:hover{background:#00dcb8}
+.btn-ghost{background:transparent;color:var(--muted2);border:1px solid var(--border)}
+.btn-ghost:hover{color:#fff;border-color:rgba(255,255,255,0.18)}
+.btn-red{background:rgba(255,71,87,0.1);color:var(--red);border:1px solid rgba(255,71,87,0.18)}
+.btn-red:hover{background:rgba(255,71,87,0.2)}
+.btn-amber{background:rgba(255,165,2,0.1);color:var(--amber);border:1px solid rgba(255,165,2,0.18)}
+.btn-amber:hover{background:rgba(255,165,2,0.2)}
+.btn-sm{padding:5px 11px;font-size:9.5px}
+.btn-xs{padding:3px 8px;font-size:9px}
+.content{flex:1;overflow-y:auto;padding:24px 28px}
+.view{display:none}
+.view.active{display:block}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-bottom:24px}
+.sc{background:var(--ink2);padding:20px;transition:background .2s;cursor:default}
+.sc:hover{background:var(--ink3)}
+.sc-lbl{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:600}
+.sc-val{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:#fff;line-height:1}
+.sc-val span{color:var(--teal)}
+.sc-sub{font-size:9.5px;color:var(--muted);margin-top:5px}
+.tbl-wrap{background:var(--ink2);border:1px solid var(--border)}
+.tbl-top{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.tbl-top-title{font-size:11.5px;font-weight:600;color:#fff}
+.srch{display:flex;align-items:center;gap:7px;background:var(--ink3);border:1px solid var(--border);padding:6px 12px;flex:1;max-width:260px}
+.srch input{background:none;border:none;outline:none;font-size:11.5px;color:#fff;width:100%;font-family:'Inter',sans-serif}
+.srch input::placeholder{color:var(--muted)}
+table{width:100%;border-collapse:collapse}
+th{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:700;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);background:var(--ink3);white-space:nowrap}
+td{padding:11px 14px;font-size:11.5px;color:var(--muted2);border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,0.015)}
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:3px 9px;border-radius:100px;white-space:nowrap}
+.tag::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0}
+.tag-green{background:rgba(46,213,115,0.1);color:var(--green);border:1px solid rgba(46,213,115,0.18)}
+.tag-amber{background:rgba(255,165,2,0.1);color:var(--amber);border:1px solid rgba(255,165,2,0.18)}
+.tag-red{background:rgba(255,71,87,0.1);color:var(--red);border:1px solid rgba(255,71,87,0.18)}
+.tag-teal{background:rgba(0,201,167,0.1);color:var(--teal);border:1px solid var(--border-t)}
+.tag-muted{background:rgba(255,255,255,0.04);color:var(--muted);border:1px solid var(--border)}
+.uc{display:flex;align-items:center;gap:9px}
+.av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--teal-dim),var(--ink3));border:1px solid var(--border-t);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--teal);flex-shrink:0;text-transform:uppercase;font-family:'Syne',sans-serif}
+.un{font-size:11.5px;font-weight:600;color:#fff}
+.ue{font-size:9.5px;color:var(--muted)}
+.mods-mini{display:flex;gap:3px}
+.mod-dot{width:22px;height:22px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;cursor:pointer;transition:all .15s;border:1px solid var(--border);color:var(--muted);background:var(--ink3);font-family:'JetBrains Mono',monospace}
+.mod-dot.on{background:rgba(0,201,167,0.15);border-color:var(--border-t);color:var(--teal)}
+.mod-dot:hover{border-color:rgba(0,201,167,0.4)}
+.ag{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .2s;backdrop-filter:blur(6px)}
+.overlay.open{opacity:1;visibility:visible}
+.modal{background:var(--ink2);border:1px solid var(--border);width:92%;max-width:560px;max-height:85vh;overflow-y:auto;transform:translateY(16px);transition:transform .2s}
+.overlay.open .modal{transform:translateY(0)}
+.modal.wide{max-width:680px}
+.mhdr{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.mttl{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff}
+.mcls{cursor:pointer;color:var(--muted);font-size:17px;padding:3px;transition:color .15s}
+.mcls:hover{color:#fff}
+.mbdy{padding:22px}
+.mftr{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:9px}
+.fld{margin-bottom:16px}
+.fld label{display:block;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:7px}
+.fld input,.fld select,.fld textarea{width:100%;background:var(--ink3);border:1px solid var(--border);padding:9px 13px;font-family:'Inter',sans-serif;font-size:12.5px;color:#fff;outline:none;transition:border-color .18s;border-radius:0}
+.fld input:focus,.fld select:focus{border-color:var(--teal)}
+.fld select option{background:var(--ink3)}
+.alert{padding:11px 15px;border-left:3px solid;margin-bottom:16px;font-size:11.5px;display:flex;align-items:flex-start;gap:9px}
+.alert-teal{border-color:var(--teal);background:rgba(0,201,167,0.05);color:var(--teal)}
+.alert-amber{border-color:var(--amber);background:rgba(255,165,2,0.05);color:var(--amber)}
+.shdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.shdr h2{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff}
+.shdr .meta{font-size:10.5px;color:var(--muted)}
+/* Módulos grid en modal */
+.mod-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:16px 0}
+.mod-card{background:var(--ink3);border:1px solid var(--border);padding:14px;position:relative;overflow:hidden;transition:border-color .2s}
+.mod-card.unlocked{border-color:var(--border-t)}
+.mod-card.unlocked::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--teal)}
+.mc-num{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:6px}
+.mc-title{font-size:11.5px;font-weight:600;color:#fff;margin-bottom:10px;line-height:1.35}
+.mc-bot{display:flex;align-items:center;justify-content:space-between}
+/* Status selector */
+.st-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px}
+.st-opt{border:1px solid var(--border);padding:12px 8px;text-align:center;cursor:pointer;transition:all .15s;background:var(--ink3)}
+.st-opt:hover{border-color:rgba(255,255,255,0.15)}
+.st-opt.sel{border-color:var(--teal);background:var(--teal-bg)}
+.st-ico{font-size:20px;margin-bottom:6px}
+.st-lbl{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted2)}
+.st-opt.sel .st-lbl{color:var(--teal)}
+/* Detail grid */
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.di{background:var(--ink3);padding:12px;border:1px solid var(--border)}
+.di-lbl{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:4px}
+.di-val{font-size:12.5px;color:#fff;font-weight:500}
+/* Solicitudes */
+.req-card{background:var(--ink3);border:1px solid var(--border);padding:18px;margin-bottom:10px;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:start;transition:border-color .2s}
+.req-card:hover{border-color:rgba(255,255,255,0.1)}
+.req-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:3px}
+.req-meta{font-size:10px;color:var(--muted);margin-bottom:10px;line-height:1.6}
+.req-msg{font-size:11px;color:var(--muted2);line-height:1.65;background:var(--ink2);padding:9px 12px;border-left:2px solid var(--border-t);font-style:italic}
+.req-acts{display:flex;flex-direction:column;gap:7px;align-items:flex-end}
+.empty{text-align:center;padding:56px 20px;color:var(--muted)}
+.empty-ico{font-size:36px;margin-bottom:14px;opacity:.35}
+.empty-txt{font-size:12px}
+.loading{text-align:center;padding:56px;color:var(--muted);font-size:12px}
+.spin{width:26px;height:26px;border:2px solid var(--border);border-top-color:var(--teal);border-radius:50%;animation:spin .65s linear infinite;margin:0 auto 14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toasts{position:fixed;bottom:22px;right:22px;z-index:9999;display:flex;flex-direction:column;gap:7px}
+.toast{background:var(--ink3);border:1px solid var(--border);border-left:3px solid var(--teal);padding:11px 16px;font-size:11.5px;color:#fff;min-width:240px;transform:translateX(110%);transition:transform .28s;display:flex;align-items:center;gap:9px}
+.toast.show{transform:translateX(0)}
+.toast.error{border-left-color:var(--red)}
+.toast.warning{border-left-color:var(--amber)}
+.toast.ok{border-left-color:var(--green)}
+#login-screen{position:fixed;inset:0;background:var(--ink);display:flex;align-items:center;justify-content:center;z-index:9999}
+.login-box{width:360px;background:var(--ink2);border:1px solid var(--border);padding:36px}
+.lgl{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:4px;color:#fff;text-transform:uppercase;text-align:center;margin-bottom:3px}
+.lgs{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--teal);text-align:center;margin-bottom:28px}
+.lg-err{font-size:11px;color:var(--red);text-align:center;margin-bottom:12px;display:none}
+.lg-btn{width:100%;padding:13px;background:var(--teal);color:var(--ink);font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;transition:background .2s}
+.lg-btn:hover{background:#00dcb8}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:2px}
+@media(max-width:860px){.sidebar{display:none}.stats-row{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="login-box">
+    <div class="lgl">ICIGIFCA</div>
+    <div class="lgs">Panel de Administración</div>
+    <div class="lg-err" id="lg-err"></div>
+    <div class="fld"><label>Email</label><input type="email" id="lg-email" placeholder="admin@icigifca.net"></div>
+    <div class="fld"><label>Contraseña</label><input type="password" id="lg-pass" placeholder="••••••••"></div>
+    <button class="lg-btn" onclick="doLogin()">Acceder →</button>
+  </div>
+</div>
+
+<div class="app" id="app" style="display:none">
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <div class="sb-mark">IC</div>
+      <div><div class="sb-title">ICIGIFCA</div><div class="sb-sub">Admin Panel</div></div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-grp">Principal</div>
+      <div class="sb-item active" onclick="nav('dashboard',this)"><span class="sb-ico">◈</span>Dashboard</div>
+      <div class="sb-item" onclick="nav('alumnos',this)"><span class="sb-ico">👤</span>Alumnos<span class="sb-pill teal" id="badge-al">—</span></div>
+      <div class="sb-item" onclick="nav('pagos',this)"><span class="sb-ico">💳</span>Pagos</div>
+      <div class="sb-grp">Foro Clínico</div>
+      <div class="sb-item" onclick="nav('solicitudes',this)"><span class="sb-ico">📋</span>Solicitudes<span class="sb-pill red" id="badge-sol">0</span></div>
+      <div class="sb-item" onclick="nav('foro-posts',this)"><span class="sb-ico">🩺</span>Posts del Foro</div>
+      <div class="sb-grp">Config</div>
+      <div class="sb-item" onclick="nav('admins',this)"><span class="sb-ico">🔑</span>Administradores</div>
+    </nav>
+    <div class="sb-foot">
+      <div class="sb-dot"></div>
+      <div class="sb-info"><div class="sb-uname" id="admin-lbl">—</div><div class="sb-urole">Administrador</div></div>
+      <div class="sb-out" onclick="doLogout()" title="Salir">⏻</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="tb-title" id="tb-title">Dashboard</div>
+      <div class="tb-right">
+        <button class="btn btn-ghost btn-sm" onclick="refreshAll()">↺ Actualizar</button>
+        <a href="panel.html" class="btn btn-ghost btn-sm">← Campus</a>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="view active" id="view-dashboard">
+        <div class="stats-row">
+          <div class="sc"><div class="sc-lbl">Alumnos Activos</div><div class="sc-val" id="s-paid">—</div><div class="sc-sub">Campus desbloqueado</div></div>
+          <div class="sc"><div class="sc-lbl">Total Registros</div><div class="sc-val" id="s-total">—</div><div class="sc-sub">Cuentas creadas</div></div>
+          <div class="sc"><div class="sc-lbl">Solicitudes Pendientes</div><div class="sc-val" id="s-sol"><span>—</span></div><div class="sc-sub">Acceso al foro</div></div>
+          <div class="sc"><div class="sc-lbl">Posts Foro</div><div class="sc-val" id="s-posts">—</div><div class="sc-sub">Publicaciones</div></div>
+        </div>
+        <div id="dash-alert" style="display:none"></div>
+        <div class="shdr"><h2>Últimos Registros</h2><span class="meta">Actividad reciente</span></div>
+        <div class="tbl-wrap">
+          <table><thead><tr><th>Usuario</th><th>Estado</th><th>Módulos</th><th>Foro</th><th>Registro</th><th></th></tr></thead>
+          <tbody id="dash-tbody"><tr><td colspan="6"><div class="loading"><div class="spin"></div>Cargando…</div></td></tr></tbody></table>
+        </div>
+      </div>
+
+      <!-- ALUMNOS -->
+      <div class="view" id="view-alumnos">
+        <div class="shdr">
+          <h2>Gestión de Alumnos</h2>
+          <button class="btn btn-ghost btn-sm" onclick="openM('m-add')">+ Dar acceso manual</button>
+        </div>
+        <div class="tbl-wrap">
+          <div class="tbl-top">
+            <span class="tbl-top-title">Todos los usuarios</span>
+            <div class="srch">🔍&nbsp;<input type="text" id="srch-al" placeholder="Buscar nombre o email…" oninput="filterAl()"></div>
+          </div>
+          <table><thead><tr><th>Usuario</th><th>Estado</th><th>Módulos</th><th>Foro</th><th>Registro</th><th>Acciones</th></tr></thead>
+          <tbody id="al-tbody"><tr><td colspan="6"><div class="loading"><div class="spin"></div>Cargando…</div></td></tr></tbody></table>
+        </div>
+      </div>
+
+      <!-- PAGOS -->
+      <div class="view" id="view-pagos">
+        <div class="shdr"><h2>Historial de Pagos</h2><span class="meta" id="pagos-meta">—</span></div>
+        <div class="tbl-wrap">
+          <table><thead><tr><th>Usuario ID</th><th>Plan</th><th>Monto</th><th>Estado</th><th>Fecha</th><th>Stripe Ref</th></tr></thead>
+          <tbody id="pagos-tbody"><tr><td colspan="6"><div class="loading"><div class="spin"></div>Cargando…</div></td></tr></tbody></table>
+        </div>
+      </div>
+
+      <!-- SOLICITUDES -->
+      <div class="view" id="view-solicitudes">
+        <div class="shdr"><h2>Solicitudes de Acceso al Foro</h2><span class="meta">Profesionales externos</span></div>
+        <div id="sol-list"><div class="loading"><div class="spin"></div>Cargando…</div></div>
+      </div>
+
+      <!-- POSTS -->
+      <div class="view" id="view-foro-posts">
+        <div class="shdr"><h2>Posts del Foro</h2><span class="meta" id="posts-meta">—</span></div>
+        <div class="tbl-wrap">
+          <table><thead><tr><th>Título</th><th>Autor</th><th>Categoría</th><th>Vistas</th><th>Fecha</th><th></th></tr></thead>
+          <tbody id="posts-tbody"><tr><td colspan="6"><div class="loading"><div class="spin"></div>Cargando…</div></td></tr></tbody></table>
+        </div>
+      </div>
+
+      <!-- ADMINS -->
+      <div class="view" id="view-admins">
+        <div class="shdr"><h2>Administradores</h2><button class="btn btn-teal btn-sm" onclick="openM('m-admin')">+ Agregar</button></div>
+        <div class="alert alert-teal"><span>ℹ</span><span>Los admins tienen acceso total al panel.</span></div>
+        <div class="tbl-wrap">
+          <table><thead><tr><th>Email</th><th>Rol</th><th></th></tr></thead>
+          <tbody id="admins-tbody"></tbody></table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<!-- Modal: Detalle alumno -->
+<div class="overlay" id="m-detail">
+  <div class="modal wide">
+    <div class="mhdr"><span class="mttl" id="m-detail-title">Alumno</span><span class="mcls" onclick="closeM('m-detail')">✕</span></div>
+    <div class="mbdy" id="m-detail-body"></div>
+    <div class="mftr"><button class="btn btn-ghost" onclick="closeM('m-detail')">Cerrar</button></div>
+  </div>
+</div>
+
+<!-- Modal: Acceso manual -->
+<div class="overlay" id="m-add">
+  <div class="modal">
+    <div class="mhdr"><span class="mttl">Dar Acceso Manual</span><span class="mcls" onclick="closeM('m-add')">✕</span></div>
+    <div class="mbdy">
+      <div class="fld"><label>Email del usuario</label><input type="email" id="m-add-email" placeholder="usuario@email.com"></div>
+      <div class="fld">
+        <label>Tipo de acceso</label>
+        <select id="m-add-tipo">
+          <option value="paid">Campus completo (paid)</option>
+          <option value="forum">Solo foro clínico</option>
+          <option value="both">Campus + Foro</option>
+          <option value="mod1">Solo Módulo 1</option>
+          <option value="mod2">Módulos 1 y 2</option>
+          <option value="mod3">Módulos 1, 2 y 3</option>
+          <option value="all_mods">Todos los módulos (1-4)</option>
+        </select>
+      </div>
+    </div>
+    <div class="mftr">
+      <button class="btn btn-ghost" onclick="closeM('m-add')">Cancelar</button>
+      <button class="btn btn-teal" onclick="darAcceso()">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Cambiar estado -->
+<div class="overlay" id="m-status">
+  <div class="modal">
+    <div class="mhdr"><span class="mttl">Cambiar Estado</span><span class="mcls" onclick="closeM('m-status')">✕</span></div>
+    <div class="mbdy">
+      <div style="font-size:12px;color:var(--muted2);margin-bottom:16px">Usuario: <strong id="m-status-email" style="color:#fff">—</strong></div>
+      <div class="st-row">
+        <div class="st-opt sel" id="st-active" onclick="selStatus('active')"><div class="st-ico">✅</div><div class="st-lbl">Activo</div></div>
+        <div class="st-opt" id="st-suspended" onclick="selStatus('suspended')"><div class="st-ico">⏸</div><div class="st-lbl">Suspendido</div></div>
+        <div class="st-opt" id="st-blocked" onclick="selStatus('blocked')"><div class="st-ico">🚫</div><div class="st-lbl">Bloqueado</div></div>
+      </div>
+      <div class="fld" style="margin-top:16px"><label>Nota interna (opcional)</label>
+        <textarea id="m-status-note" rows="2" style="width:100%;background:var(--ink3);border:1px solid var(--border);padding:9px;color:#fff;font-family:'Inter',sans-serif;font-size:12px;outline:none;resize:vertical" placeholder="Motivo…"></textarea>
+      </div>
+    </div>
+    <div class="mftr">
+      <button class="btn btn-ghost" onclick="closeM('m-status')">Cancelar</button>
+      <button class="btn btn-teal" onclick="applyStatus()">Aplicar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Módulos -->
+<div class="overlay" id="m-mods">
+  <div class="modal">
+    <div class="mhdr"><span class="mttl">Gestionar Módulos</span><span class="mcls" onclick="closeM('m-mods')">✕</span></div>
+    <div class="mbdy">
+      <div style="font-size:12px;color:var(--muted2);margin-bottom:4px">Alumno: <strong id="m-mods-email" style="color:#fff">—</strong></div>
+      <div class="alert alert-teal" style="margin:12px 0"><span>ℹ</span><span>Activa/desactiva el acceso a cada módulo del campus.</span></div>
+      <div class="mod-grid" id="m-mods-grid"></div>
+      <div style="display:flex;gap:8px;margin-top:6px">
+        <button class="btn btn-teal btn-sm" onclick="allMods(true)">✓ Todos</button>
+        <button class="btn btn-red btn-sm" onclick="allMods(false)">✗ Ninguno</button>
+      </div>
+    </div>
+    <div class="mftr">
+      <button class="btn btn-ghost" onclick="closeM('m-mods')">Cancelar</button>
+      <button class="btn btn-teal" onclick="saveMods()">Guardar módulos</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Admin -->
+<div class="overlay" id="m-admin">
+  <div class="modal">
+    <div class="mhdr"><span class="mttl">Agregar Administrador</span><span class="mcls" onclick="closeM('m-admin')">✕</span></div>
+    <div class="mbdy"><div class="fld"><label>Email</label><input type="email" id="m-admin-email" placeholder="nuevo@admin.com"></div></div>
+    <div class="mftr">
+      <button class="btn btn-ghost" onclick="closeM('m-admin')">Cancelar</button>
+      <button class="btn btn-teal" onclick="addAdmin()">Agregar</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPA_URL = 'https://ejuvegzsuxcgazmeieed.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqdXZlZ3pzdXhjZ2F6bWVpZWVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMTcwNzMsImV4cCI6MjA4Nzg5MzA3M30.sGfE9AJUzL_gZQf8PIWgcslPwifCRDvFIDHHgzQbYDY';
+const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+const MODS = {modulo1:'Módulo I — Bases Científicas',modulo2:'Módulo II — Tecnologías Regenerativas',modulo3:'Módulo III — Funcional y Piso Pélvico',modulo4:'Módulo IV — Cirugía y Práctica Clínica'};
+let ADMINS = ['jimakawary@gmail.com'];
+let currentUser = null, allProfiles = [];
+let activeModId = null, activeModState = {}, activeStatusId = null, selSt = 'active';
+
+/* ══ LOGIN ══ */
+async function doLogin() {
+  const email=document.getElementById('lg-email').value.trim(), pass=document.getElementById('lg-pass').value;
+  const err=document.getElementById('lg-err'); err.style.display='none';
+  const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  if(error){err.style.display='block';err.textContent='Error: '+error.message;return;}
+  if(!ADMINS.includes(data.user.email)){await sb.auth.signOut();err.style.display='block';err.textContent='Acceso denegado. Solo administradores.';return;}
+  initApp(data.user);
+}
+function doLogout(){sb.auth.signOut();location.reload();}
+function initApp(u){
+  currentUser=u;
+  document.getElementById('admin-lbl').textContent=u.email;
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='flex';
+  loadAdmins(); refreshAll();
+}
+
+/* ══ NAV ══ */
+const TITLES={dashboard:'Dashboard',alumnos:'Gestión de Alumnos',pagos:'Historial de Pagos',solicitudes:'Solicitudes de Acceso al Foro','foro-posts':'Posts del Foro',admins:'Administradores'};
+function nav(id,el){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  if(el)el.classList.add('active');
+  document.getElementById('tb-title').textContent=TITLES[id]||id;
+  ({alumnos:loadAlumnos,pagos:loadPagos,solicitudes:loadSolicitudes,'foro-posts':loadPosts})[id]?.();
+}
+function refreshAll(){loadDash();}
+
+/* ══ DASHBOARD ══ */
+async function loadDash(){
+  const {data:pr}=await sb.from('profiles').select('*').order('created_at',{ascending:false});
+  allProfiles=pr||[];
+  document.getElementById('s-paid').textContent=allProfiles.filter(p=>p.paid).length;
+  document.getElementById('s-total').textContent=allProfiles.length;
+  document.getElementById('badge-al').textContent=allProfiles.length;
+  const {data:sols}=await sb.from('forum_access_requests').select('id').eq('estado','pendiente');
+  const sc=sols?.length||0;
+  document.getElementById('s-sol').innerHTML=`<span>${sc}</span>`;
+  document.getElementById('badge-sol').textContent=sc;
+  const da=document.getElementById('dash-alert');
+  if(sc>0){da.style.display='flex';da.className='alert alert-amber';da.innerHTML=`<span>⚠</span><span>Hay <strong>${sc}</strong> solicitud(es) de foro pendientes.</span>`;}
+  else da.style.display='none';
+  const {count:pc}=await sb.from('forum_posts').select('*',{count:'exact',head:true});
+  document.getElementById('s-posts').textContent=pc||0;
+  const tbody=document.getElementById('dash-tbody');
+  const list=allProfiles.slice(0,12);
+  if(!list.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-ico">👤</div><div class="empty-txt">Sin usuarios</div></div></td></tr>';return;}
+  tbody.innerHTML=list.map(p=>`<tr>
+    <td><div class="uc"><div class="av">${(p.name||p.email||'?')[0]}</div><div><div class="un">${p.name||'Sin nombre'}</div><div class="ue">${p.email||'—'}</div></div></div></td>
+    <td>${stTag(p)}</td><td>${modDots(p,true)}</td>
+    <td>${p.forum_approved?`<span class="tag tag-teal">Sí</span>`:`<span class="tag tag-muted">No</span>`}</td>
+    <td style="font-size:10px;color:var(--muted)">${fd(p.created_at)}</td>
+    <td><button class="btn btn-ghost btn-xs" onclick="verAl('${p.id}')">Ver</button></td>
+  </tr>`).join('');
+}
+
+/* ══ ALUMNOS ══ */
+async function loadAlumnos(){
+  document.getElementById('al-tbody').innerHTML='<tr><td colspan="6"><div class="loading"><div class="spin"></div>Cargando…</div></td></tr>';
+  if(!allProfiles.length){const{data}=await sb.from('profiles').select('*').order('created_at',{ascending:false});allProfiles=data||[];}
+  renderAl(allProfiles);
+}
+function renderAl(list){
+  const tbody=document.getElementById('al-tbody');
+  if(!list.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-ico">👤</div><div class="empty-txt">Sin resultados</div></div></td></tr>';return;}
+  tbody.innerHTML=list.map(p=>`<tr>
+    <td><div class="uc"><div class="av">${(p.name||p.email||'?')[0]}</div><div><div class="un">${p.name||'Sin nombre'}</div><div class="ue">${p.email||'—'}</div></div></div></td>
+    <td>${stTag(p)}</td><td>${modDots(p,true)}</td>
+    <td>${p.forum_approved?`<span class="tag tag-teal">Sí</span>`:`<span class="tag tag-muted">No</span>`}</td>
+    <td style="font-size:10px;color:var(--muted)">${fd(p.created_at)}</td>
+    <td><div class="ag">
+      <button class="btn btn-ghost btn-xs" onclick="verAl('${p.id}')" title="Ver detalle">👁</button>
+      <button class="btn btn-ghost btn-xs" onclick="abrirStatus('${p.id}')" title="Cambiar estado">⚙ Estado</button>
+      <button class="btn btn-teal btn-xs" onclick="abrirMods('${p.id}')" title="Módulos">📚 Módulos</button>
+      ${!p.forum_approved?`<button class="btn btn-ghost btn-xs" onclick="tForum('${p.id}',true,'${p.email}')">Foro ✓</button>`:`<button class="btn btn-amber btn-xs" onclick="tForum('${p.id}',false,'${p.email}')">Foro ✗</button>`}
+    </div></td>
+  </tr>`).join('');
+}
+function filterAl(){const q=document.getElementById('srch-al').value.toLowerCase();renderAl(allProfiles.filter(p=>(p.name||'').toLowerCase().includes(q)||(p.email||'').toLowerCase().includes(q)));}
+
+/* ══ VER ALUMNO ══ */
+function verAl(id){
+  const p=allProfiles.find(x=>x.id===id); if(!p)return;
+  document.getElementById('m-detail-title').textContent=p.name||p.email||'Usuario';
+  document.getElementById('m-detail-body').innerHTML=`
+    <div class="dg">
+      <div class="di"><div class="di-lbl">Email</div><div class="di-val">${p.email||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Nombre</div><div class="di-val">${p.name||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Estado campus</div><div class="di-val">${stTag(p)}</div></div>
+      <div class="di"><div class="di-lbl">Acceso foro</div><div class="di-val">${p.forum_approved?'✓ Aprobado':'✗ No'}</div></div>
+      <div class="di"><div class="di-lbl">Provider</div><div class="di-val">${p.provider||'email'}</div></div>
+      <div class="di"><div class="di-lbl">Registro</div><div class="di-val">${fd(p.created_at)}</div></div>
+      ${p.admin_note?`<div class="di" style="grid-column:span 2"><div class="di-lbl">Nota admin</div><div class="di-val" style="color:var(--amber)">${p.admin_note}</div></div>`:''}
+    </div>
+    <div style="margin-bottom:18px">
+      <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px">Estado de Módulos</div>
+      <div class="mod-grid">
+        ${Object.entries(MODS).map(([k,n])=>`
+          <div class="mod-card ${p[k]?'unlocked':''}">
+            <div class="mc-num">${k.replace('modulo','MOD-0')}</div>
+            <div class="mc-title">${n}</div>
+            <div class="mc-bot">
+              <span class="tag ${p[k]?'tag-green':'tag-muted'}">${p[k]?'Activo':'Bloqueado'}</span>
+              <button class="btn ${p[k]?'btn-red':'btn-teal'} btn-xs" onclick="quickMod('${p.id}','${k}',${!p[k]})">${p[k]?'Bloquear':'Activar'}</button>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="ag" style="flex-wrap:wrap">
+      <button class="btn ${p.paid?'btn-red':'btn-teal'} btn-sm" onclick="tPaid('${p.id}',${!p.paid},'${p.email}');closeM('m-detail')">${p.paid?'✗ Quitar campus':'✓ Activar campus'}</button>
+      <button class="btn btn-ghost btn-sm" onclick="abrirStatus('${p.id}');closeM('m-detail')">⚙ Cambiar estado</button>
+      <button class="btn btn-ghost btn-sm" onclick="abrirMods('${p.id}');closeM('m-detail')">📚 Gestionar módulos</button>
+      ${!p.forum_approved?`<button class="btn btn-ghost btn-sm" onclick="tForum('${p.id}',true,'${p.email}');closeM('m-detail')">Aprobar foro</button>`:`<button class="btn btn-amber btn-sm" onclick="tForum('${p.id}',false,'${p.email}');closeM('m-detail')">Revocar foro</button>`}
+    </div>`;
+  openM('m-detail');
+}
+
+async function quickMod(id,key,val){
+  await sb.from('profiles').update({[key]:val}).eq('id',id);
+  allProfiles=allProfiles.map(p=>p.id===id?{...p,[key]:val}:p);
+  toast(`${key} ${val?'activado':'bloqueado'} ✓`,'ok');
+  verAl(id);
+}
+
+async function tPaid(id,val,email){
+  await sb.from('profiles').update({paid:val,status:val?'active':'suspended'}).eq('id',id);
+  allProfiles=allProfiles.map(p=>p.id===id?{...p,paid:val,status:val?'active':'suspended'}:p);
+  toast(`${email}: campus ${val?'activado ✓':'desactivado'}`,'ok');
+  renderAl(allProfiles);loadDash();
+}
+async function tForum(id,val,email){
+  await sb.from('profiles').update({forum_approved:val}).eq('id',id);
+  allProfiles=allProfiles.map(p=>p.id===id?{...p,forum_approved:val}:p);
+  toast(`${email}: foro ${val?'aprobado ✓':'revocado'}`,'ok');
+  renderAl(allProfiles);
+}
+
+/* ══ ESTADO ══ */
+function abrirStatus(id){
+  const p=allProfiles.find(x=>x.id===id);if(!p)return;
+  activeStatusId=id; selSt=p.status||'active';
+  document.getElementById('m-status-email').textContent=p.email||'—';
+  document.getElementById('m-status-note').value='';
+  ['active','suspended','blocked'].forEach(s=>document.getElementById('st-'+s).className='st-opt'+(s===selSt?' sel':''));
+  openM('m-status');
+}
+function selStatus(s){selSt=s;['active','suspended','blocked'].forEach(k=>document.getElementById('st-'+k).className='st-opt'+(k===s?' sel':''));}
+async function applyStatus(){
+  if(!activeStatusId)return;
+  const upd={status:selSt};
+  if(selSt==='active')upd.paid=true; else upd.paid=false;
+  const note=document.getElementById('m-status-note').value;
+  if(note)upd.admin_note=note;
+  await sb.from('profiles').update(upd).eq('id',activeStatusId);
+  allProfiles=allProfiles.map(p=>p.id===activeStatusId?{...p,...upd}:p);
+  toast(`Estado → ${selSt} ✓`,'ok');
+  closeM('m-status');renderAl(allProfiles);loadDash();
+}
+
+/* ══ MÓDULOS ══ */
+function abrirMods(id){
+  const p=allProfiles.find(x=>x.id===id);if(!p)return;
+  activeModId=id;
+  activeModState={modulo1:!!p.modulo1,modulo2:!!p.modulo2,modulo3:!!p.modulo3,modulo4:!!p.modulo4};
+  document.getElementById('m-mods-email').textContent=p.email||'—';
+  renderModGrid();openM('m-mods');
+}
+function renderModGrid(){
+  document.getElementById('m-mods-grid').innerHTML=Object.entries(MODS).map(([k,n])=>`
+    <div class="mod-card ${activeModState[k]?'unlocked':''}">
+      <div class="mc-num">${k.replace('modulo','MOD-0')}</div>
+      <div class="mc-title">${n}</div>
+      <div class="mc-bot">
+        <span class="tag ${activeModState[k]?'tag-green':'tag-muted'}">${activeModState[k]?'Activo':'Bloqueado'}</span>
+        <button class="btn ${activeModState[k]?'btn-red':'btn-teal'} btn-xs" onclick="togMod('${k}')">${activeModState[k]?'Bloquear':'Activar'}</button>
+      </div>
+    </div>`).join('');
+}
+function togMod(k){activeModState[k]=!activeModState[k];renderModGrid();}
+function allMods(v){Object.keys(activeModState).forEach(k=>activeModState[k]=v);renderModGrid();}
+async function saveMods(){
+  if(!activeModId)return;
+  const{error}=await sb.from('profiles').update(activeModState).eq('id',activeModId);
+  if(error){toast('Error: '+error.message,'error');return;}
+  allProfiles=allProfiles.map(p=>p.id===activeModId?{...p,...activeModState}:p);
+  const n=Object.values(activeModState).filter(Boolean).length;
+  toast(`Módulos guardados: ${n}/4 activos ✓`,'ok');
+  closeM('m-mods');renderAl(allProfiles);loadDash();
+}
+
+/* ══ ACCESO MANUAL ══ */
+async function darAcceso(){
+  const email=document.getElementById('m-add-email').value.trim();
+  const tipo=document.getElementById('m-add-tipo').value;
+  if(!email){toast('Ingresa un email','error');return;}
+  const{data:pr}=await sb.from('profiles').select('id').eq('email',email);
+  if(!pr?.length){toast('Usuario no encontrado. Debe estar registrado.','error');return;}
+  const id=pr[0].id;
+  const upd={};
+  if(['paid','both'].includes(tipo)){upd.paid=true;upd.status='active';}
+  if(['forum','both'].includes(tipo))upd.forum_approved=true;
+  if(tipo==='mod1'){upd.paid=true;upd.status='active';upd.modulo1=true;}
+  if(tipo==='mod2'){upd.paid=true;upd.status='active';upd.modulo1=true;upd.modulo2=true;}
+  if(tipo==='mod3'){upd.paid=true;upd.status='active';upd.modulo1=true;upd.modulo2=true;upd.modulo3=true;}
+  if(tipo==='all_mods'){upd.paid=true;upd.status='active';upd.modulo1=true;upd.modulo2=true;upd.modulo3=true;upd.modulo4=true;}
+  const{error}=await sb.from('profiles').update(upd).eq('id',id);
+  if(error){toast('Error: '+error.message,'error');return;}
+  toast(`Acceso otorgado a ${email} ✓`,'ok');
+  closeM('m-add');allProfiles=[];loadAlumnos();loadDash();
+}
+
+/* ══ PAGOS ══ */
+async function loadPagos(){
+  const tbody=document.getElementById('pagos-tbody');
+  tbody.innerHTML='<tr><td colspan="6"><div class="loading"><div class="spin"></div>Cargando…</div></td></tr>';
+  const{data}=await sb.from('payments').select('*').order('created_at',{ascending:false});
+  if(!data?.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-ico">💳</div><div class="empty-txt">Sin pagos</div></div></td></tr>';return;}
+  document.getElementById('pagos-meta').textContent=`${data.length} transacciones`;
+  tbody.innerHTML=data.map(p=>`<tr>
+    <td style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)">${p.user_id?.slice(0,14)}…</td>
+    <td><span class="tag tag-teal">${p.plan||'—'}</span></td>
+    <td style="font-weight:700;color:#fff;font-family:'JetBrains Mono',monospace">$${p.amount||'—'}</td>
+    <td>${(p.status==='completed'||p.paid)?`<span class="tag tag-green">Completado</span>`:`<span class="tag tag-amber">Pendiente</span>`}</td>
+    <td style="font-size:10px;color:var(--muted)">${fd(p.created_at)}</td>
+    <td style="font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--muted)">${p.stripe_session_id?.slice(0,22)||'—'}</td>
+  </tr>`).join('');
+}
+
+/* ══ SOLICITUDES ══ */
+async function loadSolicitudes(){
+  const c=document.getElementById('sol-list');
+  c.innerHTML='<div class="loading"><div class="spin"></div>Cargando…</div>';
+  const{data}=await sb.from('forum_access_requests').select('*').order('created_at',{ascending:false});
+  if(!data?.length){c.innerHTML='<div class="empty"><div class="empty-ico">📋</div><div class="empty-txt">Sin solicitudes</div></div>';return;}
+  c.innerHTML=data.map(s=>`
+    <div class="req-card">
+      <div>
+        <div class="req-name">${s.nombre||'—'}</div>
+        <div class="req-meta">${s.email} · ${s.titulo_profesional||'—'} · ${s.especialidad||'—'} · ${s.pais||'—'} · ${fd(s.created_at)}
+          &nbsp;<span class="tag ${s.estado==='pendiente'?'tag-amber':s.estado==='aprobado'?'tag-green':'tag-red'}">${s.estado}</span>
+        </div>
+        ${s.mensaje?`<div class="req-msg">"${s.mensaje}"</div>`:''}
+      </div>
+      <div class="req-acts">
+        ${s.estado!=='aprobado'?`<button class="btn btn-teal btn-sm" onclick="aprobar('${s.id}','${s.email}')">✓ Aprobar</button>`:''}
+        ${s.estado!=='rechazado'?`<button class="btn btn-red btn-sm" onclick="rechazar('${s.id}')">✗ Rechazar</button>`:''}
+      </div>
+    </div>`).join('');
+}
+async function aprobar(id,email){
+  await sb.from('forum_access_requests').update({estado:'aprobado'}).eq('id',id);
+  const{data}=await sb.from('profiles').select('id').eq('email',email);
+  if(data?.length)await sb.from('profiles').update({forum_approved:true}).eq('id',data[0].id);
+  toast(`${email} aprobado ✓`,'ok');loadSolicitudes();loadDash();
+}
+async function rechazar(id){
+  await sb.from('forum_access_requests').update({estado:'rechazado'}).eq('id',id);
+  toast('Solicitud rechazada');loadSolicitudes();loadDash();
+}
+
+/* ══ POSTS ══ */
+async function loadPosts(){
+  const tbody=document.getElementById('posts-tbody');
+  tbody.innerHTML='<tr><td colspan="6"><div class="loading"><div class="spin"></div>Cargando…</div></td></tr>';
+  const{data}=await sb.from('forum_posts').select('*').order('created_at',{ascending:false});
+  if(!data?.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-ico">🩺</div><div class="empty-txt">Sin posts</div></div></td></tr>';return;}
+  document.getElementById('posts-meta').textContent=`${data.length} publicaciones`;
+  tbody.innerHTML=data.map(p=>`<tr>
+    <td style="max-width:200px"><div style="font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.titulo||'—'}</div></td>
+    <td><div class="uc"><div class="av">${(p.autor_nombre||'?')[0]}</div><div><div class="un">${p.autor_nombre||'—'}</div><div class="ue">${p.autor_especialidad||'—'}</div></div></div></td>
+    <td><span class="tag tag-teal">${p.categoria||'—'}</span></td>
+    <td style="font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--teal)">${p.vistas||0}</td>
+    <td style="font-size:10px;color:var(--muted)">${fd(p.created_at)}</td>
+    <td><button class="btn btn-red btn-xs" onclick="delPost('${p.id}')">🗑</button></td>
+  </tr>`).join('');
+}
+async function delPost(id){if(!confirm('¿Eliminar post?'))return;await sb.from('forum_posts').delete().eq('id',id);toast('Post eliminado');loadPosts();}
+
+/* ══ ADMINS ══ */
+function loadAdmins(){const s=localStorage.getItem('icig_admins');if(s)ADMINS=JSON.parse(s);renderAdmins();}
+function renderAdmins(){
+  document.getElementById('admins-tbody').innerHTML=ADMINS.map(email=>`<tr>
+    <td><div class="uc"><div class="av">${email[0].toUpperCase()}</div><div><div class="un">${email}</div></div></div></td>
+    <td><span class="tag tag-teal">Super Admin</span></td>
+    <td>${ADMINS.length>1&&email!==currentUser?.email?`<button class="btn btn-red btn-xs" onclick="removeAdmin('${email}')">Eliminar</button>`:`<span style="color:var(--muted);font-size:10px">—</span>`}</td>
+  </tr>`).join('');
+}
+function addAdmin(){
+  const email=document.getElementById('m-admin-email').value.trim();
+  if(!email||!email.includes('@')){toast('Email inválido','error');return;}
+  if(ADMINS.includes(email)){toast('Ya es admin','warning');return;}
+  ADMINS.push(email);localStorage.setItem('icig_admins',JSON.stringify(ADMINS));
+  toast(`${email} agregado ✓`,'ok');closeM('m-admin');renderAdmins();
+}
+function removeAdmin(email){
+  ADMINS=ADMINS.filter(e=>e!==email);localStorage.setItem('icig_admins',JSON.stringify(ADMINS));
+  toast(`${email} eliminado`);renderAdmins();
+}
+
+/* ══ UTILS ══ */
+function stTag(p){
+  if(p.status==='suspended')return`<span class="tag tag-amber">Suspendido</span>`;
+  if(p.status==='blocked')return`<span class="tag tag-red">Bloqueado</span>`;
+  if(p.paid)return`<span class="tag tag-green">Activo</span>`;
+  return`<span class="tag tag-muted">Sin pago</span>`;
+}
+function modDots(p,click=false){
+  return`<div class="mods-mini">${['modulo1','modulo2','modulo3','modulo4'].map((k,i)=>`
+    <div class="mod-dot ${p[k]?'on':''}" title="${MODS[k]}" ${click?`onclick="abrirMods('${p.id}')"`:''}>${i+1}</div>`).join('')}</div>`;
+}
+function fd(s){if(!s)return'—';return new Date(s).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'});}
+function openM(id){document.getElementById(id).classList.add('open');}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+function toast(msg,type=''){
+  const c=document.getElementById('toasts');
+  const t=document.createElement('div');t.className=`toast ${type}`;
+  const ico={ok:'✓',error:'✗',warning:'⚠','':`ℹ`};
+  t.innerHTML=`<span>${ico[type]||'ℹ'}</span><span>${msg}</span>`;
+  c.appendChild(t);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},3800);
+}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+document.getElementById('lg-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+// Revisar sesión activa al cargar
+(async()=>{
+  const{data:{session}}=await sb.auth.getSession();
+  if(session?.user&&ADMINS.includes(session.user.email))initApp(session.user);
+})();
+</script>
+</body>
+</html>
