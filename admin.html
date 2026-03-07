@@ -422,7 +422,7 @@ async function loadDash(){
   document.getElementById('s-paid').textContent=allProfiles.filter(p=>p.paid).length;
   document.getElementById('s-total').textContent=allProfiles.length;
   document.getElementById('badge-al').textContent=allProfiles.length;
-  const {data:sols}=await sb.from('forum_access_requests').select('id').eq('estado','pendiente');
+  const {data:sols}=await sb.from('forum_access_requests').select('id').eq('aprobado',false);
   const sc=sols?.length||0;
   document.getElementById('s-sol').innerHTML=`<span>${sc}</span>`;
   document.getElementById('badge-sol').textContent=sc;
@@ -625,25 +625,25 @@ async function loadSolicitudes(){
     <div class="req-card">
       <div>
         <div class="req-name">${s.nombre||'—'}</div>
-        <div class="req-meta">${s.email} · ${s.titulo_profesional||'—'} · ${s.especialidad||'—'} · ${s.pais||'—'} · ${fd(s.created_at)}
-          &nbsp;<span class="tag ${s.estado==='pendiente'?'tag-amber':s.estado==='aprobado'?'tag-green':'tag-red'}">${s.estado}</span>
+        <div class="req-meta">${s.email} · ${s.especialidad||'—'} · ${s.institucion||'—'} · ${s.anos_experiencia||'—'} · ${fd(s.created_at)}
+          &nbsp;<span class="tag ${!s.aprobado?'tag-amber':'tag-green'}">${s.aprobado?'Aprobado':'Pendiente'}</span>
         </div>
-        ${s.mensaje?`<div class="req-msg">"${s.mensaje}"</div>`:''}
+        ${s.motivo?`<div class="req-msg">"${s.motivo}"</div>`:''}
       </div>
       <div class="req-acts">
-        ${s.estado!=='aprobado'?`<button class="btn btn-teal btn-sm" onclick="aprobar('${s.id}','${s.email}')">✓ Aprobar</button>`:''}
-        ${s.estado!=='rechazado'?`<button class="btn btn-red btn-sm" onclick="rechazar('${s.id}')">✗ Rechazar</button>`:''}
+        ${!s.aprobado?`<button class="btn btn-teal btn-sm" onclick="aprobar('${s.id}','${s.email}')">✓ Aprobar</button>`:''}
+        ${!s.aprobado?`<button class="btn btn-red btn-sm" onclick="rechazar('${s.id}')">✗ Rechazar</button>`:''}
       </div>
     </div>`).join('');
 }
 async function aprobar(id,email){
-  await sb.from('forum_access_requests').update({estado:'aprobado'}).eq('id',id);
+  await sb.from('forum_access_requests').update({aprobado:true}).eq('id',id);
   const{data}=await sb.from('profiles').select('id').eq('email',email);
   if(data?.length)await sb.from('profiles').update({forum_approved:true}).eq('id',data[0].id);
   toast(`${email} aprobado ✓`,'ok');loadSolicitudes();loadDash();
 }
 async function rechazar(id){
-  await sb.from('forum_access_requests').update({estado:'rechazado'}).eq('id',id);
+  await sb.from('forum_access_requests').delete().eq('id',id);
   toast('Solicitud rechazada');loadSolicitudes();loadDash();
 }
 
