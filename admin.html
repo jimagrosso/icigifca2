@@ -443,7 +443,10 @@ async function loadDash(){
     <td>${stTag(p)}</td><td>${modDots(p,true)}</td>
     <td>${p.forum_approved?`<span class="tag tag-teal">Sí</span>`:`<span class="tag tag-muted">No</span>`}</td>
     <td style="font-size:10px;color:var(--muted)">${fd(p.created_at)}</td>
-    <td><button class="btn btn-ghost btn-xs" onclick="verAl('${p.id}')">Ver</button></td>
+    <td><div class="ag">
+      <button class="btn btn-ghost btn-xs" onclick="verAl('${p.id}')">👁 Ver</button>
+      ${!p.forum_approved?`<button class="btn btn-ghost btn-xs" onclick="tForum('${p.id}',true,'${p.email}')">Foro ✓</button>`:`<button class="btn btn-amber btn-xs" onclick="tForum('${p.id}',false,'${p.email}')">Foro ✗</button>`}
+    </div></td>
   </tr>`).join('');
 }
 
