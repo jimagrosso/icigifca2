@@ -439,7 +439,7 @@ async function loadDash(){
   const list=allProfiles.slice(0,12);
   if(!list.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-ico">👤</div><div class="empty-txt">Sin usuarios</div></div></td></tr>';return;}
   tbody.innerHTML=list.map(p=>`<tr>
-    <td><div class="uc"><div class="av">${(p.name||p.email||'?')[0]}</div><div><div class="un">${p.name||'Sin nombre'}</div><div class="ue">${p.email||'—'}</div></div></div></td>
+    <td><div class="uc"><div class="av">${(p.email||'?')[0].toUpperCase()}</div><div><div class="un">${p.email||'Sin email'}</div>${p.name?`<div class="ue">${p.name}</div>`:''}</div></div></td>
     <td>${stTag(p)}</td><td>${modDots(p,true)}</td>
     <td>${p.forum_approved?`<span class="tag tag-teal">Sí</span>`:`<span class="tag tag-muted">No</span>`}</td>
     <td style="font-size:10px;color:var(--muted)">${fd(p.created_at)}</td>
@@ -457,7 +457,7 @@ function renderAl(list){
   const tbody=document.getElementById('al-tbody');
   if(!list.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-ico">👤</div><div class="empty-txt">Sin resultados</div></div></td></tr>';return;}
   tbody.innerHTML=list.map(p=>`<tr>
-    <td><div class="uc"><div class="av">${(p.name||p.email||'?')[0]}</div><div><div class="un">${p.name||'Sin nombre'}</div><div class="ue">${p.email||'—'}</div></div></div></td>
+    <td><div class="uc"><div class="av">${(p.email||'?')[0].toUpperCase()}</div><div><div class="un">${p.email||'Sin email'}</div>${p.name?`<div class="ue">${p.name}</div>`:''}</div></div></td>
     <td>${stTag(p)}</td><td>${modDots(p,true)}</td>
     <td>${p.forum_approved?`<span class="tag tag-teal">Sí</span>`:`<span class="tag tag-muted">No</span>`}</td>
     <td style="font-size:10px;color:var(--muted)">${fd(p.created_at)}</td>
