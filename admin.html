@@ -439,7 +439,7 @@ async function loadDash(){
   const list=allProfiles.slice(0,12);
   if(!list.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-ico">👤</div><div class="empty-txt">Sin usuarios</div></div></td></tr>';return;}
   tbody.innerHTML=list.map(p=>`<tr>
-    <td><div class="uc"><div class="av">${(p.email||'?')[0].toUpperCase()}</div><div><div class="un">${p.email||'Sin email'}</div>${p.name?`<div class="ue">${p.name}</div>`:''}</div></div></td>
+    <td><div class="uc"><div class="av">${(p.email||'?')[0].toUpperCase()}</div><div><div class="un">${p.email||'Sin email'}</div>${p.nombre_completo?`<div class="ue">${p.nombre_completo}</div>`:''}</div></div></td>
     <td>${stTag(p)}</td><td>${modDots(p,true)}</td>
     <td>${p.forum_approved?`<span class="tag tag-teal">Sí</span>`:`<span class="tag tag-muted">No</span>`}</td>
     <td style="font-size:10px;color:var(--muted)">${fd(p.created_at)}</td>
@@ -457,7 +457,7 @@ function renderAl(list){
   const tbody=document.getElementById('al-tbody');
   if(!list.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-ico">👤</div><div class="empty-txt">Sin resultados</div></div></td></tr>';return;}
   tbody.innerHTML=list.map(p=>`<tr>
-    <td><div class="uc"><div class="av">${(p.email||'?')[0].toUpperCase()}</div><div><div class="un">${p.email||'Sin email'}</div>${p.name?`<div class="ue">${p.name}</div>`:''}</div></div></td>
+    <td><div class="uc"><div class="av">${(p.email||'?')[0].toUpperCase()}</div><div><div class="un">${p.email||'Sin email'}</div>${p.nombre_completo?`<div class="ue">${p.nombre_completo}</div>`:''}</div></div></td>
     <td>${stTag(p)}</td><td>${modDots(p,true)}</td>
     <td>${p.forum_approved?`<span class="tag tag-teal">Sí</span>`:`<span class="tag tag-muted">No</span>`}</td>
     <td style="font-size:10px;color:var(--muted)">${fd(p.created_at)}</td>
@@ -469,16 +469,16 @@ function renderAl(list){
     </div></td>
   </tr>`).join('');
 }
-function filterAl(){const q=document.getElementById('srch-al').value.toLowerCase();renderAl(allProfiles.filter(p=>(p.name||'').toLowerCase().includes(q)||(p.email||'').toLowerCase().includes(q)));}
+function filterAl(){const q=document.getElementById('srch-al').value.toLowerCase();renderAl(allProfiles.filter(p=>(p.nombre_completo||'').toLowerCase().includes(q)||(p.email||'').toLowerCase().includes(q)));}
 
 /* ══ VER ALUMNO ══ */
 function verAl(id){
   const p=allProfiles.find(x=>x.id===id); if(!p)return;
-  document.getElementById('m-detail-title').textContent=p.name||p.email||'Usuario';
+  document.getElementById('m-detail-title').textContent=p.email||'Usuario';
   document.getElementById('m-detail-body').innerHTML=`
     <div class="dg">
       <div class="di"><div class="di-lbl">Email</div><div class="di-val">${p.email||'—'}</div></div>
-      <div class="di"><div class="di-lbl">Nombre</div><div class="di-val">${p.name||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Nombre</div><div class="di-val">${p.nombre_completo||'—'}</div></div>
       <div class="di"><div class="di-lbl">Estado campus</div><div class="di-val">${stTag(p)}</div></div>
       <div class="di"><div class="di-lbl">Acceso foro</div><div class="di-val">${p.forum_approved?'✓ Aprobado':'✗ No'}</div></div>
       <div class="di"><div class="di-lbl">Provider</div><div class="di-val">${p.provider||'email'}</div></div>
