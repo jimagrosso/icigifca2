@@ -377,11 +377,13 @@ tr:hover td{background:rgba(255,255,255,0.015)}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPA_URL = 'https://ejuvegzsuxcgazmeieed.supabase.co';
-const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqdXZlZ3pzdXhjZ2F6bWVpZWVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMTcwNzMsImV4cCI6MjA4Nzg5MzA3M30.sGfE9AJUzL_gZQf8PIWgcslPwifCRDvFIDHHgzQbYDY';
+const SUPA_KEY = 'sb_publishable_iSYiJpecbqoVf-QCJ3AxFQ_vbdoV4t2';
 const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
 
 const MODS = {modulo1:'Módulo I — Bases Científicas',modulo2:'Módulo II — Tecnologías Regenerativas',modulo3:'Módulo III — Funcional y Piso Pélvico',modulo4:'Módulo IV — Cirugía y Práctica Clínica'};
-let ADMINS = ['jimakawary@gmail.com'];
+// Admin list is verified server-side against the 'admins' table in Supabase.
+// Do NOT store admins in localStorage — it's mutable via DevTools.
+let ADMINS = [];
 let currentUser = null, allProfiles = [];
 let activeModId = null, activeModState = {}, activeStatusId = null, selSt = 'active';
 
@@ -391,7 +393,9 @@ async function doLogin() {
   const err=document.getElementById('lg-err'); err.style.display='none';
   const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
   if(error){err.style.display='block';err.textContent='Error: '+error.message;return;}
-  if(!ADMINS.includes(data.user.email)){await sb.auth.signOut();err.style.display='block';err.textContent='Acceso denegado. Solo administradores.';return;}
+  // Verificación server-side contra tabla 'admins' en Supabase
+  const {data:adminRow}=await sb.from('admins').select('email').eq('email',data.user.email).maybeSingle();
+  if(!adminRow){await sb.auth.signOut();err.style.display='block';err.textContent='Acceso denegado. Solo administradores.';return;}
   initApp(data.user);
 }
 function doLogout(){sb.auth.signOut();location.reload();}
@@ -666,7 +670,11 @@ async function loadPosts(){
 async function delPost(id){if(!confirm('¿Eliminar post?'))return;await sb.from('forum_posts').delete().eq('id',id);toast('Post eliminado');loadPosts();}
 
 /* ══ ADMINS ══ */
-function loadAdmins(){const s=localStorage.getItem('icig_admins');if(s)ADMINS=JSON.parse(s);renderAdmins();}
+async function loadAdmins(){
+  const {data}=await sb.from('admins').select('email').order('created_at');
+  if(data) ADMINS=data.map(r=>r.email);
+  renderAdmins();
+}
 function renderAdmins(){
   document.getElementById('admins-tbody').innerHTML=ADMINS.map(email=>`<tr>
     <td><div class="uc"><div class="av">${email[0].toUpperCase()}</div><div><div class="un">${email}</div></div></div></td>
@@ -674,16 +682,19 @@ function renderAdmins(){
     <td>${ADMINS.length>1&&email!==currentUser?.email?`<button class="btn btn-red btn-xs" onclick="removeAdmin('${email}')">Eliminar</button>`:`<span style="color:var(--muted);font-size:10px">—</span>`}</td>
   </tr>`).join('');
 }
-function addAdmin(){
+async function addAdmin(){
   const email=document.getElementById('m-admin-email').value.trim();
   if(!email||!email.includes('@')){toast('Email inválido','error');return;}
   if(ADMINS.includes(email)){toast('Ya es admin','warning');return;}
-  ADMINS.push(email);localStorage.setItem('icig_admins',JSON.stringify(ADMINS));
-  toast(`${email} agregado ✓`,'ok');closeM('m-admin');renderAdmins();
+  const {error}=await sb.from('admins').insert({email});
+  if(error){toast('Error al agregar admin','error');return;}
+  toast(`${email} agregado ✓`,'ok');closeM('m-admin');loadAdmins();
 }
-function removeAdmin(email){
-  ADMINS=ADMINS.filter(e=>e!==email);localStorage.setItem('icig_admins',JSON.stringify(ADMINS));
-  toast(`${email} eliminado`);renderAdmins();
+async function removeAdmin(email){
+  const {error}=await sb.from('admins').delete().eq('email',email);
+  if(error){toast('Error al eliminar admin','error');return;}
+  toast(`${email} eliminado`);loadAdmins();
+}
 }
 
 /* ══ UTILS ══ */
@@ -715,7 +726,10 @@ document.getElementById('lg-pass').addEventListener('keydown',e=>{if(e.key==='En
 // Revisar sesión activa al cargar
 (async()=>{
   const{data:{session}}=await sb.auth.getSession();
-  if(session?.user&&ADMINS.includes(session.user.email))initApp(session.user);
+  if(session?.user){
+    const {data:adminRow}=await sb.from('admins').select('email').eq('email',session.user.email).maybeSingle();
+    if(adminRow)initApp(session.user);
+  }
 })();
 </script>
 </body>
