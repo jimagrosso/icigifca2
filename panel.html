@@ -698,7 +698,7 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL = 'https://ejuvegzsuxcgazmeieed.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqdXZlZ3pzdXhjZ2F6bWVpZWVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMTcwNzMsImV4cCI6MjA4Nzg5MzA3M30.sGfE9AJUzL_gZQf8PIWgcslPwifCRDvFIDHHgzQbYDY';
+const SUPABASE_KEY = 'sb_publishable_iSYiJpecbqoVf-QCJ3AxFQ_vbdoV4t2';
 var _sb = null;
 var currentUser = null;
 
@@ -711,11 +711,20 @@ async function init() {
   if (!window.supabase) { console.error('Supabase CDN no cargó'); return; }
   var supabase = getSupabase();
 
-  // 1. Verificar sesión activa
-  const { data: { session } } = await supabase.auth.getSession();
+  // 1. Verificar sesión — en móvil con OAuth el hash se procesa de forma async
+  // Esperamos hasta 3s para que Supabase procese el token antes de redirigir
+  let { data: { session } } = await supabase.auth.getSession();
   if (!session) {
-    window.location.href = 'login.html';
-    return;
+    // Si hay hash en la URL (viene de OAuth), esperar el evento SIGNED_IN
+    if (window.location.hash.includes('access_token')) {
+      session = await new Promise(resolve => {
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, s) => {
+          if (event === 'SIGNED_IN') { subscription.unsubscribe(); resolve(s); }
+        });
+        setTimeout(() => resolve(null), 5000); // timeout 5s
+      });
+    }
+    if (!session) { window.location.href = 'login.html'; return; }
   }
 
   const authUser = session.user;

@@ -262,6 +262,22 @@ function getSupabase() {
   return window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 }
 
+// Si ya está logueado (o viene del callback de Google), ir directo al panel
+(async () => {
+  const sb = getSupabase(); if (!sb) return;
+  // Esperar a que Supabase procese el hash de OAuth (importante en móvil)
+  let { data: { session } } = await sb.auth.getSession();
+  if (!session && window.location.hash.includes('access_token')) {
+    session = await new Promise(resolve => {
+      const { data: { subscription } } = sb.auth.onAuthStateChange((event, s) => {
+        if (event === 'SIGNED_IN') { subscription.unsubscribe(); resolve(s); }
+      });
+      setTimeout(() => resolve(null), 5000);
+    });
+  }
+  if (session) window.location.href = 'panel.html';
+})();
+
 async function loginGoogle() {
   const sb = getSupabase(); if (!sb) return;
   const btn = document.getElementById('btnGoogle');
