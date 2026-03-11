@@ -201,6 +201,38 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
 .mod-btn-open{padding:9px 20px;background:var(--teal);color:#080E0E;border:none;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s}
 .mod-btn-open:hover{background:#00E0BC;box-shadow:0 0 20px rgba(0,201,167,0.3)}
 
+
+/* ─── PROGRAM SELECTOR ─────────────────────────────── */
+.programs-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px;margin-top:8px}
+.program-card{background:var(--ink3);border:1px solid var(--border);padding:32px 28px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;text-decoration:none;display:block}
+.program-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .25s}
+.program-card.maestria::before{background:linear-gradient(135deg,rgba(201,168,76,0.08),transparent)}
+.program-card.diplomado::before{background:linear-gradient(135deg,rgba(0,201,167,0.08),transparent)}
+.program-card:hover{border-color:rgba(255,255,255,0.15);transform:translateY(-2px)}
+.program-card.maestria:hover{border-color:var(--gold-border)}
+.program-card.diplomado:hover{border-color:var(--teal-border)}
+.program-card:hover::before{opacity:1}
+.program-badge{display:inline-flex;align-items:center;gap:6px;font-size:8px;letter-spacing:2px;text-transform:uppercase;font-weight:700;padding:5px 10px;margin-bottom:20px}
+.program-badge.maestria{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid var(--gold-border)}
+.program-badge.diplomado{background:rgba(0,201,167,0.08);color:var(--teal);border:1px solid var(--teal-border)}
+.program-name{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:10px;line-height:1.1}
+.program-desc{font-size:12px;color:var(--muted);line-height:1.6;font-weight:300;margin-bottom:24px}
+.program-meta{display:flex;flex-direction:column;gap:6px;margin-bottom:24px}
+.program-meta-item{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted2)}
+.program-meta-item span:first-child{font-size:13px}
+.program-arrow{font-size:18px;position:absolute;bottom:28px;right:28px;transition:transform .2s}
+.program-card:hover .program-arrow{transform:translateX(4px)}
+.program-arrow.maestria{color:var(--gold)}
+.program-arrow.diplomado{color:var(--teal)}
+
+/* ─── PROGRAM HEADER (breadcrumb) ──────────────────── */
+.prog-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;cursor:pointer}
+.prog-back{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);padding:6px 12px;border:1px solid var(--border);transition:all .2s}
+.prog-back:hover{border-color:rgba(255,255,255,0.2);color:#fff}
+.prog-breadcrumb{font-size:11px;color:var(--muted)}
+.prog-breadcrumb strong{color:#fff}
+@media(max-width:640px){.programs-grid{grid-template-columns:1fr}.program-name{font-size:18px}}
+
 </style>
 </head>
 <body>
@@ -235,13 +267,13 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
   <nav class="sidebar">
     <div class="sidebar-section">
       <div class="sidebar-section-label">Principal</div>
-      <a class="nav-item active" onclick="showSection('dashboard',this)" href="#">
+      <a class="nav-item active" data-sec="dashboard" onclick="showSection('dashboard',this)" href="#">
         <span class="nav-icon">⊞</span> Dashboard
       </a>
-      <a class="nav-item" onclick="showSection('modulos',this)" href="#">
-        <span class="nav-icon">📚</span> Módulos
+      <a class="nav-item" data-sec="programas" onclick="showSection('programas',this)" href="#">
+        <span class="nav-icon">📚</span> Programas
       </a>
-      <a class="nav-item" onclick="showSection('videos',this)" href="#">
+      <a class="nav-item" data-sec="videos" onclick="showSection('videos',this)" href="#">
         <span class="nav-icon">🎬</span> Videos
       </a>
       <a class="nav-item" onclick="showSection('quiz',this)" href="#">
@@ -290,72 +322,85 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
           <div class="progress-pct">8% completado</div>
         </div>
 
-        <!-- Módulos preview -->
+        <!-- Acceso rápido a programas -->
         <div class="section-header" style="margin-top:8px">
-          <div class="section-title" style="font-size:15px">Módulos del programa</div>
+          <div class="section-title" style="font-size:15px">Mis Programas</div>
+          <div class="section-sub">Selecciona un programa para ver sus módulos</div>
         </div>
-        <div class="modules-grid">
-          <div class="module-card locked" id="dashModulo1Card">
-            <div class="module-lock" id="dashModulo1Lock">🔒</div>
-            <div class="module-num">Módulo 01</div>
-            <div class="module-title">Introducción y fundamentos</div>
-            <div class="module-desc">Bases anatómicas, fisiológicas y científicas de la ginecología regenerativa moderna.</div>
-            <div id="dashModulo1Btn">
-              <button class="module-btn pay" onclick="window.location.href='pagos.html'">Activar Módulo 1 →</button>
+        <div class="programs-grid">
+          <div class="program-card diplomado" onclick="showSection('diplomado',document.querySelector('[data-sec=programas]'))">
+            <div class="program-badge diplomado">⬡ Diplomado</div>
+            <div class="program-name">Diplomado en Ginecología Regenerativa</div>
+            <div class="program-desc">Formación especializada en tecnologías regenerativas aplicadas a la práctica ginecológica clínica.</div>
+            <div class="program-meta">
+              <div class="program-meta-item"><span>📚</span> 4 módulos</div>
+              <div class="program-meta-item"><span>⏱</span> 6 meses · Online</div>
+              <div class="program-meta-item"><span>🎓</span> Certificado internacional</div>
             </div>
+            <div class="program-arrow diplomado">→</div>
           </div>
-          <div class="module-card locked">
-            <div class="module-lock">🔒</div>
-            <div class="module-num">Módulo 02</div>
-            <div class="module-title">Tecnologías regenerativas</div>
-            <div class="module-desc">Láser CO₂, radiofrecuencia, PRP y tecnologías de vanguardia aplicadas a ginecología.</div>
-            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
-          </div>
-          <div class="module-card locked">
-            <div class="module-lock">🔒</div>
-            <div class="module-num">Módulo 03</div>
-            <div class="module-title">Protocolos clínicos</div>
-            <div class="module-desc">Diseño y ejecución de protocolos para atrofia, disfunción y estética ginecológica.</div>
-            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
-          </div>
-          <div class="module-card locked">
-            <div class="module-lock">🔒</div>
-            <div class="module-num">Módulo 04</div>
-            <div class="module-title">Casos clínicos</div>
-            <div class="module-desc">Análisis de casos reales con resolución guiada por docentes especializados.</div>
-            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
-          </div>
-          <div class="module-card locked">
-            <div class="module-lock">🔒</div>
-            <div class="module-num">Módulo 05</div>
-            <div class="module-title">Prácticas / Full Immersion</div>
-            <div class="module-desc">Rotación presencial intensiva en Venezuela, R. Dominicana, Perú o México.</div>
-            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
-          </div>
-          <div class="module-card locked">
-            <div class="module-lock">🔒</div>
-            <div class="module-num">Módulo 06</div>
-            <div class="module-title">Evaluación y certificación</div>
-            <div class="module-desc">Evaluación final, defensa de caso y emisión de título universitario internacional.</div>
-            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+          <div class="program-card maestria" onclick="showSection('maestria',document.querySelector('[data-sec=programas]'))">
+            <div class="program-badge maestria">✦ Maestría</div>
+            <div class="program-name">Maestría en Ginecología Regenerativa</div>
+            <div class="program-desc">Programa de posgrado de alto nivel con formación teórico-práctica completa y título universitario internacional.</div>
+            <div class="program-meta">
+              <div class="program-meta-item"><span>📚</span> 6 módulos + Prácticas</div>
+              <div class="program-meta-item"><span>⏱</span> 12 meses · Online + Presencial</div>
+              <div class="program-meta-item"><span>🎓</span> Título universitario internacional</div>
+            </div>
+            <div class="program-arrow maestria">→</div>
           </div>
         </div>
       </div>
 
-      <!-- ══ MÓDULOS ══ -->
-      <div class="section-panel" id="sec-modulos">
+      <!-- ══ PROGRAMAS (selector) ══ -->
+      <div class="section-panel" id="sec-programas">
         <div class="section-header">
-          <div class="section-title">Módulos del Programa</div>
-          <div class="section-sub">6 módulos · Solo Módulo 1 disponible en fase de registro</div>
+          <div class="section-title">Mis Programas</div>
+          <div class="section-sub">Selecciona un programa para acceder a sus módulos</div>
+        </div>
+        <div class="programs-grid">
+          <div class="program-card diplomado" onclick="showSection('diplomado',document.querySelector('[data-sec=programas]'))">
+            <div class="program-badge diplomado">⬡ Diplomado</div>
+            <div class="program-name">Diplomado en Ginecología Regenerativa</div>
+            <div class="program-desc">Formación especializada en tecnologías regenerativas aplicadas a la práctica ginecológica clínica.</div>
+            <div class="program-meta">
+              <div class="program-meta-item"><span>📚</span> 4 módulos</div>
+              <div class="program-meta-item"><span>⏱</span> 6 meses · Online</div>
+              <div class="program-meta-item"><span>🎓</span> Certificado internacional</div>
+            </div>
+            <div class="program-arrow diplomado">→</div>
+          </div>
+          <div class="program-card maestria" onclick="showSection('maestria',document.querySelector('[data-sec=programas]'))">
+            <div class="program-badge maestria">✦ Maestría</div>
+            <div class="program-name">Maestría en Ginecología Regenerativa</div>
+            <div class="program-desc">Programa de posgrado de alto nivel con formación teórico-práctica completa y título universitario internacional.</div>
+            <div class="program-meta">
+              <div class="program-meta-item"><span>📚</span> 6 módulos + Prácticas</div>
+              <div class="program-meta-item"><span>⏱</span> 12 meses · Online + Presencial</div>
+              <div class="program-meta-item"><span>🎓</span> Título universitario internacional</div>
+            </div>
+            <div class="program-arrow maestria">→</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ DIPLOMADO ══ -->
+      <div class="section-panel" id="sec-diplomado">
+        <div class="prog-header">
+          <div class="prog-back" onclick="showSection('programas',document.querySelector('[data-sec=programas]'))">← Programas</div>
+          <div class="prog-breadcrumb">Programas / <strong>Diplomado</strong></div>
+        </div>
+        <div class="section-header">
+          <div class="section-title">Diplomado en Ginecología Regenerativa</div>
+          <div class="section-sub">4 módulos · Módulo 1 disponible al activar acceso</div>
         </div>
         <div class="modules-grid">
           <div class="module-card" id="modulo1Card">
             <div class="module-num">Módulo 01</div>
             <div class="module-title">Introducción y fundamentos</div>
             <div class="module-desc">Bases anatómicas, fisiológicas y científicas de la ginecología regenerativa. Incluye historia clínica especializada y diagnóstico integral.</div>
-            <div id="modulo1Btn">
-              <!-- Se renderiza con JS según paid -->
-            </div>
+            <div id="modulo1Btn"><!-- JS --></div>
           </div>
           <div class="module-card locked">
             <div class="module-lock">🔒</div>
@@ -374,8 +419,49 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
           <div class="module-card locked">
             <div class="module-lock">🔒</div>
             <div class="module-num">Módulo 04</div>
-            <div class="module-title">Casos clínicos</div>
+            <div class="module-title">Casos clínicos y práctica</div>
             <div class="module-desc">+40 casos reales con presentación, evolución y análisis crítico. Formato interactivo con discusión docente.</div>
+            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ MAESTRÍA ══ -->
+      <div class="section-panel" id="sec-maestria">
+        <div class="prog-header">
+          <div class="prog-back" onclick="showSection('programas',document.querySelector('[data-sec=programas]'))">← Programas</div>
+          <div class="prog-breadcrumb">Programas / <strong>Maestría</strong></div>
+        </div>
+        <div class="section-header">
+          <div class="section-title">Maestría en Ginecología Regenerativa</div>
+          <div class="section-sub">6 módulos · Módulo 1 disponible al activar acceso</div>
+        </div>
+        <div class="modules-grid">
+          <div class="module-card" id="modulo1CardMaestria">
+            <div class="module-num">Módulo 01</div>
+            <div class="module-title">Introducción y fundamentos</div>
+            <div class="module-desc">Bases anatómicas, fisiológicas y científicas de la ginecología regenerativa moderna.</div>
+            <div id="modulo1BtnMaestria"><!-- JS --></div>
+          </div>
+          <div class="module-card locked">
+            <div class="module-lock">🔒</div>
+            <div class="module-num">Módulo 02</div>
+            <div class="module-title">Tecnologías regenerativas</div>
+            <div class="module-desc">Láser CO₂, radiofrecuencia, PRP y tecnologías de vanguardia aplicadas a ginecología clínica.</div>
+            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+          </div>
+          <div class="module-card locked">
+            <div class="module-lock">🔒</div>
+            <div class="module-num">Módulo 03</div>
+            <div class="module-title">Protocolos clínicos</div>
+            <div class="module-desc">Diseño y ejecución de protocolos para atrofia, disfunción y estética ginecológica avanzada.</div>
+            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+          </div>
+          <div class="module-card locked">
+            <div class="module-lock">🔒</div>
+            <div class="module-num">Módulo 04</div>
+            <div class="module-title">Casos clínicos</div>
+            <div class="module-desc">+40 casos reales con presentación, evolución y análisis crítico guiado por docentes especializados.</div>
             <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
           </div>
           <div class="module-card locked">
@@ -812,10 +898,15 @@ async function logout() {
 function showSection(id, el) {
   document.querySelectorAll('.section-panel').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('sec-' + id).classList.add('active');
-  if (el) el.classList.add('active');
-  document.querySelector('.content-area').scrollTop = 0;
-  if (id === 'pagos') cargarPagos();
+  const sec = document.getElementById('sec-' + id);
+  if (sec) sec.classList.add('active');
+  // diplomado/maestria highlight sidebar 'Programas'
+  if (id === 'diplomado' || id === 'maestria') {
+    const progNav = document.querySelector('[data-sec=programas]');
+    if (progNav) progNav.classList.add('active');
+  } else if (el) {
+    el.classList.add('active');
+  }
 }
 
 // ── Módulo 1: botón dinámico según paid ─────────────────
