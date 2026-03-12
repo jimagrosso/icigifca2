@@ -189,6 +189,7 @@ tr:hover td{background:rgba(255,255,255,0.015)}
       <div class="sb-grp">Principal</div>
       <div class="sb-item active" onclick="nav('dashboard',this)"><span class="sb-ico">◈</span>Dashboard</div>
       <div class="sb-item" onclick="nav('alumnos',this)"><span class="sb-ico">👤</span>Alumnos<span class="sb-pill teal" id="badge-al">—</span></div>
+      <div class="sb-item" onclick="nav('aplicaciones',this)"><span class="sb-ico">📋</span>Aplicaciones<span class="sb-pill teal" id="badge-aplic">—</span></div>
       <div class="sb-item" onclick="nav('pagos',this)"><span class="sb-ico">💳</span>Pagos</div>
       <div class="sb-grp">Foro Clínico</div>
       <div class="sb-item" onclick="nav('solicitudes',this)"><span class="sb-ico">📋</span>Solicitudes<span class="sb-pill red" id="badge-sol">0</span></div>
@@ -245,7 +246,46 @@ tr:hover td{background:rgba(255,255,255,0.015)}
         </div>
       </div>
 
-      <!-- PAGOS -->
+      <!-- APLICACIONES -->
+      <div class="view" id="view-aplicaciones">
+        <div class="shdr">
+          <h2>Aplicaciones</h2>
+          <span class="meta" id="aplic-meta">—</span>
+        </div>
+        <div class="tbl-wrap">
+          <div class="tbl-top">
+            <span class="tbl-top-title">Solicitudes de admisión</span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <select id="aplic-filter-estado" onchange="filterAplics()" style="background:#141F1F;border:1px solid rgba(255,255,255,0.07);color:#E8E8E4;padding:6px 10px;font-size:11px;border-radius:2px">
+                <option value="">Todos los estados</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="aprobado">Aprobado</option>
+                <option value="rechazado">Rechazado</option>
+              </select>
+              <select id="aplic-filter-prog" onchange="filterAplics()" style="background:#141F1F;border:1px solid rgba(255,255,255,0.07);color:#E8E8E4;padding:6px 10px;font-size:11px;border-radius:2px">
+                <option value="">Todos los programas</option>
+                <option value="Diplomado">Diplomado</option>
+                <option value="Maestría">Maestría</option>
+              </select>
+              <div class="srch">🔍&nbsp;<input type="text" id="srch-aplic" placeholder="Buscar nombre o email…" oninput="filterAplics()"></div>
+            </div>
+          </div>
+          <table>
+            <thead><tr>
+              <th>Solicitante</th>
+              <th>Programa</th>
+              <th>País</th>
+              <th>Especialidad</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+              <th>Acciones</th>
+            </tr></thead>
+            <tbody id="aplic-tbody"><tr><td colspan="7"><div class="loading"><div class="spin"></div>Cargando…</div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+<!-- PAGOS -->
       <div class="view" id="view-pagos">
         <div class="shdr"><h2>Historial de Pagos</h2><span class="meta" id="pagos-meta">—</span></div>
         <div class="tbl-wrap">
@@ -415,9 +455,105 @@ function nav(id,el){
   document.getElementById('view-'+id).classList.add('active');
   if(el)el.classList.add('active');
   document.getElementById('tb-title').textContent=TITLES[id]||id;
-  ({alumnos:loadAlumnos,pagos:loadPagos,solicitudes:loadSolicitudes,'foro-posts':loadPosts})[id]?.();
+  ({alumnos:loadAlumnos,pagos:loadPagos,solicitudes:loadSolicitudes,'foro-posts':loadPosts,aplicaciones:loadAplicaciones})[id]?.();
 }
 function refreshAll(){loadDash();}
+
+
+/* ══ APLICACIONES ══ */
+let allAplics = [];
+
+async function loadAplicaciones() {
+  document.getElementById('aplic-tbody').innerHTML = '<tr><td colspan="7"><div class="loading"><div class="spin"></div>Cargando…</div></td></tr>';
+  const {data} = await sb.from('aplicaciones').select('*').order('created_at', {ascending: false});
+  allAplics = data || [];
+  document.getElementById('badge-aplic').textContent = allAplics.length;
+  document.getElementById('aplic-meta').textContent = allAplics.length + ' solicitudes en total · ' + allAplics.filter(a=>a.estado==='pendiente').length + ' pendientes';
+  renderAplics(allAplics);
+}
+
+function renderAplics(list) {
+  const tbody = document.getElementById('aplic-tbody');
+  if (!list.length) {
+    tbody.innerHTML = '<tr><td colspan="7"><div class="empty"><div class="empty-ico">📋</div><div class="empty-txt">Sin aplicaciones</div></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = list.map(a => {
+    const estadoTag = a.estado === 'aprobado'
+      ? '<span class="tag tag-teal">Aprobado</span>'
+      : a.estado === 'rechazado'
+      ? '<span class="tag" style="background:rgba(224,85,85,0.1);color:#E05555;border:1px solid rgba(224,85,85,0.2)">Rechazado</span>'
+      : '<span class="tag tag-amber">Pendiente</span>';
+    const prog = a.programa || '—';
+    const progTag = prog.toLowerCase().includes('maestr')
+      ? '<span class="tag tag-amber" style="font-size:9px">✦ Maestría</span>'
+      : '<span class="tag tag-teal" style="font-size:9px">⬡ Diplomado</span>';
+    return \`<tr>
+      <td><div class="uc"><div class="av">\${(a.nombre||'?')[0].toUpperCase()}</div><div>
+        <div class="un">\${a.nombre||'—'}</div>
+        <div class="ue">\${a.correo||'—'}</div>
+      </div></div></td>
+      <td>\${progTag}</td>
+      <td style="font-size:11px">\${a.pais||'—'}</td>
+      <td style="font-size:11px;color:var(--muted2)">\${a.especialidad||'—'}</td>
+      <td>\${estadoTag}</td>
+      <td style="font-size:10px;color:var(--muted)">\${fd(a.created_at)}</td>
+      <td><div class="ag">
+        <button class="btn btn-ghost btn-xs" onclick="verAplic('\${a.id}')">👁 Ver</button>
+        \${a.estado !== 'aprobado' ? \`<button class="btn btn-ghost btn-xs" onclick="cambiarEstadoAplic('\${a.id}','aprobado')">✓ Aprobar</button>\` : ''}
+        \${a.estado !== 'rechazado' ? \`<button class="btn btn-amber btn-xs" onclick="cambiarEstadoAplic('\${a.id}','rechazado')">✗ Rechazar</button>\` : ''}
+      </div></td>
+    </tr>\`;
+  }).join('');
+}
+
+function filterAplics() {
+  const q = document.getElementById('srch-aplic').value.toLowerCase();
+  const estado = document.getElementById('aplic-filter-estado').value;
+  const prog = document.getElementById('aplic-filter-prog').value.toLowerCase();
+  renderAplics(allAplics.filter(a =>
+    (!q || (a.nombre||'').toLowerCase().includes(q) || (a.correo||'').toLowerCase().includes(q)) &&
+    (!estado || a.estado === estado) &&
+    (!prog || (a.programa||'').toLowerCase().includes(prog))
+  ));
+}
+
+async function cambiarEstadoAplic(id, estado) {
+  await sb.from('aplicaciones').update({estado}).eq('id', id);
+  allAplics = allAplics.map(a => a.id === id ? {...a, estado} : a);
+  filterAplics();
+  if (currentAplic?.id === id) currentAplic.estado = estado;
+}
+
+let currentAplic = null;
+function verAplic(id) {
+  currentAplic = allAplics.find(a => a.id === id);
+  if (!currentAplic) return;
+  const a = currentAplic;
+  document.getElementById('aplic-detail-body').innerHTML = \`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+      <div class="di"><div class="di-lbl">Nombre completo</div><div class="di-val">\${a.nombre||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Correo</div><div class="di-val">\${a.correo||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Teléfono</div><div class="di-val">\${a.telefono||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Cédula / ID</div><div class="di-val">\${a.cedula||'—'}</div></div>
+      <div class="di"><div class="di-lbl">País</div><div class="di-val">\${a.pais||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Ciudad</div><div class="di-val">\${a.ciudad||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Programa solicitado</div><div class="di-val">\${a.programa||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Especialidad</div><div class="di-val">\${a.especialidad||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Universidad</div><div class="di-val">\${a.universidad||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Año de graduación</div><div class="di-val">\${a.anio_graduacion||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Curso previo ICIGIFCA</div><div class="di-val">\${a.curso_previo_icigifca||'—'}</div></div>
+      <div class="di" style="grid-column:span 2"><div class="di-lbl">Otras formaciones</div><div class="di-val">\${a.otras_formaciones||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Estado</div><div class="di-val">\${a.estado||'pendiente'}</div></div>
+      <div class="di"><div class="di-lbl">Fecha de aplicación</div><div class="di-val">\${fd(a.created_at)}</div></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+      \${a.estado !== 'aprobado' ? \`<button class="btn btn-ghost btn-sm" onclick="cambiarEstadoAplic('\${a.id}','aprobado');closeM('m-aplic')">✓ Aprobar</button>\` : ''}
+      \${a.estado !== 'rechazado' ? \`<button class="btn btn-amber btn-sm" onclick="cambiarEstadoAplic('\${a.id}','rechazado');closeM('m-aplic')">✗ Rechazar</button>\` : ''}
+    </div>
+  \`;
+  openM('m-aplic');
+}
 
 /* ══ DASHBOARD ══ */
 async function loadDash(){
@@ -734,5 +870,19 @@ document.getElementById('lg-pass').addEventListener('keydown',e=>{if(e.key==='En
   }
 })();
 </script>
+
+<!-- Modal: Detalle aplicación -->
+<div class="overlay" id="m-aplic">
+  <div class="modal wide">
+    <div class="mhdr">
+      <div class="mhdr-title">Detalle de Aplicación</div>
+      <button class="mhdr-close" onclick="closeM('m-aplic')">✕</button>
+    </div>
+    <div class="mbody" id="aplic-detail-body">
+      <!-- Filled by JS -->
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
