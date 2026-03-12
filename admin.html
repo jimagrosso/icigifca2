@@ -488,22 +488,22 @@ function renderAplics(list) {
     const progTag = prog.toLowerCase().includes('maestr')
       ? '<span class="tag tag-amber" style="font-size:9px">✦ Maestría</span>'
       : '<span class="tag tag-teal" style="font-size:9px">⬡ Diplomado</span>';
-    return \`<tr>
-      <td><div class="uc"><div class="av">\${(a.nombre||'?')[0].toUpperCase()}</div><div>
-        <div class="un">\${a.nombre||'—'}</div>
-        <div class="ue">\${a.correo||'—'}</div>
+    return `<tr>
+      <td><div class="uc"><div class="av">${(a.nombre||'?')[0].toUpperCase()}</div><div>
+        <div class="un">${a.nombre||'—'}</div>
+        <div class="ue">${a.correo||'—'}</div>
       </div></div></td>
-      <td>\${progTag}</td>
-      <td style="font-size:11px">\${a.pais||'—'}</td>
-      <td style="font-size:11px;color:var(--muted2)">\${a.especialidad||'—'}</td>
-      <td>\${estadoTag}</td>
-      <td style="font-size:10px;color:var(--muted)">\${fd(a.created_at)}</td>
+      <td>${progTag}</td>
+      <td style="font-size:11px">${a.pais||'—'}</td>
+      <td style="font-size:11px;color:var(--muted2)">${a.especialidad||'—'}</td>
+      <td>${estadoTag}</td>
+      <td style="font-size:10px;color:var(--muted)">${fd(a.created_at)}</td>
       <td><div class="ag">
-        <button class="btn btn-ghost btn-xs" onclick="verAplic('\${a.id}')">👁 Ver</button>
-        \${a.estado !== 'aprobado' ? \`<button class="btn btn-ghost btn-xs" onclick="cambiarEstadoAplic('\${a.id}','aprobado')">✓ Aprobar</button>\` : ''}
-        \${a.estado !== 'rechazado' ? \`<button class="btn btn-amber btn-xs" onclick="cambiarEstadoAplic('\${a.id}','rechazado')">✗ Rechazar</button>\` : ''}
+        <button class="btn btn-ghost btn-xs" onclick="verAplic('${a.id}')">👁 Ver</button>
+        ${a.estado !== 'aprobado' ? `<button class="btn btn-ghost btn-xs" onclick="cambiarEstadoAplic('${a.id}','aprobado')">✓ Aprobar</button>` : ''}
+        ${a.estado !== 'rechazado' ? `<button class="btn btn-amber btn-xs" onclick="cambiarEstadoAplic('${a.id}','rechazado')">✗ Rechazar</button>` : ''}
       </div></td>
-    </tr>\`;
+    </tr>`;
   }).join('');
 }
 
@@ -530,28 +530,28 @@ function verAplic(id) {
   currentAplic = allAplics.find(a => a.id === id);
   if (!currentAplic) return;
   const a = currentAplic;
-  document.getElementById('aplic-detail-body').innerHTML = \`
+  document.getElementById('aplic-detail-body').innerHTML = `
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
-      <div class="di"><div class="di-lbl">Nombre completo</div><div class="di-val">\${a.nombre||'—'}</div></div>
-      <div class="di"><div class="di-lbl">Correo</div><div class="di-val">\${a.correo||'—'}</div></div>
-      <div class="di"><div class="di-lbl">Teléfono</div><div class="di-val">\${a.telefono||'—'}</div></div>
-      <div class="di"><div class="di-lbl">Cédula / ID</div><div class="di-val">\${a.cedula||'—'}</div></div>
-      <div class="di"><div class="di-lbl">País</div><div class="di-val">\${a.pais||'—'}</div></div>
-      <div class="di"><div class="di-lbl">Ciudad</div><div class="di-val">\${a.ciudad||'—'}</div></div>
-      <div class="di"><div class="di-lbl">Programa solicitado</div><div class="di-val">\${a.programa||'—'}</div></div>
-      <div class="di"><div class="di-lbl">Especialidad</div><div class="di-val">\${a.especialidad||'—'}</div></div>
-      <div class="di"><div class="di-lbl">Universidad</div><div class="di-val">\${a.universidad||'—'}</div></div>
-      <div class="di"><div class="di-lbl">Año de graduación</div><div class="di-val">\${a.anio_graduacion||'—'}</div></div>
-      <div class="di"><div class="di-lbl">Curso previo ICIGIFCA</div><div class="di-val">\${a.curso_previo_icigifca||'—'}</div></div>
-      <div class="di" style="grid-column:span 2"><div class="di-lbl">Otras formaciones</div><div class="di-val">\${a.otras_formaciones||'—'}</div></div>
-      <div class="di"><div class="di-lbl">Estado</div><div class="di-val">\${a.estado||'pendiente'}</div></div>
-      <div class="di"><div class="di-lbl">Fecha de aplicación</div><div class="di-val">\${fd(a.created_at)}</div></div>
+      <div class="di"><div class="di-lbl">Nombre completo</div><div class="di-val">${a.nombre||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Correo</div><div class="di-val">${a.correo||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Teléfono</div><div class="di-val">${a.telefono||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Cédula / ID</div><div class="di-val">${a.cedula||'—'}</div></div>
+      <div class="di"><div class="di-lbl">País</div><div class="di-val">${a.pais||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Ciudad</div><div class="di-val">${a.ciudad||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Programa solicitado</div><div class="di-val">${a.programa||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Especialidad</div><div class="di-val">${a.especialidad||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Universidad</div><div class="di-val">${a.universidad||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Año de graduación</div><div class="di-val">${a.anio_graduacion||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Curso previo ICIGIFCA</div><div class="di-val">${a.curso_previo_icigifca||'—'}</div></div>
+      <div class="di" style="grid-column:span 2"><div class="di-lbl">Otras formaciones</div><div class="di-val">${a.otras_formaciones||'—'}</div></div>
+      <div class="di"><div class="di-lbl">Estado</div><div class="di-val">${a.estado||'pendiente'}</div></div>
+      <div class="di"><div class="di-lbl">Fecha de aplicación</div><div class="di-val">${fd(a.created_at)}</div></div>
     </div>
     <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
-      \${a.estado !== 'aprobado' ? \`<button class="btn btn-ghost btn-sm" onclick="cambiarEstadoAplic('\${a.id}','aprobado');closeM('m-aplic')">✓ Aprobar</button>\` : ''}
-      \${a.estado !== 'rechazado' ? \`<button class="btn btn-amber btn-sm" onclick="cambiarEstadoAplic('\${a.id}','rechazado');closeM('m-aplic')">✗ Rechazar</button>\` : ''}
+      ${a.estado !== 'aprobado' ? `<button class="btn btn-ghost btn-sm" onclick="cambiarEstadoAplic('${a.id}','aprobado');closeM('m-aplic')">✓ Aprobar</button>` : ''}
+      ${a.estado !== 'rechazado' ? `<button class="btn btn-amber btn-sm" onclick="cambiarEstadoAplic('${a.id}','rechazado');closeM('m-aplic')">✗ Rechazar</button>` : ''}
     </div>
-  \`;
+  `;
   openM('m-aplic');
 }
 
