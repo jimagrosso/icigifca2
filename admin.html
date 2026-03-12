@@ -879,7 +879,7 @@ function renderComps() {
         <div class="ue">${c.email||'—'}</div>
       </div></div></td>
       <td style="font-weight:700;color:#fff">${c.monto||'—'}</td>
-      <td style="font-size:11px">${(c.programa||c.metodo||'—'}</td>
+      <td style="font-size:11px">${c.programa||c.metodo||'—'}</td>
       <td style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)">${c.referencia||'—'}</td>
       <td>${estadoTag}</td>
       <td style="font-size:10px;color:var(--muted)">${fd(c.created_at)}</td>
