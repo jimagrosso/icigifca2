@@ -828,7 +828,7 @@ async function loadPagos(){
 
 let allComps = [];
 async function loadComprobantes(onlyBadge = false) {
-  const { data, error } = await sb.from('comprobantes_pago').select('*').order('created_at', { ascending: false });
+  const { data, error } = await sb.from('comprobantes').select('*').order('created_at', { ascending: false });
   if (error) { console.error(error); return; }
   allComps = data || [];
 
@@ -879,11 +879,11 @@ function renderComps() {
         <div class="ue">${c.email||'—'}</div>
       </div></div></td>
       <td style="font-weight:700;color:#fff">${c.monto||'—'}</td>
-      <td style="font-size:11px">${c.metodo||'—'}</td>
+      <td style="font-size:11px">${(c.programa||c.metodo||'—'}</td>
       <td style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)">${c.referencia||'—'}</td>
       <td>${estadoTag}</td>
       <td style="font-size:10px;color:var(--muted)">${fd(c.created_at)}</td>
-      <td>${c.imagen_url ? `<a href="${c.imagen_url}" target="_blank" class="btn btn-ghost btn-xs">🖼 Ver</a>` : '—'}</td>
+      <td>${c.comprobante_url ? `<a href="${c.comprobante_url}" target="_blank" class="btn btn-ghost btn-xs">🖼 Ver</a>` : '—'}</td>
       <td style="display:flex;gap:6px">
         ${c.estado !== 'aprobado' ? `<button class="btn btn-ghost btn-xs" onclick="cambiarEstComp('${c.id}','aprobado')">✓ Aprobar</button>` : ''}
         ${c.estado !== 'rechazado' ? `<button class="btn btn-amber btn-xs" onclick="cambiarEstComp('${c.id}','rechazado')">✗ Rechazar</button>` : ''}
@@ -893,7 +893,7 @@ function renderComps() {
 }
 
 async function cambiarEstComp(id, estado) {
-  await sb.from('comprobantes_pago').update({ estado }).eq('id', id);
+  await sb.from('comprobantes').update({ estado }).eq('id', id);
   allComps = allComps.map(c => c.id === id ? { ...c, estado } : c);
   renderComps();
   // Actualizar badge

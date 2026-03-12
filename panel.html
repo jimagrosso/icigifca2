@@ -796,6 +796,52 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
         <div id="pagosContent">
           <div class="pagos-empty"><div class="pagos-empty-icon">💳</div><p>Cargando pagos...</p></div>
         </div>
+
+        <!-- ── Subir comprobante ── -->
+        <div class="section-header" style="margin-top:32px;border-top:1px solid var(--border);padding-top:24px">
+          <h2 class="section-title" style="font-size:15px">📎 Subir comprobante de pago</h2>
+          <p class="section-desc">Si realizaste una transferencia bancaria o Zelle, sube aquí tu comprobante y lo verificaremos en máximo 24h.</p>
+        </div>
+
+        <div id="comprobante-form" style="background:var(--ink2);border:1px solid var(--border);border-radius:12px;padding:24px;max-width:520px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+            <div>
+              <label style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px">Programa</label>
+              <select id="comp-programa" style="width:100%;background:var(--ink3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--fg);font-size:12px">
+                <option value="Diplomado en Ginecología Regenerativa">Diplomado</option>
+                <option value="Maestría en Ginecología Regenerativa">Maestría</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px">Monto (USD)</label>
+              <input id="comp-monto" type="number" min="0" step="0.01" placeholder="Ej: 350.00"
+                style="width:100%;background:var(--ink3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--fg);font-size:12px;box-sizing:border-box">
+            </div>
+          </div>
+          <div style="margin-bottom:14px">
+            <label style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px">Número de referencia (opcional)</label>
+            <input id="comp-ref" type="text" placeholder="Ej: 0004587621"
+              style="width:100%;background:var(--ink3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--fg);font-size:12px;box-sizing:border-box">
+          </div>
+          <div style="margin-bottom:18px">
+            <label style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px">Archivo (imagen o PDF, máx 5MB)</label>
+            <label id="comp-dropzone" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:2px dashed var(--border);border-radius:10px;padding:28px 16px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='var(--teal)'" onmouseout="this.style.borderColor='var(--border)'">
+              <span style="font-size:28px">📄</span>
+              <span id="comp-filename" style="font-size:12px;color:var(--muted)">Click para seleccionar o arrastra aquí</span>
+              <input id="comp-file" type="file" accept="image/*,.pdf" style="display:none" onchange="previewComp(this)">
+            </label>
+          </div>
+          <button id="comp-btn" onclick="subirComprobante()" style="width:100%;background:var(--teal);color:#000;font-weight:700;font-size:12px;letter-spacing:1px;padding:13px;border:none;border-radius:8px;cursor:pointer;text-transform:uppercase">
+            Enviar comprobante
+          </button>
+          <div id="comp-status" style="margin-top:12px;font-size:12px;text-align:center;color:var(--muted)"></div>
+        </div>
+
+        <!-- ── Mis comprobantes enviados ── -->
+        <div style="margin-top:28px">
+          <h3 style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:14px">Comprobantes enviados</h3>
+          <div id="mis-comprobantes"><p style="font-size:12px;color:var(--muted)">Cargando...</p></div>
+        </div>
       </div>
 
       <!-- ══ SOPORTE ══ -->
@@ -990,6 +1036,11 @@ function showSection(id, el) {
   } else if (el) {
     el.classList.add('active');
   }
+  // Cargar datos de pagos y comprobantes al entrar
+  if (id === 'pagos' && currentUser) {
+    cargarPagos();
+    cargarMisComprobantes();
+  }
 }
 
 // ── Módulo 1: botón dinámico según paid ─────────────────
@@ -1064,6 +1115,90 @@ async function cargarPagos() {
       </tr></thead>
       <tbody>${filas}</tbody>
     </table>`;
+}
+
+// ── Comprobantes ─────────────────────────────────────────
+function previewComp(input) {
+  const fn = document.getElementById('comp-filename');
+  if (input.files[0]) fn.textContent = input.files[0].name;
+}
+
+async function subirComprobante() {
+  const file = document.getElementById('comp-file').files[0];
+  const programa = document.getElementById('comp-programa').value;
+  const monto = parseFloat(document.getElementById('comp-monto').value) || 0;
+  const referencia = document.getElementById('comp-ref').value.trim();
+  const status = document.getElementById('comp-status');
+  const btn = document.getElementById('comp-btn');
+
+  if (!file) { status.textContent = '⚠ Selecciona un archivo primero.'; return; }
+  if (file.size > 5 * 1024 * 1024) { status.textContent = '⚠ El archivo supera 5MB.'; return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Subiendo...';
+  status.textContent = '';
+
+  try {
+    const sb = getSupabase();
+    const ext = file.name.split('.').pop();
+    const path = `${currentUser.id}/${Date.now()}.${ext}`;
+
+    const { error: upErr } = await sb.storage.from('comprobantes').upload(path, file, { upsert: false });
+    if (upErr) throw upErr;
+
+    const { data: urlData } = sb.storage.from('comprobantes').getPublicUrl(path);
+    // Use signed URL since bucket is private
+    const { data: signed, error: signErr } = await sb.storage.from('comprobantes').createSignedUrl(path, 60 * 60 * 24 * 365);
+    const url = signed?.signedUrl || urlData?.publicUrl;
+
+    const { error: dbErr } = await sb.from('comprobantes').insert({
+      user_id: currentUser.id,
+      nombre: currentUser.user_metadata?.full_name || currentUser.email,
+      email: currentUser.email,
+      programa,
+      monto,
+      referencia,
+      comprobante_url: url,
+      estado: 'pendiente'
+    });
+    if (dbErr) throw dbErr;
+
+    status.innerHTML = '<span style="color:var(--teal)">✓ Comprobante enviado. Te notificaremos cuando sea verificado.</span>';
+    document.getElementById('comp-file').value = '';
+    document.getElementById('comp-filename').textContent = 'Click para seleccionar o arrastra aquí';
+    document.getElementById('comp-monto').value = '';
+    document.getElementById('comp-ref').value = '';
+    cargarMisComprobantes();
+  } catch(e) {
+    status.textContent = '✗ Error al subir: ' + (e.message || e);
+  }
+  btn.disabled = false;
+  btn.textContent = 'Enviar comprobante';
+}
+
+async function cargarMisComprobantes() {
+  const el = document.getElementById('mis-comprobantes');
+  if (!el) return;
+  const { data, error } = await getSupabase().from('comprobantes')
+    .select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+  if (!data || data.length === 0) {
+    el.innerHTML = '<p style="font-size:12px;color:var(--muted)">Aún no has enviado comprobantes.</p>';
+    return;
+  }
+  const fmt = iso => new Date(iso).toLocaleDateString('es-VE', {day:'2-digit', month:'short', year:'numeric'});
+  const estadoColor = { pendiente: '#d4a017', verificado: 'var(--teal)', rechazado: '#E05555' };
+  const filas = data.map(c => `<tr>
+    <td style="font-size:11px">${fmt(c.created_at)}</td>
+    <td style="font-size:11px">${c.programa || '—'}</td>
+    <td style="font-size:11px">${c.monto ? '$' + c.monto : '—'}</td>
+    <td style="font-size:11px">${c.referencia || '—'}</td>
+    <td><span style="font-size:10px;font-weight:700;color:${estadoColor[c.estado] || 'var(--muted)'};text-transform:uppercase;letter-spacing:.5px">${c.estado}</span></td>
+    <td><a href="${c.comprobante_url}" target="_blank" style="color:var(--teal);font-size:11px">Ver archivo</a></td>
+  </tr>`).join('');
+  el.innerHTML = `<table class="pagos-table">
+    <thead><tr><th>Fecha</th><th>Programa</th><th>Monto</th><th>Referencia</th><th>Estado</th><th>Archivo</th></tr></thead>
+    <tbody>${filas}</tbody>
+  </table>`;
 }
 
 window.addEventListener('load', init);
