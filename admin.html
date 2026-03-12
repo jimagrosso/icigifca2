@@ -91,6 +91,9 @@ tr:hover td{background:rgba(255,255,255,0.015)}
 .mod-dot{width:22px;height:22px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;cursor:pointer;transition:all .15s;border:1px solid var(--border);color:var(--muted);background:var(--ink3);font-family:'JetBrains Mono',monospace}
 .mod-dot.on{background:rgba(0,201,167,0.15);border-color:var(--border-t);color:var(--teal)}
 .mod-dot:hover{border-color:rgba(0,201,167,0.4)}
+.mod-dot.mae{border-color:rgba(245,158,11,0.2);color:var(--muted)}
+.mod-dot.mae.on-mae{background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.5);color:#f5a623}
+.mod-dot.mae:hover{border-color:rgba(245,158,11,0.5)}
 .ag{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .2s;backdrop-filter:blur(6px)}
 .overlay.open{opacity:1;visibility:visible}
@@ -423,15 +426,32 @@ tr:hover td{background:rgba(255,255,255,0.015)}
 
 <!-- Modal: Módulos -->
 <div class="overlay" id="m-mods">
-  <div class="modal">
+  <div class="modal" style="max-width:640px">
     <div class="mhdr"><span class="mttl">Gestionar Módulos</span><span class="mcls" onclick="closeM('m-mods')">✕</span></div>
     <div class="mbdy">
-      <div style="font-size:12px;color:var(--muted2);margin-bottom:4px">Alumno: <strong id="m-mods-email" style="color:#fff">—</strong></div>
-      <div class="alert alert-teal" style="margin:12px 0"><span>ℹ</span><span>Activa/desactiva el acceso a cada módulo del campus.</span></div>
-      <div class="mod-grid" id="m-mods-grid"></div>
-      <div style="display:flex;gap:8px;margin-top:6px">
-        <button class="btn btn-teal btn-sm" onclick="allMods(true)">✓ Todos</button>
-        <button class="btn btn-red btn-sm" onclick="allMods(false)">✗ Ninguno</button>
+      <div style="font-size:12px;color:var(--muted2);margin-bottom:14px">Alumno: <strong id="m-mods-email" style="color:#fff">—</strong></div>
+      <!-- Tabs programa -->
+      <div style="display:flex;gap:6px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:12px">
+        <button id="mods-tab-dip" class="btn btn-teal btn-sm" onclick="switchModsTab('dip')">⬡ Diplomado</button>
+        <button id="mods-tab-mae" class="btn btn-ghost btn-sm" onclick="switchModsTab('mae')">✦ Maestría</button>
+      </div>
+      <!-- Panel Diplomado -->
+      <div id="mods-panel-dip">
+        <div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Diplomado en Ginecología Regenerativa — 4 Módulos</div>
+        <div class="mod-grid" id="m-mods-grid-dip"></div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn btn-teal btn-sm" onclick="allMods('dip',true)">✓ Todos</button>
+          <button class="btn btn-red btn-sm" onclick="allMods('dip',false)">✗ Ninguno</button>
+        </div>
+      </div>
+      <!-- Panel Maestría -->
+      <div id="mods-panel-mae" style="display:none">
+        <div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Maestría en Ginecología Regenerativa — 8 Módulos</div>
+        <div class="mod-grid" id="m-mods-grid-mae"></div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn btn-teal btn-sm" onclick="allMods('mae',true)">✓ Todos</button>
+          <button class="btn btn-red btn-sm" onclick="allMods('mae',false)">✗ Ninguno</button>
+        </div>
       </div>
     </div>
     <div class="mftr">
@@ -459,7 +479,23 @@ const SUPA_URL = 'https://ejuvegzsuxcgazmeieed.supabase.co';
 const SUPA_KEY = 'sb_publishable_iSYiJpecbqoVf-QCJ3AxFQ_vbdoV4t2';
 const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
 
-const MODS = {modulo1:'Módulo I — Bases Científicas',modulo2:'Módulo II — Tecnologías Regenerativas',modulo3:'Módulo III — Funcional y Piso Pélvico',modulo4:'Módulo IV — Cirugía y Práctica Clínica'};
+const MODS_DIP = {
+  modulo1:'Módulo I — Bases Científicas',
+  modulo2:'Módulo II — Tecnologías Regenerativas',
+  modulo3:'Módulo III — Funcional y Piso Pélvico',
+  modulo4:'Módulo IV — Cirugía y Práctica Clínica'
+};
+const MODS_MAE = {
+  mae_modulo1:'Módulo 1 — Fundamentos de Ginecología Regenerativa',
+  mae_modulo2:'Módulo 2 — Tecnologías Regenerativas Avanzadas',
+  mae_modulo3:'Módulo 3 — Energías Aplicadas a la Medicina',
+  mae_modulo4:'Módulo 4 — Diagnóstico Funcional y Sexualidad',
+  mae_modulo5:'Módulo 5 — Cirugía Regenerativa y Estética Genital',
+  mae_modulo6:'Módulo 6 — Terapia Hormonal y Medicina Funcional',
+  mae_modulo7:'Módulo 7 — Protocolos Clínicos y Casos Avanzados',
+  mae_modulo8:'Módulo 8 — Investigación y Desarrollo Profesional'
+};
+const MODS = {...MODS_DIP}; // backwards compat for dot display
 // Admin list is verified server-side against the 'admins' table in Supabase.
 // Do NOT store admins in localStorage — it's mutable via DevTools.
 let ADMINS = [];
@@ -683,14 +719,26 @@ function verAl(id){
       ${p.admin_note?`<div class="di" style="grid-column:span 2"><div class="di-lbl">Nota admin</div><div class="di-val" style="color:var(--amber)">${p.admin_note}</div></div>`:''}
     </div>
     <div style="margin-bottom:18px">
-      <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px">Estado de Módulos</div>
-      <div class="mod-grid">
-        ${Object.entries(MODS).map(([k,n])=>`
+      <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px">Diplomado — Módulos</div>
+      <div class="mod-grid" style="margin-bottom:18px">
+        ${Object.entries(MODS_DIP).map(([k,n],i)=>`
           <div class="mod-card ${p[k]?'unlocked':''}">
-            <div class="mc-num">${k.replace('modulo','MOD-0')}</div>
+            <div class="mc-num">DIP-0${i+1}</div>
             <div class="mc-title">${n}</div>
             <div class="mc-bot">
               <span class="tag ${p[k]?'tag-green':'tag-muted'}">${p[k]?'Activo':'Bloqueado'}</span>
+              <button class="btn ${p[k]?'btn-red':'btn-teal'} btn-xs" onclick="quickMod('${p.id}','${k}',${!p[k]})">${p[k]?'Bloquear':'Activar'}</button>
+            </div>
+          </div>`).join('')}
+      </div>
+      <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px">Maestría — Módulos</div>
+      <div class="mod-grid">
+        ${Object.entries(MODS_MAE).map(([k,n],i)=>`
+          <div class="mod-card ${p[k]?'unlocked':''}" style="${p[k]?'border-color:rgba(245,158,11,0.4)':''}">
+            <div class="mc-num" style="color:${p[k]?'#f5a623':'var(--muted)'}">MAE-0${i+1}</div>
+            <div class="mc-title">${n}</div>
+            <div class="mc-bot">
+              <span class="tag ${p[k]?'tag-amber':'tag-muted'}">${p[k]?'Activo':'Bloqueado'}</span>
               <button class="btn ${p[k]?'btn-red':'btn-teal'} btn-xs" onclick="quickMod('${p.id}','${k}',${!p[k]})">${p[k]?'Bloquear':'Activar'}</button>
             </div>
           </div>`).join('')}
@@ -748,33 +796,59 @@ async function applyStatus(){
 }
 
 /* ══ MÓDULOS ══ */
+function switchModsTab(prog){
+  document.getElementById('mods-panel-dip').style.display=prog==='dip'?'':'none';
+  document.getElementById('mods-panel-mae').style.display=prog==='mae'?'':'none';
+  document.getElementById('mods-tab-dip').className='btn btn-sm '+(prog==='dip'?'btn-teal':'btn-ghost');
+  document.getElementById('mods-tab-mae').className='btn btn-sm '+(prog==='mae'?'btn-teal':'btn-ghost');
+}
 function abrirMods(id){
   const p=allProfiles.find(x=>x.id===id);if(!p)return;
   activeModId=id;
-  activeModState={modulo1:!!p.modulo1,modulo2:!!p.modulo2,modulo3:!!p.modulo3,modulo4:!!p.modulo4};
+  activeModState={
+    modulo1:!!p.modulo1,modulo2:!!p.modulo2,modulo3:!!p.modulo3,modulo4:!!p.modulo4,
+    mae_modulo1:!!p.mae_modulo1,mae_modulo2:!!p.mae_modulo2,mae_modulo3:!!p.mae_modulo3,
+    mae_modulo4:!!p.mae_modulo4,mae_modulo5:!!p.mae_modulo5,mae_modulo6:!!p.mae_modulo6,
+    mae_modulo7:!!p.mae_modulo7,mae_modulo8:!!p.mae_modulo8
+  };
   document.getElementById('m-mods-email').textContent=p.email||'—';
-  renderModGrid();openM('m-mods');
+  switchModsTab('dip');
+  renderModGrid();
+  openM('m-mods');
 }
 function renderModGrid(){
-  document.getElementById('m-mods-grid').innerHTML=Object.entries(MODS).map(([k,n])=>`
+  document.getElementById('m-mods-grid-dip').innerHTML=Object.entries(MODS_DIP).map(([k,n],i)=>`
     <div class="mod-card ${activeModState[k]?'unlocked':''}">
-      <div class="mc-num">${k.replace('modulo','MOD-0')}</div>
+      <div class="mc-num">DIP-0${i+1}</div>
       <div class="mc-title">${n}</div>
       <div class="mc-bot">
         <span class="tag ${activeModState[k]?'tag-green':'tag-muted'}">${activeModState[k]?'Activo':'Bloqueado'}</span>
         <button class="btn ${activeModState[k]?'btn-red':'btn-teal'} btn-xs" onclick="togMod('${k}')">${activeModState[k]?'Bloquear':'Activar'}</button>
       </div>
     </div>`).join('');
+  document.getElementById('m-mods-grid-mae').innerHTML=Object.entries(MODS_MAE).map(([k,n],i)=>`
+    <div class="mod-card ${activeModState[k]?'unlocked':''}">
+      <div class="mc-num">MAE-0${i+1}</div>
+      <div class="mc-title">${n}</div>
+      <div class="mc-bot">
+        <span class="tag ${activeModState[k]?'tag-amber':'tag-muted'}">${activeModState[k]?'Activo':'Bloqueado'}</span>
+        <button class="btn ${activeModState[k]?'btn-red':'btn-teal'} btn-xs" onclick="togMod('${k}')">${activeModState[k]?'Bloquear':'Activar'}</button>
+      </div>
+    </div>`).join('');
 }
 function togMod(k){activeModState[k]=!activeModState[k];renderModGrid();}
-function allMods(v){Object.keys(activeModState).forEach(k=>activeModState[k]=v);renderModGrid();}
+function allMods(prog,v){
+  const keys=prog==='dip'?Object.keys(MODS_DIP):Object.keys(MODS_MAE);
+  keys.forEach(k=>activeModState[k]=v);renderModGrid();
+}
 async function saveMods(){
   if(!activeModId)return;
   const{error}=await sb.from('profiles').update(activeModState).eq('id',activeModId);
   if(error){toast('Error: '+error.message,'error');return;}
   allProfiles=allProfiles.map(p=>p.id===activeModId?{...p,...activeModState}:p);
-  const n=Object.values(activeModState).filter(Boolean).length;
-  toast(`Módulos guardados: ${n}/4 activos ✓`,'ok');
+  const nD=Object.keys(MODS_DIP).filter(k=>activeModState[k]).length;
+  const nM=Object.keys(MODS_MAE).filter(k=>activeModState[k]).length;
+  toast(`Guardado ✓  Diplomado: ${nD}/4 · Maestría: ${nM}/8`,'ok');
   closeM('m-mods');renderAl(allProfiles);loadDash();
 }
 
@@ -1005,8 +1079,12 @@ function stTag(p){
   return`<span class="tag tag-muted">Sin pago</span>`;
 }
 function modDots(p,click=false){
-  return`<div class="mods-mini">${['modulo1','modulo2','modulo3','modulo4'].map((k,i)=>`
-    <div class="mod-dot ${p[k]?'on':''}" title="${MODS[k]}" ${click?`onclick="abrirMods('${p.id}')"`:''}>${i+1}</div>`).join('')}</div>`;
+  const ca=click?`onclick="abrirMods('${p.id}')" style="cursor:pointer"`:'';
+  const dip=['modulo1','modulo2','modulo3','modulo4'].map((k,i)=>
+    `<div class="mod-dot ${p[k]?'on':''}" title="DIP-0${i+1}" ${ca}>${i+1}</div>`).join('');
+  const mae=['mae_modulo1','mae_modulo2','mae_modulo3','mae_modulo4','mae_modulo5','mae_modulo6','mae_modulo7','mae_modulo8'].map((k,i)=>
+    `<div class="mod-dot mae ${p[k]?'on-mae':''}" title="MAE-0${i+1}" ${ca}>${i+1}</div>`).join('');
+  return`<div style="display:flex;flex-direction:column;gap:4px"><div class="mods-mini">${dip}</div><div class="mods-mini">${mae}</div></div>`;
 }
 function fd(s){if(!s)return'—';return new Date(s).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'});}
 function openM(id){document.getElementById(id).classList.add('open');}
