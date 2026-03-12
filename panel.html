@@ -1151,10 +1151,15 @@ async function subirComprobante() {
     const { data: signed, error: signErr } = await sb.storage.from('comprobantes').createSignedUrl(path, 60 * 60 * 24 * 365);
     const url = signed?.signedUrl || urlData?.publicUrl;
 
+    // Obtener nombre del perfil si no está en metadata
+    const { data: perfil } = await sb.from('profiles').select('nombre_completo, email').eq('id', currentUser.id).single();
+    const _nombre = currentUser.user_metadata?.full_name || perfil?.nombre_completo || currentUser.email;
+    const _email = currentUser.email || perfil?.email;
+
     const { error: dbErr } = await sb.from('comprobantes').insert({
       user_id: currentUser.id,
-      nombre: currentUser.user_metadata?.full_name || currentUser.email,
-      email: currentUser.email,
+      nombre: _nombre,
+      email: _email,
       programa,
       monto,
       referencia,
