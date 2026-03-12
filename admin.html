@@ -523,6 +523,25 @@ async function cambiarEstadoAplic(id, estado) {
   allAplics = allAplics.map(a => a.id === id ? {...a, estado} : a);
   filterAplics();
   if (currentAplic?.id === id) currentAplic.estado = estado;
+
+  // Si se aprueba, abrir WhatsApp con mensaje pre-escrito
+  if (estado === 'aprobado') {
+    const a = allAplics.find(x => x.id === id);
+    if (a?.telefono) {
+      const tel = a.telefono.replace(/\D/g, ''); // solo números
+      const nombre = a.nombre?.split(' ')[0] || 'Doctor/a';
+      const programa = a.programa || 'el programa';
+      const msg = encodeURIComponent(
+        `Estimado/a ${nombre}, nos complace informarle que su aplicación al *${programa}* del Instituto Internacional de Ginecología y Cirugía Funcional de Centro América (ICIGIFCA) ha sido *aprobada*.\n\n` +
+        `Le invitamos a completar su registro en nuestro campus virtual: https://icigifca.net/registro.html\n\n` +
+        `Quedo a su disposición para cualquier consulta.\n\n` +
+        `_Equipo ICIGIFCA_`
+      );
+      window.open(`https://wa.me/${tel}?text=${msg}`, '_blank');
+    } else {
+      toast(`✓ Aprobada — Sin teléfono registrado para contactar por WhatsApp`, 'teal');
+    }
+  }
 }
 
 let currentAplic = null;
