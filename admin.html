@@ -33,7 +33,8 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--ink);color
 .sb-pill.teal{background:var(--teal);color:var(--ink)}
 .sb-pill.muted{background:rgba(255,255,255,0.08);color:var(--muted)}
 .sb-foot{padding:14px 18px;border-top:1px solid var(--border);display:flex;align-items:center;gap:9px;}
-.sb-dot{width:7px;height:7px;background:var(--green);border-radius:50%;flex-shrink:0}
+.pago-tab.active{background:rgba(0,201,167,0.15);color:#00C9A7;border-color:rgba(0,201,167,0.3)}
+.sb-dot{
 .sb-info{flex:1;min-width:0}
 .sb-uname{font-size:11px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sb-urole{font-size:8px;color:var(--teal);letter-spacing:1px;text-transform:uppercase}
@@ -190,7 +191,7 @@ tr:hover td{background:rgba(255,255,255,0.015)}
       <div class="sb-item active" onclick="nav('dashboard',this)"><span class="sb-ico">◈</span>Dashboard</div>
       <div class="sb-item" onclick="nav('alumnos',this)"><span class="sb-ico">👤</span>Alumnos<span class="sb-pill teal" id="badge-al">—</span></div>
       <div class="sb-item" onclick="nav('aplicaciones',this)"><span class="sb-ico">📋</span>Aplicaciones<span class="sb-pill teal" id="badge-aplic">—</span></div>
-      <div class="sb-item" onclick="nav('pagos',this)"><span class="sb-ico">💳</span>Pagos</div>
+      <div class="sb-item" onclick="nav('pagos',this)"><span class="sb-ico">💳</span>Pagos<span class="sb-pill red" id="badge-comp-nav" style="display:none">0</span></div>
       <div class="sb-grp">Foro Clínico</div>
       <div class="sb-item" onclick="nav('solicitudes',this)"><span class="sb-ico">📋</span>Solicitudes<span class="sb-pill red" id="badge-sol">0</span></div>
       <div class="sb-item" onclick="nav('foro-posts',this)"><span class="sb-ico">🩺</span>Posts del Foro</div>
@@ -287,10 +288,47 @@ tr:hover td{background:rgba(255,255,255,0.015)}
 
 <!-- PAGOS -->
       <div class="view" id="view-pagos">
-        <div class="shdr"><h2>Historial de Pagos</h2><span class="meta" id="pagos-meta">—</span></div>
-        <div class="tbl-wrap">
-          <table><thead><tr><th>Usuario ID</th><th>Plan</th><th>Monto</th><th>Estado</th><th>Fecha</th><th>Stripe Ref</th></tr></thead>
-          <tbody id="pagos-tbody"><tr><td colspan="6"><div class="loading"><div class="spin"></div>Cargando…</div></td></tr></tbody></table>
+        <div class="shdr">
+          <h2>Pagos</h2>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-ghost btn-sm pago-tab active" id="tab-stripe" onclick="switchPagoTab('stripe',this)">💳 Stripe</button>
+            <button class="btn btn-ghost btn-sm pago-tab" id="tab-comp" onclick="switchPagoTab('comp',this)">📎 Comprobantes <span class="sb-pill red" id="badge-comp" style="display:none">0</span></button>
+          </div>
+        </div>
+
+        <!-- Stripe -->
+        <div id="pago-panel-stripe">
+          <div class="tbl-wrap">
+            <table><thead><tr><th>Usuario</th><th>Plan</th><th>Monto</th><th>Estado</th><th>Fecha</th><th>Stripe Ref</th></tr></thead>
+            <tbody id="pagos-tbody"><tr><td colspan="6"><div class="loading"><div class="spin"></div>Cargando…</div></td></tr></tbody></table>
+          </div>
+        </div>
+
+        <!-- Comprobantes manuales -->
+        <div id="pago-panel-comp" style="display:none">
+          <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap">
+            <input type="text" class="comp-search" id="compSearch" placeholder="Buscar nombre o email…" oninput="filterComps()" style="flex:1;min-width:200px;background:#0D1515;border:1px solid rgba(255,255,255,0.07);color:#E8E8E4;padding:8px 12px;font-size:12px;border-radius:2px">
+            <select id="compEstFilter" onchange="filterComps()" style="background:#0D1515;border:1px solid rgba(255,255,255,0.07);color:#E8E8E4;padding:8px 12px;font-size:12px;border-radius:2px">
+              <option value="">Todos</option>
+              <option value="pendiente">Pendiente</option>
+              <option value="aprobado">Aprobado</option>
+              <option value="rechazado">Rechazado</option>
+            </select>
+          </div>
+          <div class="tbl-wrap">
+            <table><thead><tr>
+              <th>Alumno</th><th>Monto</th><th>Método</th><th>Referencia</th><th>Estado</th><th>Fecha</th><th>Imagen</th><th>Acciones</th>
+            </tr></thead>
+            <tbody id="comp-tbody"><tr><td colspan="8"><div class="loading"><div class="spin"></div>Cargando…</div></td></tr></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL COMPROBANTE -->
+      <div class="modal" id="m-comp" onclick="if(event.target===this)closeM('m-comp')">
+        <div class="modal-box" style="max-width:600px">
+          <div class="modal-hdr"><span id="mcomp-title">Comprobante</span><button class="btn-close" onclick="closeM('m-comp')">✕</button></div>
+          <div id="mcomp-body" style="padding:24px"></div>
         </div>
       </div>
 
@@ -761,12 +799,20 @@ async function darAcceso(){
 }
 
 /* ══ PAGOS ══ */
+/* ══ PAGOS TABS ══ */
+function switchPagoTab(tab, el) {
+  document.querySelectorAll('.pago-tab').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('pago-panel-stripe').style.display = tab === 'stripe' ? '' : 'none';
+  document.getElementById('pago-panel-comp').style.display = tab === 'comp' ? '' : 'none';
+  if (tab === 'comp') loadComprobantes();
+}
+
 async function loadPagos(){
   const tbody=document.getElementById('pagos-tbody');
   tbody.innerHTML='<tr><td colspan="6"><div class="loading"><div class="spin"></div>Cargando…</div></td></tr>';
   const{data}=await sb.from('payments').select('*').order('created_at',{ascending:false});
-  if(!data?.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-ico">💳</div><div class="empty-txt">Sin pagos</div></div></td></tr>';return;}
-  document.getElementById('pagos-meta').textContent=`${data.length} transacciones`;
+  if(!data?.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-ico">💳</div><div class="empty-txt">Sin pagos Stripe</div></div></td></tr>';return;}
   tbody.innerHTML=data.map(p=>`<tr>
     <td style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)">${p.user_id?.slice(0,14)}…</td>
     <td><span class="tag tag-teal">${p.plan||'—'}</span></td>
@@ -775,6 +821,88 @@ async function loadPagos(){
     <td style="font-size:10px;color:var(--muted)">${fd(p.created_at)}</td>
     <td style="font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--muted)">${p.stripe_session_id?.slice(0,22)||'—'}</td>
   </tr>`).join('');
+
+  // También cargar badge de comprobantes pendientes
+  loadComprobantes(true);
+}
+
+let allComps = [];
+async function loadComprobantes(onlyBadge = false) {
+  const { data, error } = await sb.from('comprobantes_pago').select('*').order('created_at', { ascending: false });
+  if (error) { console.error(error); return; }
+  allComps = data || [];
+
+  // Badge de pendientes
+  const pendientes = allComps.filter(c => c.estado === 'pendiente').length;
+  const badge = document.getElementById('badge-comp');
+  const badgeNav = document.getElementById('badge-comp-nav');
+  if (pendientes > 0) {
+    badge.textContent = pendientes; badge.style.display = '';
+    badgeNav.textContent = pendientes; badgeNav.style.display = '';
+  } else {
+    badge.style.display = 'none';
+    badgeNav.style.display = 'none';
+  }
+
+  if (!onlyBadge) renderComps();
+}
+
+function filterComps() {
+  renderComps();
+}
+
+function renderComps() {
+  const tbody = document.getElementById('comp-tbody');
+  const search = document.getElementById('compSearch').value.toLowerCase();
+  const estFilter = document.getElementById('compEstFilter').value;
+
+  let list = allComps.filter(c => {
+    const matchSearch = !search || (c.nombre||'').toLowerCase().includes(search) || (c.email||'').toLowerCase().includes(search);
+    const matchEst = !estFilter || c.estado === estFilter;
+    return matchSearch && matchEst;
+  });
+
+  if (!list.length) {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty"><div class="empty-ico">📎</div><div class="empty-txt">Sin comprobantes</div></div></td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = list.map(c => {
+    const estadoTag = c.estado === 'aprobado'
+      ? '<span class="tag" style="background:rgba(0,201,167,0.1);color:#00C9A7;border:1px solid rgba(0,201,167,0.2)">Aprobado</span>'
+      : c.estado === 'rechazado'
+      ? '<span class="tag" style="background:rgba(224,85,85,0.1);color:#E05555;border:1px solid rgba(224,85,85,0.2)">Rechazado</span>'
+      : '<span class="tag tag-amber">Pendiente</span>';
+    return `<tr>
+      <td><div class="uc"><div class="av">${(c.nombre||'?')[0].toUpperCase()}</div><div>
+        <div class="un">${c.nombre||'—'}</div>
+        <div class="ue">${c.email||'—'}</div>
+      </div></div></td>
+      <td style="font-weight:700;color:#fff">${c.monto||'—'}</td>
+      <td style="font-size:11px">${c.metodo||'—'}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)">${c.referencia||'—'}</td>
+      <td>${estadoTag}</td>
+      <td style="font-size:10px;color:var(--muted)">${fd(c.created_at)}</td>
+      <td>${c.imagen_url ? `<a href="${c.imagen_url}" target="_blank" class="btn btn-ghost btn-xs">🖼 Ver</a>` : '—'}</td>
+      <td style="display:flex;gap:6px">
+        ${c.estado !== 'aprobado' ? `<button class="btn btn-ghost btn-xs" onclick="cambiarEstComp('${c.id}','aprobado')">✓ Aprobar</button>` : ''}
+        ${c.estado !== 'rechazado' ? `<button class="btn btn-amber btn-xs" onclick="cambiarEstComp('${c.id}','rechazado')">✗ Rechazar</button>` : ''}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+async function cambiarEstComp(id, estado) {
+  await sb.from('comprobantes_pago').update({ estado }).eq('id', id);
+  allComps = allComps.map(c => c.id === id ? { ...c, estado } : c);
+  renderComps();
+  // Actualizar badge
+  const pendientes = allComps.filter(c => c.estado === 'pendiente').length;
+  const badge = document.getElementById('badge-comp');
+  const badgeNav = document.getElementById('badge-comp-nav');
+  if (pendientes > 0) { badge.textContent = pendientes; badge.style.display = ''; badgeNav.textContent = pendientes; badgeNav.style.display = ''; }
+  else { badge.style.display = 'none'; badgeNav.style.display = 'none'; }
+  toast(estado === 'aprobado' ? '✓ Comprobante aprobado' : '✗ Comprobante rechazado', estado === 'aprobado' ? 'teal' : 'amber');
 }
 
 /* ══ SOLICITUDES ══ */

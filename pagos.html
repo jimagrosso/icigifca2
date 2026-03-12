@@ -79,6 +79,27 @@ html,body{min-height:100%;font-family:'DM Sans',sans-serif;background:#080E0E;co
 /* SEGURIDAD */
 .seguridad{margin-top:40px;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;animation:fadeUp .5s .3s ease both}
 .seg-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted)}
+
+/* ─── COMPROBANTE ───────────────────────────── */
+.comprobante-section{max-width:700px;margin:0 auto 32px;padding:28px;background:#0D1515;border:1px solid rgba(255,255,255,0.07)}
+.comprobante-header{margin-bottom:20px}
+.comprobante-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:6px}
+.comprobante-sub{font-size:12px;color:rgba(232,232,228,0.5);line-height:1.5}
+.comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.comp-group{display:flex;flex-direction:column;gap:6px}
+.comp-label{font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:rgba(232,232,228,0.5);font-weight:500}
+.comp-input{background:#141F1F;border:1px solid rgba(255,255,255,0.07);color:#E8E8E4;padding:10px 14px;font-family:'Inter',sans-serif;font-size:13px;outline:none;transition:border-color .2s;border-radius:2px}
+.comp-input:focus{border-color:#00C9A7}
+.comp-upload{border:1px dashed rgba(255,255,255,0.15);padding:28px;text-align:center;cursor:pointer;transition:all .2s;border-radius:2px;margin-top:4px}
+.comp-upload:hover{border-color:#00C9A7;background:rgba(0,201,167,0.04)}
+.comp-upload-ico{font-size:28px;margin-bottom:8px}
+.comp-upload-txt{font-size:13px;color:#E8E8E4;font-weight:500;margin-bottom:4px}
+.comp-upload-sub{font-size:11px;color:rgba(232,232,228,0.4)}
+.comp-btn{width:100%;margin-top:20px;background:#00C9A7;color:#080E0E;padding:14px;font-family:'Inter',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;border:none;cursor:pointer;transition:all .2s;border-radius:2px}
+.comp-btn:hover:not(:disabled){background:#00E0BC}
+.comp-btn:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:600px){.comp-grid{grid-template-columns:1fr}.comp-group[style*="span 2"]{grid-column:span 1}}
+
 </style>
 </head>
 <body>
@@ -151,6 +172,65 @@ html,body{min-height:100%;font-family:'DM Sans',sans-serif;background:#080E0E;co
 
   </div>
 
+  <!-- ══ SUBIR COMPROBANTE ══ -->
+  <div class="comprobante-section" id="comprobanteSection" style="display:none">
+    <div class="comprobante-header">
+      <div class="comprobante-title">📎 Subir comprobante de pago</div>
+      <div class="comprobante-sub">Sube tu comprobante y lo revisamos en 24h hábiles. Te notificamos por WhatsApp.</div>
+    </div>
+    <div class="comprobante-form" id="comprobanteForm">
+      <div class="comp-grid">
+        <div class="comp-group">
+          <label class="comp-label">Monto pagado <span style="color:#E05555">*</span></label>
+          <input type="text" id="compMonto" class="comp-input" placeholder="Ej: $150 USD / Bs 50.000">
+        </div>
+        <div class="comp-group">
+          <label class="comp-label">Método de pago <span style="color:#E05555">*</span></label>
+          <select id="compMetodo" class="comp-input">
+            <option value="">Seleccionar…</option>
+            <option>Zelle</option>
+            <option>Transferencia bancaria</option>
+            <option>Pago Móvil</option>
+            <option>Bolívares efectivo</option>
+            <option>Pesos colombianos</option>
+            <option>Pesos mexicanos</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="comp-group" style="grid-column:span 2">
+          <label class="comp-label">Número de referencia / confirmación</label>
+          <input type="text" id="compRef" class="comp-input" placeholder="Opcional — número de transacción">
+        </div>
+      </div>
+
+      <div class="comp-group" style="margin-top:16px">
+        <label class="comp-label">Imagen del comprobante <span style="color:#E05555">*</span></label>
+        <div class="comp-upload" id="compUploadZone" onclick="document.getElementById('compFile').click()">
+          <div class="comp-upload-ico">📷</div>
+          <div class="comp-upload-txt">Click para seleccionar imagen</div>
+          <div class="comp-upload-sub">JPG, PNG, PDF · Máx. 5MB</div>
+          <input type="file" id="compFile" accept="image/*,application/pdf" style="display:none" onchange="previewFile(this)">
+        </div>
+        <div id="compPreview" style="display:none;margin-top:10px">
+          <img id="compPreviewImg" style="max-width:100%;max-height:200px;border:1px solid rgba(255,255,255,0.1);border-radius:2px" alt="preview">
+          <div id="compPreviewName" style="font-size:11px;color:var(--muted);margin-top:6px"></div>
+        </div>
+      </div>
+
+      <div id="compMsg" style="display:none;margin-top:12px;padding:12px 16px;font-size:12px;border-radius:2px"></div>
+
+      <button class="comp-btn" id="compBtn" onclick="subirComprobante()">
+        Enviar comprobante →
+      </button>
+    </div>
+
+    <div id="compExito" style="display:none;text-align:center;padding:32px;background:rgba(0,201,167,0.06);border:1px solid rgba(0,201,167,0.2);margin-top:16px">
+      <div style="font-size:32px;margin-bottom:12px">✅</div>
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:8px">Comprobante recibido</div>
+      <div style="font-size:12px;color:var(--muted)">El equipo ICIGIFCA lo revisará en 24h hábiles y activará tu acceso.</div>
+    </div>
+  </div>
+
   <div class="garantia">
     <div class="garantia-icon">🛡</div>
     <div class="garantia-text">
@@ -195,9 +275,106 @@ async function init() {
   );
 
   document.getElementById('btnWhatsapp').href = `https://wa.me/${WA_NUMBER}?text=${mensaje}`;
+  
+  // Mostrar sección de comprobante si está logueado
+  document.getElementById('comprobanteSection').style.display = 'block';
 }
 
 window.addEventListener('load', init);
+
+function previewFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const preview = document.getElementById('compPreview');
+  const img = document.getElementById('compPreviewImg');
+  const name = document.getElementById('compPreviewName');
+  name.textContent = file.name + ' (' + (file.size/1024).toFixed(0) + ' KB)';
+  if (file.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onload = e => { img.src = e.target.result; preview.style.display = 'block'; };
+    reader.readAsDataURL(file);
+  } else {
+    img.src = '';
+    img.alt = '📄 ' + file.name;
+    preview.style.display = 'block';
+  }
+  // Change upload zone appearance
+  document.getElementById('compUploadZone').style.borderColor = '#00C9A7';
+}
+
+async function subirComprobante() {
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { alert('Debes iniciar sesión primero.'); return; }
+
+  const monto = document.getElementById('compMonto').value.trim();
+  const metodo = document.getElementById('compMetodo').value;
+  const ref = document.getElementById('compRef').value.trim();
+  const file = document.getElementById('compFile').files[0];
+  const msg = document.getElementById('compMsg');
+
+  // Validar
+  if (!monto || !metodo || !file) {
+    msg.style.display = 'block';
+    msg.style.background = 'rgba(224,85,85,0.1)';
+    msg.style.border = '1px solid rgba(224,85,85,0.2)';
+    msg.style.color = '#E05555';
+    msg.textContent = 'Por favor completa monto, método de pago e imagen del comprobante.';
+    return;
+  }
+
+  const btn = document.getElementById('compBtn');
+  btn.disabled = true;
+  btn.textContent = 'Subiendo…';
+  msg.style.display = 'none';
+
+  try {
+    const user = session.user;
+    const ext = file.name.split('.').pop();
+    const filename = `${user.id}/${Date.now()}.${ext}`;
+
+    // Upload to Supabase Storage
+    const { data: uploadData, error: uploadErr } = await sb.storage
+      .from('comprobantes')
+      .upload(filename, file, { contentType: file.type, upsert: false });
+
+    if (uploadErr) throw uploadErr;
+
+    // Get signed URL (valid 1 year for admin review)
+    const { data: urlData } = await sb.storage
+      .from('comprobantes')
+      .createSignedUrl(filename, 31536000);
+
+    // Save record to comprobantes_pago table
+    const nombre = user.user_metadata?.nombre_completo || user.user_metadata?.full_name || user.email.split('@')[0];
+    const { error: dbErr } = await sb.from('comprobantes_pago').insert({
+      user_id: user.id,
+      email: user.email,
+      nombre,
+      monto,
+      metodo,
+      referencia: ref || null,
+      imagen_url: urlData?.signedUrl || filename,
+      estado: 'pendiente'
+    });
+
+    if (dbErr) throw dbErr;
+
+    // Mostrar éxito
+    document.getElementById('comprobanteForm').style.display = 'none';
+    document.getElementById('compExito').style.display = 'block';
+
+  } catch(err) {
+    msg.style.display = 'block';
+    msg.style.background = 'rgba(224,85,85,0.1)';
+    msg.style.border = '1px solid rgba(224,85,85,0.2)';
+    msg.style.color = '#E05555';
+    msg.textContent = 'Error al subir: ' + err.message;
+    btn.disabled = false;
+    btn.textContent = 'Enviar comprobante →';
+  }
+}
+
 </script>
 </body>
 </html>
