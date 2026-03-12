@@ -883,10 +883,10 @@ function renderComps() {
       <td style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)">${c.referencia||'—'}</td>
       <td>${estadoTag}</td>
       <td style="font-size:10px;color:var(--muted)">${fd(c.created_at)}</td>
-      <td>${c.comprobante_url ? `<a href="${c.comprobante_url}" target="_blank" class="btn btn-ghost btn-xs">🖼 Ver</a>` : '—'}</td>
+      <td>${c.comprobante_url ? '<a href="' + c.comprobante_url + '" target="_blank" class="btn btn-ghost btn-xs">🖼 Ver</a>' : '—'}</td>
       <td style="display:flex;gap:6px">
-        ${c.estado !== 'aprobado' ? `<button class="btn btn-ghost btn-xs" onclick="cambiarEstComp('${c.id}','aprobado')">✓ Aprobar</button>` : ''}
-        ${c.estado !== 'rechazado' ? `<button class="btn btn-amber btn-xs" onclick="cambiarEstComp('${c.id}','rechazado')">✗ Rechazar</button>` : ''}
+        ${c.estado !== 'aprobado' ? '<button class="btn btn-ghost btn-xs" onclick="cambiarEstComp(\'' + c.id + '\',\'aprobado\')">✓ Aprobar</button>' : ''}
+        ${c.estado !== 'rechazado' ? '<button class="btn btn-amber btn-xs" onclick="cambiarEstComp(\'' + c.id + '\',\'rechazado\')">✗ Rechazar</button>' : ''}
       </td>
     </tr>`;
   }).join('');
