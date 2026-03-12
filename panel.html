@@ -233,6 +233,16 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
 .prog-breadcrumb strong{color:#fff}
 @media(max-width:640px){.programs-grid{grid-template-columns:1fr}.program-name{font-size:18px}}
 
+
+/* ─── INNER PROGRAM TABS ───────────────────── */
+.prog-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:28px;overflow-x:auto}
+.prog-tab{padding:10px 18px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;font-family:'Inter',sans-serif}
+.prog-tab:hover{color:var(--muted2)}
+.prog-tab.active{color:#fff;border-bottom-color:var(--teal)}
+.prog-tab.active.gold{border-bottom-color:var(--gold);color:var(--gold)}
+.prog-inner{display:none}.prog-inner.active{display:block}
+@media(max-width:640px){.prog-tab{padding:8px 12px;font-size:9px}}
+
 </style>
 </head>
 <body>
@@ -273,18 +283,7 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
       <a class="nav-item" data-sec="programas" onclick="showSection('programas',this)" href="#">
         <span class="nav-icon">📚</span> Programas
       </a>
-      <a class="nav-item" data-sec="videos" onclick="showSection('videos',this)" href="#">
-        <span class="nav-icon">🎬</span> Videos
-      </a>
-      <a class="nav-item" onclick="showSection('quiz',this)" href="#">
-        <span class="nav-icon">✏️</span> Quiz
-      </a>
-      <a class="nav-item" onclick="showSection('material',this)" href="#">
-        <span class="nav-icon">📄</span> Material de apoyo
-      </a>
-      <a class="nav-item" onclick="showSection('calendario',this)" href="#">
-        <span class="nav-icon">📅</span> Calendario
-      </a>
+
     </div>
     <div class="sidebar-section">
       <div class="sidebar-section-label">Cuenta</div>
@@ -393,37 +392,156 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
         </div>
         <div class="section-header">
           <div class="section-title">Diplomado en Ginecología Regenerativa</div>
-          <div class="section-sub">4 módulos · Módulo 1 disponible al activar acceso</div>
+          <div class="section-sub">4 módulos · Certificado internacional</div>
         </div>
-        <div class="modules-grid">
-          <div class="module-card" id="modulo1Card">
-            <div class="module-num">Módulo 01</div>
-            <div class="module-title">Introducción y fundamentos</div>
-            <div class="module-desc">Bases anatómicas, fisiológicas y científicas de la ginecología regenerativa. Incluye historia clínica especializada y diagnóstico integral.</div>
-            <div id="modulo1Btn"><!-- JS --></div>
-          </div>
-          <div class="module-card locked">
-            <div class="module-lock">🔒</div>
-            <div class="module-num">Módulo 02</div>
-            <div class="module-title">Tecnologías regenerativas</div>
-            <div class="module-desc">Láser CO₂ fraccionado, radiofrecuencia monopolar y bipolar, PRP ginecológico. Fundamentos y aplicaciones clínicas.</div>
-            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
-          </div>
-          <div class="module-card locked">
-            <div class="module-lock">🔒</div>
-            <div class="module-num">Módulo 03</div>
-            <div class="module-title">Protocolos clínicos</div>
-            <div class="module-desc">Atrofia vulvovaginal, síndrome genitourinario, disfunciones sexuales femeninas. Diseño personalizado de protocolos.</div>
-            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
-          </div>
-          <div class="module-card locked">
-            <div class="module-lock">🔒</div>
-            <div class="module-num">Módulo 04</div>
-            <div class="module-title">Casos clínicos y práctica</div>
-            <div class="module-desc">+40 casos reales con presentación, evolución y análisis crítico. Formato interactivo con discusión docente.</div>
-            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+
+        <!-- Sub-tabs -->
+        <div class="prog-tabs">
+          <button class="prog-tab active" onclick="switchProgTab('diplomado','modulos',this)">📚 Módulos</button>
+          <button class="prog-tab" onclick="switchProgTab('diplomado','videos',this)">🎬 Videos</button>
+          <button class="prog-tab" onclick="switchProgTab('diplomado','quiz',this)">✏️ Quiz</button>
+          <button class="prog-tab" onclick="switchProgTab('diplomado','material',this)">📄 Material</button>
+          <button class="prog-tab" onclick="switchProgTab('diplomado','calendario',this)">📅 Calendario</button>
+        </div>
+
+        <!-- MÓDULOS -->
+        <div class="prog-inner active" id="dip-modulos">
+          <div class="modules-grid">
+            <div class="module-card" id="modulo1Card">
+              <div class="module-num">Módulo 01</div>
+              <div class="module-title">Introducción y fundamentos</div>
+              <div class="module-desc">Bases anatómicas, fisiológicas y científicas de la ginecología regenerativa. Historia clínica especializada y diagnóstico integral.</div>
+              <div id="modulo1Btn"><!-- JS --></div>
+            </div>
+            <div class="module-card locked">
+              <div class="module-lock">🔒</div>
+              <div class="module-num">Módulo 02</div>
+              <div class="module-title">Tecnologías regenerativas</div>
+              <div class="module-desc">Láser CO₂ fraccionado, radiofrecuencia monopolar y bipolar, PRP ginecológico. Fundamentos y aplicaciones clínicas.</div>
+              <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+            </div>
+            <div class="module-card locked">
+              <div class="module-lock">🔒</div>
+              <div class="module-num">Módulo 03</div>
+              <div class="module-title">Protocolos clínicos</div>
+              <div class="module-desc">Atrofia vulvovaginal, síndrome genitourinario, disfunciones sexuales femeninas. Diseño personalizado de protocolos.</div>
+              <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+            </div>
+            <div class="module-card locked">
+              <div class="module-lock">🔒</div>
+              <div class="module-num">Módulo 04</div>
+              <div class="module-title">Casos clínicos y práctica</div>
+              <div class="module-desc">+40 casos reales con presentación, evolución y análisis crítico. Formato interactivo con discusión docente.</div>
+              <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+            </div>
           </div>
         </div>
+
+        <!-- VIDEOS -->
+        <div class="prog-inner" id="dip-videos">
+          <div class="videos-grid">
+            <div class="video-tile">
+              <div class="video-thumb">
+                <div style="color:var(--muted);font-size:11px;text-align:center;padding:16px;position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(8,14,14,0.8));font-weight:300">Introducción al programa · 8 min</div>
+                <div class="video-play">▶</div>
+              </div>
+              <div class="video-info">
+                <div class="video-title">Bienvenida — Dra. Ajakaida Renaud</div>
+                <div class="video-meta">Módulo 1 · 8:24 min · Demo gratuito</div>
+              </div>
+            </div>
+            <div class="video-tile" style="opacity:.65">
+              <div class="video-thumb"><div class="video-thumb-locked"><div class="lock">🔒</div><div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div></div></div>
+              <div class="video-info"><div class="video-title">Anatomía regenerativa aplicada</div><div class="video-meta">Módulo 1 · 22 min</div></div>
+            </div>
+            <div class="video-tile" style="opacity:.65">
+              <div class="video-thumb"><div class="video-thumb-locked"><div class="lock">🔒</div><div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div></div></div>
+              <div class="video-info"><div class="video-title">Procedimiento láser CO₂ · Demostración</div><div class="video-meta">Módulo 2 · 34 min</div></div>
+            </div>
+            <div class="video-tile" style="opacity:.65">
+              <div class="video-thumb"><div class="video-thumb-locked"><div class="lock">🔒</div><div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div></div></div>
+              <div class="video-info"><div class="video-title">Aplicación clínica de PRP ginecológico</div><div class="video-meta">Módulo 2 · 28 min</div></div>
+            </div>
+            <div class="video-tile" style="opacity:.65">
+              <div class="video-thumb"><div class="video-thumb-locked"><div class="lock">🔒</div><div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div></div></div>
+              <div class="video-info"><div class="video-title">Masterclass: Caso clínico completo</div><div class="video-meta">Módulo 4 · 48 min</div></div>
+            </div>
+            <div class="video-tile" style="opacity:.65">
+              <div class="video-thumb"><div class="video-thumb-locked"><div class="lock">🔒</div><div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div></div></div>
+              <div class="video-info"><div class="video-title">Protocolos de radiofrecuencia monopolar</div><div class="video-meta">Módulo 3 · 31 min</div></div>
+            </div>
+          </div>
+          <div style="text-align:center;padding:16px 0">
+            <button class="module-btn pay" style="padding:12px 28px" onclick="window.location.href='pagos.html'">🔒 Desbloquear toda la biblioteca → Activar matrícula</button>
+          </div>
+        </div>
+
+        <!-- QUIZ -->
+        <div class="prog-inner" id="dip-quiz">
+          <div class="quiz-list">
+            <div class="quiz-item" style="border-color:var(--teal-border)">
+              <div class="quiz-info"><div class="quiz-title">Quiz de diagnóstico inicial</div><div class="quiz-meta">10 preguntas · Sin límite de tiempo · Demo gratuito</div></div>
+              <button class="quiz-btn open" onclick="alert('Quiz demo — Próximamente disponible.')">Iniciar quiz</button>
+            </div>
+            <div class="quiz-item" style="opacity:.65">
+              <div class="quiz-info"><div class="quiz-title">Evaluación Módulo 1 — Fundamentos</div><div class="quiz-meta">25 preguntas · 30 min · Certificable</div></div>
+              <button class="quiz-btn locked-btn">🔒 Bloqueado</button>
+            </div>
+            <div class="quiz-item" style="opacity:.65">
+              <div class="quiz-info"><div class="quiz-title">Evaluación Módulo 2 — Tecnologías</div><div class="quiz-meta">30 preguntas · 40 min · Certificable</div></div>
+              <button class="quiz-btn locked-btn">🔒 Bloqueado</button>
+            </div>
+            <div class="quiz-item" style="opacity:.65">
+              <div class="quiz-info"><div class="quiz-title">Evaluación Módulo 3 — Protocolos</div><div class="quiz-meta">28 preguntas · 35 min · Certificable</div></div>
+              <button class="quiz-btn locked-btn">🔒 Bloqueado</button>
+            </div>
+            <div class="quiz-item" style="opacity:.65">
+              <div class="quiz-info"><div class="quiz-title">Examen final integrativo — Diplomado</div><div class="quiz-meta">50 preguntas · 75 min · Requerido para certificación</div></div>
+              <button class="quiz-btn locked-btn">🔒 Bloqueado</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MATERIAL -->
+        <div class="prog-inner" id="dip-material">
+          <div class="material-list">
+            <div class="material-item" style="border-color:var(--teal-border)">
+              <div class="material-icon">📋</div>
+              <div class="material-info"><div class="material-title">Guía de bienvenida al campus ICIGIFCA</div><div class="material-meta">PDF · 12 páginas · Acceso gratuito</div></div>
+              <a href="#" class="material-btn open" onclick="alert('PDF de bienvenida — Próximamente disponible.')">Descargar</a>
+            </div>
+            <div class="material-item" style="opacity:.65">
+              <div class="material-icon">📗</div>
+              <div class="material-info"><div class="material-title">Manual de protocolos clínicos Vol. I</div><div class="material-meta">PDF · 87 páginas · Módulo 3</div></div>
+              <button class="material-btn locked-btn">🔒 Bloqueado</button>
+            </div>
+            <div class="material-item" style="opacity:.65">
+              <div class="material-icon">📙</div>
+              <div class="material-info"><div class="material-title">Atlas de procedimientos regenerativos</div><div class="material-meta">PDF · 124 páginas · Módulo 2</div></div>
+              <button class="material-btn locked-btn">🔒 Bloqueado</button>
+            </div>
+            <div class="material-item" style="opacity:.65">
+              <div class="material-icon">📊</div>
+              <div class="material-info"><div class="material-title">Plantillas de historia clínica ginecológica</div><div class="material-meta">DOCX + PDF · Uso clínico directo</div></div>
+              <button class="material-btn locked-btn">🔒 Bloqueado</button>
+            </div>
+            <div class="material-item" style="opacity:.65">
+              <div class="material-icon">🔬</div>
+              <div class="material-info"><div class="material-title">Bibliografía científica seleccionada</div><div class="material-meta">30 artículos indexados · Actualizado 2024</div></div>
+              <button class="material-btn locked-btn">🔒 Bloqueado</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CALENDARIO -->
+        <div class="prog-inner" id="dip-calendario">
+          <div class="calendar-empty">
+            <div class="calendar-icon">📅</div>
+            <div class="calendar-title">Calendario del Diplomado</div>
+            <div class="calendar-desc">Las fechas de módulos, webinars y evaluaciones del Diplomado<br>se habilitan al activar tu matrícula.</div>
+          </div>
+        </div>
+
       </div>
 
       <!-- ══ MAESTRÍA ══ -->
@@ -434,268 +552,196 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
         </div>
         <div class="section-header">
           <div class="section-title">Maestría en Ginecología Regenerativa</div>
-          <div class="section-sub">8 módulos · Formación teórico-práctica completa</div>
+          <div class="section-sub">8 módulos · Título universitario internacional</div>
         </div>
-        <div class="modules-grid">
 
-          <div class="module-card" id="modulo1CardMaestria">
-            <div class="module-num">Módulo 01</div>
-            <div class="module-title">Fundamentos de Ginecología Regenerativa y Medicina Fotónica</div>
-            <div class="module-desc">Bases científicas de la ginecología regenerativa, marco ético y regulatorio, biología regenerativa aplicada, PRP, PRF, exosomas, péptidos y biomodulación tisular.</div>
-            <div id="modulo1BtnMaestria"><!-- JS --></div>
-          </div>
-
-          <div class="module-card locked">
-            <div class="module-lock">🔒</div>
-            <div class="module-num">Módulo 02</div>
-            <div class="module-title">Tecnologías Regenerativas Avanzadas</div>
-            <div class="module-desc">Ácido hialurónico, plasma rico en plaquetas, nanograsa, micrograsa, exosomas y bioestimulación tisular avanzada.</div>
-            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
-          </div>
-
-          <div class="module-card locked">
-            <div class="module-lock">🔒</div>
-            <div class="module-num">Módulo 03</div>
-            <div class="module-title">Energías Aplicadas a la Medicina Regenerativa</div>
-            <div class="module-desc">Láser CO₂, Er:YAG, láser diodo, HIFU, radiofrecuencia monopolar y microablativa, electromagnetismo y ondas de choque.</div>
-            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
-          </div>
-
-          <div class="module-card locked">
-            <div class="module-lock">🔒</div>
-            <div class="module-num">Módulo 04</div>
-            <div class="module-title">Diagnóstico Funcional y Sexualidad</div>
-            <div class="module-desc">Piso pélvico, rehabilitación funcional, disfunciones sexuales femeninas y masculinas, ecografía transperineal, evaluación 3D, microbiota vaginal, estrógenos y factores de crecimiento.</div>
-            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
-          </div>
-
-          <div class="module-card locked">
-            <div class="module-lock">🔒</div>
-            <div class="module-num">Módulo 05</div>
-            <div class="module-title">Cirugía Regenerativa y Estética Genital</div>
-            <div class="module-desc">Cirugía reconstructiva vulvar, labios menores y mayores, clitoroplastia, himenoplastia, perineoplastia y técnicas quirúrgicas avanzadas.</div>
-            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
-          </div>
-
-          <div class="module-card locked">
-            <div class="module-lock">🔒</div>
-            <div class="module-num">Módulo 06</div>
-            <div class="module-title">Terapia Hormonal y Medicina Funcional</div>
-            <div class="module-desc">Hormonas bioidénticas, regulación hormonal femenina, enfoque integrativo y protocolos clínicos funcionales personalizados.</div>
-            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
-          </div>
-
-          <div class="module-card locked">
-            <div class="module-lock">🔒</div>
-            <div class="module-num">Módulo 07</div>
-            <div class="module-title">Protocolos Clínicos y Casos Avanzados</div>
-            <div class="module-desc">Protocolos combinados, evaluación de resultados, discusión de casos clínicos reales y estrategias clínicas avanzadas.</div>
-            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
-          </div>
-
-          <div class="module-card locked">
-            <div class="module-lock">🔒</div>
-            <div class="module-num">Módulo 08</div>
-            <div class="module-title">Investigación Clínica y Desarrollo Profesional</div>
-            <div class="module-desc">Investigación clínica, publicación científica, protocolos clínicos, desarrollo profesional y liderazgo médico en ginecología regenerativa.</div>
-            <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
-          </div>
-
+        <!-- Sub-tabs -->
+        <div class="prog-tabs">
+          <button class="prog-tab active gold" onclick="switchProgTab('maestria','modulos',this)">📚 Módulos</button>
+          <button class="prog-tab" onclick="switchProgTab('maestria','videos',this)">🎬 Videos</button>
+          <button class="prog-tab" onclick="switchProgTab('maestria','quiz',this)">✏️ Quiz</button>
+          <button class="prog-tab" onclick="switchProgTab('maestria','material',this)">📄 Material</button>
+          <button class="prog-tab" onclick="switchProgTab('maestria','calendario',this)">📅 Calendario</button>
         </div>
+
+        <!-- MÓDULOS -->
+        <div class="prog-inner active" id="mae-modulos">
+          <div class="modules-grid">
+            <div class="module-card" id="modulo1CardMaestria">
+              <div class="module-num">Módulo 01</div>
+              <div class="module-title">Fundamentos de Ginecología Regenerativa y Medicina Fotónica</div>
+              <div class="module-desc">Bases científicas, marco ético y regulatorio, biología regenerativa aplicada, PRP, PRF, exosomas, péptidos y biomodulación tisular.</div>
+              <div id="modulo1BtnMaestria"><!-- JS --></div>
+            </div>
+            <div class="module-card locked">
+              <div class="module-lock">🔒</div>
+              <div class="module-num">Módulo 02</div>
+              <div class="module-title">Tecnologías Regenerativas Avanzadas</div>
+              <div class="module-desc">Ácido hialurónico, plasma rico en plaquetas, nanograsa, micrograsa, exosomas y bioestimulación tisular avanzada.</div>
+              <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+            </div>
+            <div class="module-card locked">
+              <div class="module-lock">🔒</div>
+              <div class="module-num">Módulo 03</div>
+              <div class="module-title">Energías Aplicadas a la Medicina Regenerativa</div>
+              <div class="module-desc">Láser CO₂, Er:YAG, láser diodo, HIFU, radiofrecuencia monopolar y microablativa, electromagnetismo y ondas de choque.</div>
+              <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+            </div>
+            <div class="module-card locked">
+              <div class="module-lock">🔒</div>
+              <div class="module-num">Módulo 04</div>
+              <div class="module-title">Diagnóstico Funcional y Sexualidad</div>
+              <div class="module-desc">Piso pélvico, rehabilitación funcional, disfunciones sexuales, ecografía transperineal, evaluación 3D, microbiota vaginal y factores de crecimiento.</div>
+              <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+            </div>
+            <div class="module-card locked">
+              <div class="module-lock">🔒</div>
+              <div class="module-num">Módulo 05</div>
+              <div class="module-title">Cirugía Regenerativa y Estética Genital</div>
+              <div class="module-desc">Cirugía reconstructiva vulvar, labios menores y mayores, clitoroplastia, himenoplastia, perineoplastia y técnicas avanzadas.</div>
+              <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+            </div>
+            <div class="module-card locked">
+              <div class="module-lock">🔒</div>
+              <div class="module-num">Módulo 06</div>
+              <div class="module-title">Terapia Hormonal y Medicina Funcional</div>
+              <div class="module-desc">Hormonas bioidénticas, regulación hormonal femenina, enfoque integrativo y protocolos clínicos funcionales personalizados.</div>
+              <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+            </div>
+            <div class="module-card locked">
+              <div class="module-lock">🔒</div>
+              <div class="module-num">Módulo 07</div>
+              <div class="module-title">Protocolos Clínicos y Casos Avanzados</div>
+              <div class="module-desc">Protocolos combinados, evaluación de resultados, discusión de casos clínicos reales y estrategias clínicas avanzadas.</div>
+              <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+            </div>
+            <div class="module-card locked">
+              <div class="module-lock">🔒</div>
+              <div class="module-num">Módulo 08</div>
+              <div class="module-title">Investigación Clínica y Desarrollo Profesional</div>
+              <div class="module-desc">Investigación clínica, publicación científica, protocolos, desarrollo profesional y liderazgo médico en ginecología regenerativa.</div>
+              <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIDEOS -->
+        <div class="prog-inner" id="mae-videos">
+          <div class="videos-grid">
+            <div class="video-tile">
+              <div class="video-thumb">
+                <div style="color:var(--muted);font-size:11px;text-align:center;padding:16px;position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(8,14,14,0.8));font-weight:300">Bienvenida a la Maestría · 10 min</div>
+                <div class="video-play">▶</div>
+              </div>
+              <div class="video-info">
+                <div class="video-title">Introducción a la Maestría — Dra. Ajakaida Renaud</div>
+                <div class="video-meta">Módulo 1 · 10:15 min · Demo gratuito</div>
+              </div>
+            </div>
+            <div class="video-tile" style="opacity:.65">
+              <div class="video-thumb"><div class="video-thumb-locked"><div class="lock">🔒</div><div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div></div></div>
+              <div class="video-info"><div class="video-title">Biología regenerativa aplicada</div><div class="video-meta">Módulo 1 · 38 min</div></div>
+            </div>
+            <div class="video-tile" style="opacity:.65">
+              <div class="video-thumb"><div class="video-thumb-locked"><div class="lock">🔒</div><div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div></div></div>
+              <div class="video-info"><div class="video-title">PRP y PRF — Técnica avanzada</div><div class="video-meta">Módulo 2 · 44 min</div></div>
+            </div>
+            <div class="video-tile" style="opacity:.65">
+              <div class="video-thumb"><div class="video-thumb-locked"><div class="lock">🔒</div><div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div></div></div>
+              <div class="video-info"><div class="video-title">Láser CO₂ y Er:YAG · Casos en vivo</div><div class="video-meta">Módulo 3 · 55 min</div></div>
+            </div>
+            <div class="video-tile" style="opacity:.65">
+              <div class="video-thumb"><div class="video-thumb-locked"><div class="lock">🔒</div><div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div></div></div>
+              <div class="video-info"><div class="video-title">Cirugía estética genital — Full immersion</div><div class="video-meta">Módulo 5 · 62 min</div></div>
+            </div>
+            <div class="video-tile" style="opacity:.65">
+              <div class="video-thumb"><div class="video-thumb-locked"><div class="lock">🔒</div><div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div></div></div>
+              <div class="video-info"><div class="video-title">Masterclass: Terapia hormonal integrativa</div><div class="video-meta">Módulo 6 · 48 min</div></div>
+            </div>
+          </div>
+          <div style="text-align:center;padding:16px 0">
+            <button class="module-btn pay" style="padding:12px 28px" onclick="window.location.href='pagos.html'">🔒 Desbloquear toda la biblioteca → Activar matrícula</button>
+          </div>
+        </div>
+
+        <!-- QUIZ -->
+        <div class="prog-inner" id="mae-quiz">
+          <div class="quiz-list">
+            <div class="quiz-item" style="border-color:var(--gold-border)">
+              <div class="quiz-info"><div class="quiz-title">Evaluación diagnóstica inicial — Maestría</div><div class="quiz-meta">15 preguntas · Sin límite de tiempo · Demo gratuito</div></div>
+              <button class="quiz-btn open" onclick="alert('Quiz demo — Próximamente disponible.')">Iniciar quiz</button>
+            </div>
+            <div class="quiz-item" style="opacity:.65">
+              <div class="quiz-info"><div class="quiz-title">Evaluación Módulo 1 — Fundamentos regenerativos</div><div class="quiz-meta">30 preguntas · 40 min · Certificable</div></div>
+              <button class="quiz-btn locked-btn">🔒 Bloqueado</button>
+            </div>
+            <div class="quiz-item" style="opacity:.65">
+              <div class="quiz-info"><div class="quiz-title">Evaluación Módulo 2 — Tecnologías avanzadas</div><div class="quiz-meta">35 preguntas · 45 min · Certificable</div></div>
+              <button class="quiz-btn locked-btn">🔒 Bloqueado</button>
+            </div>
+            <div class="quiz-item" style="opacity:.65">
+              <div class="quiz-info"><div class="quiz-title">Evaluación Módulo 3 — Energías aplicadas</div><div class="quiz-meta">32 preguntas · 40 min · Certificable</div></div>
+              <button class="quiz-btn locked-btn">🔒 Bloqueado</button>
+            </div>
+            <div class="quiz-item" style="opacity:.65">
+              <div class="quiz-info"><div class="quiz-title">Evaluación Módulos 4–8 (individuales)</div><div class="quiz-meta">30–40 preguntas c/u · Acceso progresivo</div></div>
+              <button class="quiz-btn locked-btn">🔒 Bloqueado</button>
+            </div>
+            <div class="quiz-item" style="opacity:.65">
+              <div class="quiz-info"><div class="quiz-title">Examen final integrativo — Maestría</div><div class="quiz-meta">80 preguntas · 120 min · Requerido para título</div></div>
+              <button class="quiz-btn locked-btn">🔒 Bloqueado</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MATERIAL -->
+        <div class="prog-inner" id="mae-material">
+          <div class="material-list">
+            <div class="material-item" style="border-color:var(--gold-border)">
+              <div class="material-icon">📋</div>
+              <div class="material-info"><div class="material-title">Guía de bienvenida — Maestría ICIGIFCA</div><div class="material-meta">PDF · 18 páginas · Acceso gratuito</div></div>
+              <a href="#" class="material-btn open" onclick="alert('PDF de bienvenida — Próximamente disponible.')">Descargar</a>
+            </div>
+            <div class="material-item" style="opacity:.65">
+              <div class="material-icon">📗</div>
+              <div class="material-info"><div class="material-title">Manual de biología regenerativa avanzada</div><div class="material-meta">PDF · 112 páginas · Módulo 1</div></div>
+              <button class="material-btn locked-btn">🔒 Bloqueado</button>
+            </div>
+            <div class="material-item" style="opacity:.65">
+              <div class="material-icon">📙</div>
+              <div class="material-info"><div class="material-title">Atlas de energías aplicadas a ginecología</div><div class="material-meta">PDF · 156 páginas · Módulo 3</div></div>
+              <button class="material-btn locked-btn">🔒 Bloqueado</button>
+            </div>
+            <div class="material-item" style="opacity:.65">
+              <div class="material-icon">🔬</div>
+              <div class="material-info"><div class="material-title">Guía de cirugía estética genital</div><div class="material-meta">PDF · 98 páginas · Módulo 5</div></div>
+              <button class="material-btn locked-btn">🔒 Bloqueado</button>
+            </div>
+            <div class="material-item" style="opacity:.65">
+              <div class="material-icon">📊</div>
+              <div class="material-info"><div class="material-title">Protocolos de terapia hormonal bioidéntica</div><div class="material-meta">PDF · Uso clínico directo · Módulo 6</div></div>
+              <button class="material-btn locked-btn">🔒 Bloqueado</button>
+            </div>
+            <div class="material-item" style="opacity:.65">
+              <div class="material-icon">📰</div>
+              <div class="material-info"><div class="material-title">Bibliografía científica indexada — Maestría</div><div class="material-meta">68 artículos · Actualizado 2024</div></div>
+              <button class="material-btn locked-btn">🔒 Bloqueado</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CALENDARIO -->
+        <div class="prog-inner" id="mae-calendario">
+          <div class="calendar-empty">
+            <div class="calendar-icon">📅</div>
+            <div class="calendar-title">Calendario de la Maestría</div>
+            <div class="calendar-desc">Las fechas de módulos, webinars, prácticas presenciales<br>y defensa de tesis se habilitan al activar tu matrícula.</div>
+          </div>
+        </div>
+
       </div>
 
       
-
-      <!-- ══ VIDEOS ══ -->
-      <div class="section-panel" id="sec-videos">
-        <div class="section-header">
-          <div class="section-title">Biblioteca de Videos</div>
-          <div class="section-sub">1 video de demo disponible · Resto se activan con matrícula</div>
-        </div>
-        <div class="videos-grid">
-          <div class="video-tile">
-            <div class="video-thumb">
-              <div style="color:var(--muted);font-size:11px;text-align:center;padding:16px;position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(8,14,14,0.8));font-weight:300">Introducción al programa · 8 min</div>
-              <div class="video-play">▶</div>
-            </div>
-            <div class="video-info">
-              <div class="video-title">Bienvenida — Dra. Ajakaida Renaud</div>
-              <div class="video-meta">Módulo 1 · 8:24 min · Demo gratuito</div>
-            </div>
-          </div>
-          <div class="video-tile" style="opacity:.65">
-            <div class="video-thumb">
-              <div class="video-thumb-locked">
-                <div class="lock">🔒</div>
-                <div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div>
-              </div>
-            </div>
-            <div class="video-info">
-              <div class="video-title">Anatomía regenerativa aplicada</div>
-              <div class="video-meta">Módulo 1 · 22 min</div>
-            </div>
-          </div>
-          <div class="video-tile" style="opacity:.65">
-            <div class="video-thumb">
-              <div class="video-thumb-locked">
-                <div class="lock">🔒</div>
-                <div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div>
-              </div>
-            </div>
-            <div class="video-info">
-              <div class="video-title">Procedimiento láser CO₂ · Demostración</div>
-              <div class="video-meta">Módulo 2 · 34 min</div>
-            </div>
-          </div>
-          <div class="video-tile" style="opacity:.65">
-            <div class="video-thumb">
-              <div class="video-thumb-locked">
-                <div class="lock">🔒</div>
-                <div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div>
-              </div>
-            </div>
-            <div class="video-info">
-              <div class="video-title">Aplicación clínica de PRP ginecológico</div>
-              <div class="video-meta">Módulo 2 · 28 min</div>
-            </div>
-          </div>
-          <div class="video-tile" style="opacity:.65">
-            <div class="video-thumb">
-              <div class="video-thumb-locked">
-                <div class="lock">🔒</div>
-                <div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div>
-              </div>
-            </div>
-            <div class="video-info">
-              <div class="video-title">Masterclass: Caso clínico completo</div>
-              <div class="video-meta">Módulo 4 · 48 min</div>
-            </div>
-          </div>
-          <div class="video-tile" style="opacity:.65">
-            <div class="video-thumb">
-              <div class="video-thumb-locked">
-                <div class="lock">🔒</div>
-                <div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Bloqueado</div>
-              </div>
-            </div>
-            <div class="video-info">
-              <div class="video-title">Piso pélvico · Radiofrecuencia monopolar</div>
-              <div class="video-meta">Módulo 3 · 31 min</div>
-            </div>
-          </div>
-        </div>
-        <div style="text-align:center;padding:16px 0">
-          <button class="module-btn pay" style="padding:12px 28px" onclick="window.location.href='pagos.html'">🔒 Desbloquear toda la biblioteca → Activar matrícula</button>
-        </div>
-      </div>
-
-      <!-- ══ QUIZ ══ -->
-      <div class="section-panel" id="sec-quiz">
-        <div class="section-header">
-          <div class="section-title">Evaluaciones y Quiz</div>
-          <div class="section-sub">1 quiz demo disponible · Activa matrícula para todos</div>
-        </div>
-        <div class="quiz-list">
-          <div class="quiz-item" style="border-color:var(--teal-border)">
-            <div class="quiz-info">
-              <div class="quiz-title">Quiz de diagnóstico inicial</div>
-              <div class="quiz-meta">10 preguntas · Sin límite de tiempo · Demo gratuito</div>
-            </div>
-            <button class="quiz-btn open" onclick="alert('Quiz demo — Próximamente disponible en fase 2.')">Iniciar quiz</button>
-          </div>
-          <div class="quiz-item" style="opacity:.65">
-            <div class="quiz-info">
-              <div class="quiz-title">Evaluación Módulo 1 — Fundamentos</div>
-              <div class="quiz-meta">25 preguntas · 30 min · Certificable</div>
-            </div>
-            <button class="quiz-btn locked-btn">🔒 Bloqueado</button>
-          </div>
-          <div class="quiz-item" style="opacity:.65">
-            <div class="quiz-info">
-              <div class="quiz-title">Evaluación Módulo 2 — Tecnologías</div>
-              <div class="quiz-meta">30 preguntas · 40 min · Certificable</div>
-            </div>
-            <button class="quiz-btn locked-btn">🔒 Bloqueado</button>
-          </div>
-          <div class="quiz-item" style="opacity:.65">
-            <div class="quiz-info">
-              <div class="quiz-title">Evaluación Módulo 3 — Protocolos</div>
-              <div class="quiz-meta">28 preguntas · 35 min · Certificable</div>
-            </div>
-            <button class="quiz-btn locked-btn">🔒 Bloqueado</button>
-          </div>
-          <div class="quiz-item" style="opacity:.65">
-            <div class="quiz-info">
-              <div class="quiz-title">Examen final integrativo</div>
-              <div class="quiz-meta">60 preguntas · 90 min · Requerido para certificación</div>
-            </div>
-            <button class="quiz-btn locked-btn">🔒 Bloqueado</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ MATERIAL ══ -->
-      <div class="section-panel" id="sec-material">
-        <div class="section-header">
-          <div class="section-title">Material de apoyo</div>
-          <div class="section-sub">Guías, protocolos y recursos descargables</div>
-        </div>
-        <div class="material-list">
-          <div class="material-item" style="border-color:var(--teal-border)">
-            <div class="material-icon">📋</div>
-            <div class="material-info">
-              <div class="material-title">Guía de bienvenida al campus ICIGIFCA</div>
-              <div class="material-meta">PDF · 12 páginas · Acceso gratuito</div>
-            </div>
-            <a href="#" class="material-btn open" onclick="alert('PDF de bienvenida — Próximamente disponible.')">Descargar</a>
-          </div>
-          <div class="material-item" style="opacity:.65">
-            <div class="material-icon">📗</div>
-            <div class="material-info">
-              <div class="material-title">Manual de protocolos clínicos Vol. I</div>
-              <div class="material-meta">PDF · 87 páginas · Módulo 3</div>
-            </div>
-            <button class="material-btn locked-btn">🔒 Bloqueado</button>
-          </div>
-          <div class="material-item" style="opacity:.65">
-            <div class="material-icon">📙</div>
-            <div class="material-info">
-              <div class="material-title">Atlas de procedimientos regenerativos</div>
-              <div class="material-meta">PDF · 124 páginas · Módulo 2</div>
-            </div>
-            <button class="material-btn locked-btn">🔒 Bloqueado</button>
-          </div>
-          <div class="material-item" style="opacity:.65">
-            <div class="material-icon">📊</div>
-            <div class="material-info">
-              <div class="material-title">Plantillas de historia clínica ginecológica</div>
-              <div class="material-meta">DOCX + PDF · Uso clínico directo</div>
-            </div>
-            <button class="material-btn locked-btn">🔒 Bloqueado</button>
-          </div>
-          <div class="material-item" style="opacity:.65">
-            <div class="material-icon">🔬</div>
-            <div class="material-info">
-              <div class="material-title">Bibliografía científica seleccionada</div>
-              <div class="material-meta">42 artículos indexados · Actualizado 2024</div>
-            </div>
-            <button class="material-btn locked-btn">🔒 Bloqueado</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ CALENDARIO ══ -->
-      <div class="section-panel" id="sec-calendario">
-        <div class="section-header">
-          <div class="section-title">Calendario académico</div>
-          <div class="section-sub">Fechas de módulos, webinars y prácticas clínicas</div>
-        </div>
-        <div class="calendar-empty">
-          <div class="calendar-icon">📅</div>
-          <div class="calendar-title">Fechas se habilitan al activar matrícula</div>
-          <div class="calendar-desc">Una vez que actives tu acceso, verás el calendario completo de módulos,<br>webinars en vivo con docentes y fechas de prácticas clínicas presenciales.</div>
-        </div>
-      </div>
 
       <!-- ══ PERFIL ══ -->
       <div class="section-panel" id="sec-perfil">
@@ -920,6 +966,18 @@ async function logout() {
 }
 
 // ── Section nav ─────────────────────────────────────────
+function switchProgTab(prog, tab, el) {
+  const prefix = prog === 'diplomado' ? 'dip' : 'mae';
+  // Hide all inner panels for this program
+  document.querySelectorAll('#sec-' + prog + ' .prog-inner').forEach(p => p.classList.remove('active'));
+  // Deactivate all tabs for this program  
+  document.querySelectorAll('#sec-' + prog + ' .prog-tab').forEach(t => t.classList.remove('active'));
+  // Show selected
+  const inner = document.getElementById(prefix + '-' + tab);
+  if (inner) inner.classList.add('active');
+  if (el) el.classList.add('active');
+}
+
 function showSection(id, el) {
   document.querySelectorAll('.section-panel').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
