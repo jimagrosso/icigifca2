@@ -217,15 +217,37 @@ const SUPABASE_KEY = 'sb_publishable_iSYiJpecbqoVf-QCJ3AxFQ_vbdoV4t2';
 const CLASES = [
   {
     id: 'mod1-clase1',
-    titulo: 'Principios Básicos de la Fotónica en Ginecología',
-    desc: 'Fundamentos de la luz láser y sus aplicaciones clínicas en ginecología regenerativa.',
-    vimeoId: '902781321'
+    titulo: 'Clase 1 — Láser y Bioseguridad',
+    desc: 'Fundamentos del láser y protocolos de bioseguridad en ginecología regenerativa.',
+    vimeoId: '793710316'
   },
   {
     id: 'mod1-clase2',
-    titulo: 'Bioseguridad',
-    desc: 'Protocolos de bioseguridad esenciales para la práctica clínica en ginecología regenerativa.',
-    vimeoId: '793710316'
+    titulo: 'Patología y Tracto Genital — Parte 1',
+    desc: 'Estudio de la patología y el tracto genital femenino. Primera parte.',
+    vimeoId: '443113837',
+    vimeoHash: '13cc50a435'
+  },
+  {
+    id: 'mod1-clase3',
+    titulo: 'Patología y Tracto Genital — Parte 2',
+    desc: 'Continuación del estudio de patología y tracto genital. Segunda parte.',
+    vimeoId: '443122534',
+    vimeoHash: '99a9fe2206'
+  },
+  {
+    id: 'mod1-clase4',
+    titulo: 'Patología y Tracto Genital — Parte 3',
+    desc: 'Tercera parte del estudio de patología y tracto genital femenino.',
+    vimeoId: '443122953',
+    vimeoHash: '3c8b307580'
+  },
+  {
+    id: 'mod1-clase5',
+    titulo: 'Patología y Tracto Genital — Parte 4',
+    desc: 'Cuarta parte. Conclusiones clínicas y aplicaciones prácticas.',
+    vimeoId: '443125448',
+    vimeoHash: '3ed7e3176c'
   }
 ];
 
@@ -314,15 +336,17 @@ function loadPlayer(idx) {
   const container = document.getElementById('vimeoPlayer');
   container.innerHTML = '';
 
-  player = new Vimeo.Player('vimeoPlayer', {
+  const playerOpts = {
     id: clase.vimeoId,
     responsive: true,
     title: false,
     byline: false,
     portrait: false,
     color: '00C9A7',
-    // Deshabilitar salto de tiempo bloqueando la seekbar con overlay
-  });
+  };
+  if (clase.vimeoHash) playerOpts.h = clase.vimeoHash;
+
+  player = new Vimeo.Player('vimeoPlayer', playerOpts);
 
   player.ready().then(() => {
     player.getDuration().then(d => { duration = d; });
