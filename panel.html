@@ -433,26 +433,26 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
               <div class="module-desc">Bases anatómicas, fisiológicas y científicas de la ginecología regenerativa. Historia clínica especializada y diagnóstico integral.</div>
               <div id="modulo1Btn"><!-- JS --></div>
             </div>
-            <div class="module-card locked">
+            <div class="module-card locked" id="modulo2Card">
               <div class="module-lock">🔒</div>
               <div class="module-num">Módulo 02</div>
               <div class="module-title">Tecnologías regenerativas</div>
               <div class="module-desc">Láser CO₂ fraccionado, radiofrecuencia monopolar y bipolar, PRP ginecológico. Fundamentos y aplicaciones clínicas.</div>
-              <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+              <div id="modulo2Btn"><button class="module-btn pay" onclick="window.location.href='pagos.html'">🔒 Módulo bloqueado</button></div>
             </div>
-            <div class="module-card locked">
+            <div class="module-card locked" id="modulo3Card">
               <div class="module-lock">🔒</div>
               <div class="module-num">Módulo 03</div>
               <div class="module-title">Protocolos clínicos</div>
               <div class="module-desc">Atrofia vulvovaginal, síndrome genitourinario, disfunciones sexuales femeninas. Diseño personalizado de protocolos.</div>
-              <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+              <div id="modulo3Btn"><button class="module-btn pay" onclick="window.location.href='pagos.html'">🔒 Módulo bloqueado</button></div>
             </div>
-            <div class="module-card locked">
+            <div class="module-card locked" id="modulo4Card">
               <div class="module-lock">🔒</div>
               <div class="module-num">Módulo 04</div>
               <div class="module-title">Casos clínicos y práctica</div>
               <div class="module-desc">+40 casos reales con presentación, evolución y análisis crítico. Formato interactivo con discusión docente.</div>
-              <button class="module-btn pay" onclick="window.location.href='pagos.html'">Bloqueado — Activar con pago</button>
+              <div id="modulo4Btn"><button class="module-btn pay" onclick="window.location.href='pagos.html'">🔒 Módulo bloqueado</button></div>
             </div>
           </div>
         </div>
@@ -976,7 +976,21 @@ async function init() {
     perfil_profesional:  profile?.perfil_profesional || (isGoogle ? 'Pendiente completar' : '—'),
     paid:                profile?.paid === true,
     isGoogle,
-    profileIncomplete:   !profile?.cedula
+    profileIncomplete:   !profile?.cedula,
+    // Módulos Diplomado
+    modulo1:  profile?.modulo1  === true,
+    modulo2:  profile?.modulo2  === true,
+    modulo3:  profile?.modulo3  === true,
+    modulo4:  profile?.modulo4  === true,
+    // Módulos Maestría
+    mae_modulo1: profile?.mae_modulo1 === true,
+    mae_modulo2: profile?.mae_modulo2 === true,
+    mae_modulo3: profile?.mae_modulo3 === true,
+    mae_modulo4: profile?.mae_modulo4 === true,
+    mae_modulo5: profile?.mae_modulo5 === true,
+    mae_modulo6: profile?.mae_modulo6 === true,
+    mae_modulo7: profile?.mae_modulo7 === true,
+    mae_modulo8: profile?.mae_modulo8 === true,
   };
 
   // Si es Google y no tiene perfil → crear perfil mínimo (sin tocar paid)
@@ -1018,7 +1032,7 @@ function populateUI(u) {
     document.getElementById('statusBadge').style.borderColor = 'var(--teal-border)';
     document.getElementById('statusBadge').style.color       = 'var(--teal)';
   }
-  renderModulo1(u.paid);
+  renderModulos(u);
 }
 
 function showIncompleteProfileBanner() {
@@ -1066,28 +1080,43 @@ function showSection(id, el) {
   }
 }
 
-// ── Módulo 1: botón dinámico según paid ─────────────────
-function renderModulo1(paid) {
-  // En sección Módulos
-  const btn = document.getElementById('modulo1Btn');
-  const card = document.getElementById('modulo1Card');
-  // En dashboard
-  const dashBtn = document.getElementById('dashModulo1Btn');
-  const dashCard = document.getElementById('dashModulo1Card');
+// ── Módulos: renderizar según acceso individual ──────────
+function renderModulos(u) {
+  // Config de cada módulo del Diplomado
+  const dipMods = [
+    { key:'modulo1', btnId:'modulo1Btn', cardId:'modulo1Card', url:'diplomado-modulo1.html', label:'Módulo 1' },
+    { key:'modulo2', btnId:'modulo2Btn', cardId:'modulo2Card', url:'#', label:'Módulo 2' },
+    { key:'modulo3', btnId:'modulo3Btn', cardId:'modulo3Card', url:'#', label:'Módulo 3' },
+    { key:'modulo4', btnId:'modulo4Btn', cardId:'modulo4Card', url:'#', label:'Módulo 4' },
+  ];
 
-  if (paid) {
-    if (card) { card.classList.remove('locked'); card.classList.add('preview'); }
-    if (btn) btn.innerHTML = `<button class="module-btn open" onclick="window.location.href='diplomado-modulo1.html'">▶ Acceder al módulo</button>`;
-    if (dashCard) { dashCard.classList.remove('locked'); dashCard.classList.add('preview'); }
-    const dashLock = document.getElementById('dashModulo1Lock');
-    if (dashLock) dashLock.style.display = 'none';
-    if (dashBtn) dashBtn.innerHTML = `<button class="module-btn open" onclick="window.location.href='diplomado-modulo1.html'">▶ Acceder al módulo</button>`;
-  } else {
-    if (card) { card.classList.remove('preview'); card.classList.add('locked'); }
-    if (btn) btn.innerHTML = `<button class="module-btn pay" onclick="window.location.href='pagos.html'">🔒 Activar con primer pago</button>`;
-    if (dashCard) { dashCard.classList.remove('preview'); dashCard.classList.add('locked'); }
-    if (dashBtn) dashBtn.innerHTML = `<button class="module-btn pay" onclick="window.location.href='pagos.html'">Activar Módulo 1 →</button>`;
-  }
+  dipMods.forEach(m => {
+    const card = document.getElementById(m.cardId);
+    const btn  = document.getElementById(m.btnId);
+    const acceso = u[m.key];
+    if (card) {
+      card.classList.remove('locked','preview');
+      card.classList.add(acceso ? 'preview' : 'locked');
+      // quitar icono candado si existe
+      const lockIco = card.querySelector('.module-lock');
+      if (lockIco) lockIco.style.display = acceso ? 'none' : '';
+    }
+    if (btn) {
+      btn.innerHTML = acceso
+        ? `<button class="module-btn open" onclick="window.location.href='${m.url}'">▶ Acceder al módulo</button>`
+        : `<button class="module-btn pay" onclick="window.location.href='pagos.html'">🔒 Módulo bloqueado</button>`;
+    }
+  });
+
+  // Dashboard módulo 1 (acceso rápido)
+  const dashBtn  = document.getElementById('dashModulo1Btn');
+  const dashCard = document.getElementById('dashModulo1Card');
+  const dashLock = document.getElementById('dashModulo1Lock');
+  if (dashCard) { dashCard.classList.remove('locked','preview'); dashCard.classList.add(u.modulo1 ? 'preview' : 'locked'); }
+  if (dashLock) dashLock.style.display = u.modulo1 ? 'none' : '';
+  if (dashBtn) dashBtn.innerHTML = u.modulo1
+    ? `<button class="module-btn open" onclick="window.location.href='diplomado-modulo1.html'">▶ Acceder al módulo</button>`
+    : `<button class="module-btn pay" onclick="window.location.href='pagos.html'">Activar Módulo 1 →</button>`;
 }
 
 // ── Cargar pagos del usuario ─────────────────────────────

@@ -234,9 +234,10 @@ window.addEventListener('load', async () => {
     const { data: { session } } = await sb.auth.getSession();
     if (!session) { window.location.replace('login.html'); return; }
     userId = session.user.id;
-    // Verificar que pagó
-    const { data: profile } = await sb.from('profiles').select('paid').eq('id', userId).single();
-    if (!profile?.paid) { window.location.replace('pagos.html'); return; }
+    // Verificar acceso: necesita modulo1 activo (el admin lo controla)
+    const { data: profile } = await sb.from('profiles').select('paid, modulo1').eq('id', userId).single();
+    const tieneAcceso = profile?.modulo1 === true || profile?.paid === true;
+    if (!tieneAcceso) { window.location.replace('panel.html'); return; }
   }
 
   // Construir lista de clases y cargar progreso
