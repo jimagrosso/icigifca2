@@ -1356,6 +1356,7 @@ async function guardarPerfil() {
   statusEl.style.color = 'var(--muted)';
   statusEl.textContent = '';
 
+  const sb = getSupabase();
   const { error } = await sb.from('profiles').update({
     nombre_completo:     nombre,
     cedula:              cedula,
