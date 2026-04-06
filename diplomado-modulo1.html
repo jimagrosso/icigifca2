@@ -174,35 +174,17 @@ html,body{min-height:100%;font-family:'DM Sans',sans-serif;background:#080E0E;co
   <div class="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-title">Módulo 01</div>
-      <div class="sidebar-sub">Diplomado · 2 clases</div>
+      <div class="sidebar-sub" id="sidebarSub">Diplomado · cargando…</div>
     </div>
 
     <div id="clasesList">
-      <!-- Clase 1 -->
-      <div class="clase-item active" id="item-0" onclick="selectClase(0)">
-        <div class="ci-num" id="num-0">1</div>
-        <div class="ci-info">
-          <div class="ci-label">Clase 1</div>
-          <div class="ci-title">Principios Básicos de la Fotónica en Ginecología</div>
-        </div>
-        <div class="ci-lock" id="lock-0"></div>
-      </div>
-
-      <!-- Clase 2 -->
-      <div class="clase-item locked-item" id="item-1" onclick="selectClase(1)">
-        <div class="ci-num" id="num-1">2</div>
-        <div class="ci-info">
-          <div class="ci-label">Clase 2</div>
-          <div class="ci-title">Bioseguridad</div>
-        </div>
-        <div class="ci-lock" id="lock-1">🔒</div>
-      </div>
+      <!-- Generado dinámicamente por JS -->
     </div>
 
     <div class="prog-general">
       <div class="prog-label">Progreso del módulo</div>
       <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
-      <div class="prog-text"><span id="progText">0</span> de 2 clases completadas</div>
+      <div class="prog-text"><span id="progText">0</span> de <span id="totalClases">0</span> clases completadas</div>
     </div>
   </div>
 
@@ -257,7 +239,8 @@ window.addEventListener('load', async () => {
     if (!profile?.paid) { window.location.replace('pagos.html'); return; }
   }
 
-  // Cargar progreso guardado
+  // Construir lista de clases y cargar progreso
+  buildSidebar();
   loadProgress();
   loadPlayer(currentClase);
 });
@@ -272,7 +255,9 @@ function loadProgress() {
   const saved = localStorage.getItem('icigifca_diplomado_mod1');
   if (saved) {
     const data = JSON.parse(saved);
-    completed = data.completed || [false, false];
+    // Asegurar que completed tenga el mismo tamaño que CLASES
+    const savedCompleted = data.completed || [];
+    completed = CLASES.map((_, i) => savedCompleted[i] || false);
     // Ir a primera clase no completada
     const firstPending = completed.findIndex(c => !c);
     currentClase = firstPending === -1 ? CLASES.length - 1 : firstPending;
@@ -397,6 +382,23 @@ function goNext() {
 }
 
 // ── ACTUALIZAR SIDEBAR ───────────────────────────────────
+function buildSidebar() {
+  // Actualizar contador
+  document.getElementById('sidebarSub').textContent = `Diplomado · ${CLASES.length} clases`;
+  document.getElementById('totalClases').textContent = CLASES.length;
+  // Generar items dinámicamente
+  const list = document.getElementById('clasesList');
+  list.innerHTML = CLASES.map((c, idx) => `
+    <div class="clase-item${idx === 0 ? ' active' : ' locked-item'}" id="item-${idx}" onclick="selectClase(${idx})">
+      <div class="ci-num" id="num-${idx}">${idx + 1}</div>
+      <div class="ci-info">
+        <div class="ci-label">Clase ${idx + 1}</div>
+        <div class="ci-title">${c.titulo}</div>
+      </div>
+      <div class="ci-lock" id="lock-${idx}">${idx > 0 ? '🔒' : ''}</div>
+    </div>`).join('');
+}
+
 function updateSidebar() {
   const completadas = completed.filter(Boolean).length;
   document.getElementById('progFill').style.width = (completadas / CLASES.length * 100) + '%';
