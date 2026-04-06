@@ -270,7 +270,7 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
 <!-- INCOMPLETE PROFILE BANNER -->
 <div class="profile-banner" id="profileBanner">
   ⚡ Completaste tu registro con Google. Agrega tu especialidad y datos para un acceso completo.
-  <a href="#" onclick="showSection('perfil',null);document.getElementById('profileBanner').style.display='none';return false">Completar perfil →</a>
+  <a href="#" onclick="showSection('perfil',null);toggleEditPerfil(true);return false">Completar perfil →</a>
 </div>
 
 <!-- TOP BAR -->
@@ -769,18 +769,24 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
           <div class="section-title">Mi perfil</div>
           <div class="section-sub">Información de tu cuenta</div>
         </div>
-        <div class="profile-card">
+        <!-- Vista de perfil -->
+        <div class="profile-card" id="profileView">
           <div class="profile-header">
             <div class="profile-avatar" id="profileInitial">–</div>
-            <div>
+            <div style="flex:1">
               <div class="profile-name" id="profileName">–</div>
               <div class="profile-role" id="profileRole">–</div>
             </div>
+            <button onclick="toggleEditPerfil(true)" style="background:var(--teal);color:#000;border:none;padding:8px 18px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:4px;flex-shrink:0">✏ Editar</button>
           </div>
           <div class="profile-fields">
             <div class="profile-field">
               <label>Correo electrónico</label>
               <p id="profileEmail">–</p>
+            </div>
+            <div class="profile-field">
+              <label>Nombre completo</label>
+              <p id="profileNombre">–</p>
             </div>
             <div class="profile-field">
               <label>Teléfono</label>
@@ -802,6 +808,47 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
               <label>Estado de cuenta</label>
               <p id="profilePaid" style="color:var(--gold)">Acceso básico</p>
             </div>
+          </div>
+        </div>
+
+        <!-- Formulario de edición -->
+        <div id="profileEdit" style="display:none;background:var(--ink2);border:1px solid var(--border);border-radius:12px;padding:28px;max-width:560px;margin-top:8px">
+          <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;font-weight:700">Editar datos del perfil</div>
+          <div style="display:grid;gap:16px">
+            <div>
+              <label style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px">Nombre completo *</label>
+              <input id="edit-nombre" type="text" placeholder="Dra. Nombre Apellido"
+                style="width:100%;background:var(--ink3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--fg);font-size:13px;box-sizing:border-box">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <div>
+                <label style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px">Cédula / Pasaporte *</label>
+                <input id="edit-cedula" type="text" placeholder="Ej: V-12345678"
+                  style="width:100%;background:var(--ink3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--fg);font-size:13px;box-sizing:border-box">
+              </div>
+              <div>
+                <label style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px">Teléfono / WhatsApp *</label>
+                <input id="edit-telefono" type="tel" placeholder="Ej: +58 414 1234567"
+                  style="width:100%;background:var(--ink3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--fg);font-size:13px;box-sizing:border-box">
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <div>
+                <label style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px">País *</label>
+                <input id="edit-pais" type="text" placeholder="Ej: Venezuela"
+                  style="width:100%;background:var(--ink3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--fg);font-size:13px;box-sizing:border-box">
+              </div>
+              <div>
+                <label style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px">Especialidad / Profesión *</label>
+                <input id="edit-especialidad" type="text" placeholder="Ej: Ginecóloga"
+                  style="width:100%;background:var(--ink3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--fg);font-size:13px;box-sizing:border-box">
+              </div>
+            </div>
+          </div>
+          <div id="edit-status" style="margin:14px 0;font-size:12px;color:var(--muted);min-height:18px"></div>
+          <div style="display:flex;gap:10px">
+            <button onclick="guardarPerfil()" style="flex:1;background:var(--teal);color:#000;border:none;padding:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:6px">💾 Guardar cambios</button>
+            <button onclick="toggleEditPerfil(false)" style="background:var(--ink3);color:var(--muted2);border:1px solid var(--border);padding:12px 20px;font-size:12px;font-weight:600;cursor:pointer;border-radius:6px">Cancelar</button>
           </div>
         </div>
       </div>
@@ -1014,16 +1061,23 @@ async function init() {
 }
 
 function populateUI(u) {
-  const firstName = u.nombre_completo.split(' ')[0];
-  document.getElementById('topbarName').textContent    = u.nombre_completo;
+  const firstName = (u.nombre_completo||u.correo).split(' ')[0];
+  document.getElementById('topbarName').textContent    = u.nombre_completo || u.correo;
   document.getElementById('profileInitial').textContent = firstName.charAt(0).toUpperCase();
-  document.getElementById('profileName').textContent   = u.nombre_completo;
+  document.getElementById('profileName').textContent   = u.nombre_completo || u.correo;
   document.getElementById('profileRole').textContent   = u.perfil_profesional;
   document.getElementById('profileEmail').textContent  = u.correo;
+  document.getElementById('profileNombre').textContent = u.nombre_completo || '—';
   document.getElementById('profileTel').textContent    = u.telefono;
   document.getElementById('profilePais').textContent   = u.pais;
   document.getElementById('profileCedula').textContent = u.cedula;
   document.getElementById('profileEspec').textContent  = u.perfil_profesional;
+  // Pre-cargar el formulario de edición con los datos actuales
+  document.getElementById('edit-nombre').value     = u.nombre_completo !== '—' ? u.nombre_completo : '';
+  document.getElementById('edit-cedula').value     = u.cedula !== '—' ? u.cedula : '';
+  document.getElementById('edit-telefono').value   = u.telefono !== '—' ? u.telefono : '';
+  document.getElementById('edit-pais').value       = u.pais !== '—' ? u.pais : '';
+  document.getElementById('edit-especialidad').value = u.perfil_profesional !== '—' && u.perfil_profesional !== 'Pendiente completar' ? u.perfil_profesional : '';
   if (u.paid) {
     document.getElementById('profilePaid').textContent = '✅ Matrícula activa';
     document.getElementById('profilePaid').style.color = 'var(--teal)';
@@ -1268,6 +1322,77 @@ function mnActive(id) {
 function toggleMobileMenu() {
   document.getElementById('mobileDrawer').classList.toggle('open');
   document.getElementById('mobileDrawerOverlay').classList.toggle('open');
+}
+
+/* ── EDITAR PERFIL ──────────────────────────────────────── */
+function toggleEditPerfil(show) {
+  document.getElementById('profileView').style.display = show ? 'none' : '';
+  document.getElementById('profileEdit').style.display = show ? '' : 'none';
+  document.getElementById('edit-status').textContent = '';
+  // Si se abre edición, ocultar el banner de perfil incompleto
+  if (show) {
+    const banner = document.getElementById('profileBanner');
+    if (banner) banner.style.display = 'none';
+  }
+}
+
+async function guardarPerfil() {
+  const nombre     = document.getElementById('edit-nombre').value.trim();
+  const cedula     = document.getElementById('edit-cedula').value.trim();
+  const telefono   = document.getElementById('edit-telefono').value.trim();
+  const pais       = document.getElementById('edit-pais').value.trim();
+  const especialidad = document.getElementById('edit-especialidad').value.trim();
+  const statusEl   = document.getElementById('edit-status');
+
+  if (!nombre || !cedula || !telefono || !pais || !especialidad) {
+    statusEl.style.color = '#e05555';
+    statusEl.textContent = '⚠ Por favor completa todos los campos obligatorios.';
+    return;
+  }
+
+  const btn = document.querySelector('[onclick="guardarPerfil()"]');
+  btn.disabled = true;
+  btn.textContent = 'Guardando…';
+  statusEl.style.color = 'var(--muted)';
+  statusEl.textContent = '';
+
+  const { error } = await sb.from('profiles').update({
+    nombre_completo:     nombre,
+    cedula:              cedula,
+    telefono:            telefono,
+    pais:                pais,
+    perfil_profesional:  especialidad,
+    email:               currentUser.correo
+  }).eq('id', currentUser.id);
+
+  btn.disabled = false;
+  btn.textContent = '💾 Guardar cambios';
+
+  if (error) {
+    statusEl.style.color = '#e05555';
+    statusEl.textContent = '❌ Error al guardar: ' + error.message;
+    return;
+  }
+
+  // Actualizar currentUser localmente
+  currentUser.nombre_completo    = nombre;
+  currentUser.cedula             = cedula;
+  currentUser.telefono           = telefono;
+  currentUser.pais               = pais;
+  currentUser.perfil_profesional = especialidad;
+  currentUser.profileIncomplete  = false;
+
+  // Refrescar la vista
+  populateUI(currentUser);
+  toggleEditPerfil(false);
+
+  // Ocultar banner definitivamente
+  const banner = document.getElementById('profileBanner');
+  if (banner) banner.style.display = 'none';
+
+  statusEl.style.color = 'var(--teal)';
+  statusEl.textContent = '✅ Perfil actualizado correctamente.';
+  setTimeout(() => { statusEl.textContent = ''; }, 3000);
 }
 </script>
 
