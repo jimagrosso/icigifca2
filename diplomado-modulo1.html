@@ -287,14 +287,6 @@ function loadPlayer(idx) {
   document.getElementById('videoOverlay').classList.remove('hidden');
   maxWatched = 0;
 
-  // Si la clase está bloqueada
-  if (idx > 0 && !completed[idx - 1]) {
-    document.getElementById('lockedOverlay').classList.remove('hidden');
-    document.getElementById('videoOverlay').classList.add('hidden');
-    if (player) { player.unload(); }
-    return;
-  }
-
   // Si ya la completó
   if (completed[idx]) {
     document.getElementById('progressFill').style.width = '100%';
@@ -323,22 +315,12 @@ function loadPlayer(idx) {
     player.ready().then(() => {
       player.getDuration().then(d => { duration = d; });
 
-    // Rastrear tiempo — si intenta adelantar, regresarlo
+    // Rastrear tiempo para barra de progreso
     player.on('timeupdate', (data) => {
       const current = data.seconds;
-
-      // Si adelantó más allá del máximo permitido
-      if (current > maxWatched + 3) {
-        player.setCurrentTime(maxWatched);
-        return;
-      }
-
-      // Actualizar máximo visto
       if (current > maxWatched) maxWatched = current;
-
-      // Actualizar barra
       if (duration > 0) {
-        const pct = Math.min(100, Math.round((maxWatched / duration) * 100));
+        const pct = Math.min(100, Math.round((current / duration) * 100));
         document.getElementById('progressFill').style.width = pct + '%';
         document.getElementById('progressPct').textContent = pct + '%';
       }
@@ -378,8 +360,6 @@ function loadPlayer(idx) {
 
 // ── SELECCIONAR CLASE ────────────────────────────────────
 function selectClase(idx) {
-  // Bloquear si la anterior no está completa
-  if (idx > 0 && !completed[idx - 1]) return;
   currentClase = idx;
   loadPlayer(idx);
   updateSidebar();
@@ -401,13 +381,13 @@ function buildSidebar() {
   // Generar items dinámicamente
   const list = document.getElementById('clasesList');
   list.innerHTML = CLASES.map((c, idx) => `
-    <div class="clase-item${idx === 0 ? ' active' : ' locked-item'}" id="item-${idx}" onclick="selectClase(${idx})">
+    <div class="clase-item${idx === 0 ? ' active' : ''}" id="item-${idx}" onclick="selectClase(${idx})">
       <div class="ci-num" id="num-${idx}">${idx + 1}</div>
       <div class="ci-info">
         <div class="ci-label">Clase ${idx + 1}</div>
         <div class="ci-title">${c.titulo}</div>
       </div>
-      <div class="ci-lock" id="lock-${idx}">${idx > 0 ? '🔒' : ''}</div>
+      <div class="ci-lock" id="lock-${idx}"></div>
     </div>`).join('');
 }
 
@@ -432,10 +412,7 @@ function updateSidebar() {
     } else {
       num.textContent = idx + 1;
     }
-    if (idx > 0 && !completed[idx - 1]) {
-      item.classList.add('locked-item');
-      lock.textContent = '🔒';
-    }
+    // Sin prelación — todas las clases están disponibles
   });
 }
 </script>
