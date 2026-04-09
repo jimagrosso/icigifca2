@@ -303,24 +303,25 @@ function loadPlayer(idx) {
     document.getElementById('btnNext').style.display = idx < CLASES.length - 1 ? 'inline-flex' : 'none';
   }
 
-  // Destruir player anterior
+  // Destruir player anterior correctamente
   const container = document.getElementById('vimeoPlayer');
-  container.innerHTML = '';
+  const doLoad = (autoplay) => {
+    container.innerHTML = '';
+    const playerOpts = {
+      id: clase.vimeoId,
+      responsive: true,
+      title: false,
+      byline: false,
+      portrait: false,
+      color: '00C9A7',
+      autoplay: autoplay,
+    };
+    if (clase.vimeoHash) playerOpts.h = clase.vimeoHash;
 
-  const playerOpts = {
-    id: clase.vimeoId,
-    responsive: true,
-    title: false,
-    byline: false,
-    portrait: false,
-    color: '00C9A7',
-  };
-  if (clase.vimeoHash) playerOpts.h = clase.vimeoHash;
+    player = new Vimeo.Player('vimeoPlayer', playerOpts);
 
-  player = new Vimeo.Player('vimeoPlayer', playerOpts);
-
-  player.ready().then(() => {
-    player.getDuration().then(d => { duration = d; });
+    player.ready().then(() => {
+      player.getDuration().then(d => { duration = d; });
 
     // Rastrear tiempo — si intenta adelantar, regresarlo
     player.on('timeupdate', (data) => {
@@ -353,16 +354,26 @@ function loadPlayer(idx) {
       document.getElementById('progressPct').textContent = '100%';
 
       if (idx < CLASES.length - 1) {
-        // Hay más clases
+        // Hay más clases — avanzar automáticamente
         document.getElementById('completadoBanner').classList.add('show');
         document.getElementById('btnNext').style.display = 'inline-flex';
+        // Auto-avanzar después de 2 segundos
+        setTimeout(() => { goNext(); }, 2000);
       } else {
         // Módulo completo
         document.getElementById('moduloDone').classList.add('show');
         document.getElementById('completadoBanner').classList.remove('show');
       }
     });
-  });
+  }); // end player.ready
+  }; // end doLoad
+
+  // Destruir player anterior y cargar nuevo
+  if (player) {
+    player.destroy().then(() => { player = null; doLoad(true); }).catch(() => { doLoad(true); });
+  } else {
+    doLoad(false);
+  }
 }
 
 // ── SELECCIONAR CLASE ────────────────────────────────────
