@@ -295,52 +295,10 @@ function loadPlayer(idx) {
     document.getElementById('btnNext').style.display = idx < CLASES.length - 1 ? 'inline-flex' : 'none';
   }
 
-  // Cargar video — reusar player si ya existe, crear si no
+  // Siempre destruir y recrear el iframe — único método confiable con videos privados
   const container = document.getElementById('vimeoPlayer');
 
-  const setupEvents = () => {
-    player.off('timeupdate');
-    player.off('ended');
-
-    player.getDuration().then(d => { duration = d; });
-
-    player.on('timeupdate', (data) => {
-      const current = data.seconds;
-      if (current > maxWatched) maxWatched = current;
-      if (duration > 0) {
-        const pct = Math.min(100, Math.round((current / duration) * 100));
-        document.getElementById('progressFill').style.width = pct + '%';
-        document.getElementById('progressPct').textContent = pct + '%';
-      }
-    });
-
-    player.on('ended', () => {
-      if (!completed[idx]) { completed[idx] = true; saveProgress(); }
-      document.getElementById('progressFill').style.width = '100%';
-      document.getElementById('progressPct').textContent = '100%';
-      if (idx < CLASES.length - 1) {
-        document.getElementById('completadoBanner').classList.add('show');
-        document.getElementById('btnNext').style.display = 'inline-flex';
-      } else {
-        document.getElementById('moduloDone').classList.add('show');
-        document.getElementById('completadoBanner').classList.remove('show');
-      }
-    });
-  };
-
-  if (player) {
-    // Reusar player existente — solo cargar nuevo video
-    // loadVideo acepta objeto {id, h} para videos privados con hash
-    const videoOpts = clase.vimeoHash
-      ? { id: parseInt(clase.vimeoId), h: clase.vimeoHash }
-      : parseInt(clase.vimeoId);
-    player.loadVideo(videoOpts).then(() => {
-      setupEvents();
-    }).catch(err => {
-      console.error('loadVideo error:', err);
-    });
-  } else {
-    // Crear player por primera vez
+  const crearPlayer = () => {
     container.innerHTML = '';
     const opts = {
       id: clase.vimeoId,
@@ -351,8 +309,42 @@ function loadPlayer(idx) {
       color: '00C9A7',
     };
     if (clase.vimeoHash) opts.h = clase.vimeoHash;
+
     player = new Vimeo.Player('vimeoPlayer', opts);
-    player.ready().then(() => { setupEvents(); });
+
+    player.ready().then(() => {
+      player.getDuration().then(d => { duration = d; });
+
+      player.on('timeupdate', (data) => {
+        const current = data.seconds;
+        if (current > maxWatched) maxWatched = current;
+        if (duration > 0) {
+          const pct = Math.min(100, Math.round((current / duration) * 100));
+          document.getElementById('progressFill').style.width = pct + '%';
+          document.getElementById('progressPct').textContent = pct + '%';
+        }
+      });
+
+      player.on('ended', () => {
+        if (!completed[idx]) { completed[idx] = true; saveProgress(); }
+        document.getElementById('progressFill').style.width = '100%';
+        document.getElementById('progressPct').textContent = '100%';
+        if (idx < CLASES.length - 1) {
+          document.getElementById('completadoBanner').classList.add('show');
+          document.getElementById('btnNext').style.display = 'inline-flex';
+        } else {
+          document.getElementById('moduloDone').classList.add('show');
+          document.getElementById('completadoBanner').classList.remove('show');
+        }
+      });
+    });
+  };
+
+  // Destruir player anterior si existe, luego crear nuevo
+  if (player) {
+    player.destroy().finally(() => { player = null; crearPlayer(); });
+  } else {
+    crearPlayer();
   }
 }
 
