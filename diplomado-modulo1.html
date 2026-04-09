@@ -331,7 +331,7 @@ function loadPlayer(idx) {
   if (player) {
     // Reusar player existente — solo cargar nuevo video
     const url = clase.vimeoHash
-      ? `https://vimeo.com/${clase.vimeoId}?h=${clase.vimeoHash}`
+      ? `https://vimeo.com/${clase.vimeoId}/${clase.vimeoHash}`
       : `https://vimeo.com/${clase.vimeoId}`;
     player.loadVideo(url).then(() => {
       setupEvents();
