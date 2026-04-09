@@ -295,27 +295,15 @@ function loadPlayer(idx) {
     document.getElementById('btnNext').style.display = idx < CLASES.length - 1 ? 'inline-flex' : 'none';
   }
 
-  // Destruir player anterior correctamente
+  // Cargar video — reusar player si ya existe, crear si no
   const container = document.getElementById('vimeoPlayer');
-  const doLoad = (autoplay) => {
-    container.innerHTML = '';
-    const playerOpts = {
-      id: clase.vimeoId,
-      responsive: true,
-      title: false,
-      byline: false,
-      portrait: false,
-      color: '00C9A7',
-      autoplay: autoplay,
-    };
-    if (clase.vimeoHash) playerOpts.h = clase.vimeoHash;
 
-    player = new Vimeo.Player('vimeoPlayer', playerOpts);
+  const setupEvents = () => {
+    player.off('timeupdate');
+    player.off('ended');
 
-    player.ready().then(() => {
-      player.getDuration().then(d => { duration = d; });
+    player.getDuration().then(d => { duration = d; });
 
-    // Rastrear tiempo para barra de progreso
     player.on('timeupdate', (data) => {
       const current = data.seconds;
       if (current > maxWatched) maxWatched = current;
@@ -326,35 +314,44 @@ function loadPlayer(idx) {
       }
     });
 
-    // Al terminar el video
     player.on('ended', () => {
-      if (!completed[idx]) {
-        completed[idx] = true;
-        saveProgress();
-      }
+      if (!completed[idx]) { completed[idx] = true; saveProgress(); }
       document.getElementById('progressFill').style.width = '100%';
       document.getElementById('progressPct').textContent = '100%';
-
       if (idx < CLASES.length - 1) {
-        // Hay más clases — avanzar automáticamente
         document.getElementById('completadoBanner').classList.add('show');
         document.getElementById('btnNext').style.display = 'inline-flex';
-        // Auto-avanzar después de 2 segundos
-        setTimeout(() => { goNext(); }, 2000);
       } else {
-        // Módulo completo
         document.getElementById('moduloDone').classList.add('show');
         document.getElementById('completadoBanner').classList.remove('show');
       }
     });
-  }); // end player.ready
-  }; // end doLoad
+  };
 
-  // Destruir player anterior y cargar nuevo
   if (player) {
-    player.destroy().then(() => { player = null; doLoad(true); }).catch(() => { doLoad(true); });
+    // Reusar player existente — solo cargar nuevo video
+    const url = clase.vimeoHash
+      ? `https://vimeo.com/${clase.vimeoId}?h=${clase.vimeoHash}`
+      : `https://vimeo.com/${clase.vimeoId}`;
+    player.loadVideo(url).then(() => {
+      setupEvents();
+    }).catch(err => {
+      console.error('loadVideo error:', err);
+    });
   } else {
-    doLoad(false);
+    // Crear player por primera vez
+    container.innerHTML = '';
+    const opts = {
+      id: clase.vimeoId,
+      responsive: true,
+      title: false,
+      byline: false,
+      portrait: false,
+      color: '00C9A7',
+    };
+    if (clase.vimeoHash) opts.h = clase.vimeoHash;
+    player = new Vimeo.Player('vimeoPlayer', opts);
+    player.ready().then(() => { setupEvents(); });
   }
 }
 
