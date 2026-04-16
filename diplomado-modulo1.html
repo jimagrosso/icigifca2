@@ -185,6 +185,7 @@ html,body{min-height:100%;font-family:'DM Sans',sans-serif;background:#080E0E;co
       <div class="prog-label">Progreso del módulo</div>
       <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
       <div class="prog-text"><span id="progText">0</span> de <span id="totalClases">0</span> clases completadas</div>
+      <button onclick="resetProgreso()" style="margin-top:10px;width:100%;background:none;border:1px solid rgba(255,255,255,0.1);color:var(--muted);font-size:10px;padding:6px;cursor:pointer;border-radius:4px;letter-spacing:1px">↺ Reiniciar progreso</button>
     </div>
   </div>
 
@@ -247,6 +248,15 @@ window.addEventListener('load', async () => {
 });
 
 // ── PROGRESO LOCAL ───────────────────────────────────────
+function resetProgreso() {
+  if (!confirm('¿Reiniciar el progreso del módulo? Podrás ver todos los videos desde el inicio.')) return;
+  localStorage.removeItem('icigifca_diplomado_mod1');
+  completed = new Array(CLASES.length).fill(false);
+  currentClase = 0;
+  updateSidebar();
+  loadPlayer(0);
+}
+
 function saveProgress() {
   localStorage.setItem('icigifca_diplomado_mod1', JSON.stringify({ completed, currentClase }));
   updateSidebar();
@@ -255,17 +265,18 @@ function saveProgress() {
 function loadProgress() {
   const saved = localStorage.getItem('icigifca_diplomado_mod1');
   if (saved) {
-    const data = JSON.parse(saved);
-    // Asegurar que completed tenga el mismo tamaño que CLASES
-    const savedCompleted = data.completed || [];
-    completed = CLASES.map((_, i) => savedCompleted[i] || false);
-    // Ir a primera clase no completada
-    const firstPending = completed.findIndex(c => !c);
-    currentClase = firstPending === -1 ? CLASES.length - 1 : firstPending;
+    try {
+      const data = JSON.parse(saved);
+      const savedCompleted = data.completed || [];
+      completed = CLASES.map((_, i) => savedCompleted[i] || false);
+    } catch(e) {
+      completed = new Array(CLASES.length).fill(false);
+    }
   } else {
     completed = new Array(CLASES.length).fill(false);
-    currentClase = 0;
   }
+  // Siempre empezar en clase 1 — sin prelación
+  currentClase = 0;
   updateSidebar();
 }
 
