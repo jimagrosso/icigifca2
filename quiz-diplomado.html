@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz — ICIGIFCA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--teal:#00C9A7;--gold:#C9A84C;--ink:#080E0E;--ink2:#0D1515;--ink3:#111C1C;--ink4:#162020;--border:rgba(255,255,255,0.07);--muted:#4A6060;--muted2:#8A9E9E;--fg:#E8E8E4;--red:#E05555}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--ink);color:var(--fg);font-family:'Inter',sans-serif;min-height:100vh}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;background:var(--ink2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.logo{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;letter-spacing:3px;color:#fff;text-decoration:none}
+.back-btn{color:var(--muted2);font-size:12px;text-decoration:none}
+.back-btn:hover{color:var(--teal)}
+.prog-bar-wrap{height:3px;background:var(--ink3);position:sticky;top:56px;z-index:99}
+.prog-bar{height:100%;background:var(--teal);transition:width .4s ease;width:0%}
+.container{max-width:700px;margin:0 auto;padding:40px 24px 80px}
+
+/* Pantalla inicio */
+.quiz-intro{text-align:center;padding:60px 0}
+.quiz-intro-ico{font-size:48px;margin-bottom:20px}
+.quiz-titulo{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff;margin-bottom:12px}
+.quiz-desc{color:var(--muted2);font-size:14px;line-height:1.6;max-width:500px;margin:0 auto 32px}
+.meta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:32px;text-align:center}
+.meta-item{background:var(--ink2);border:1px solid var(--border);padding:16px;border-radius:4px}
+.meta-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--teal)}
+.meta-label{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.btn-start{background:var(--teal);color:#000;border:none;padding:14px 40px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:opacity .2s}
+.btn-start:hover{opacity:.85}
+.ya-completado{background:rgba(0,201,167,0.08);border:1px solid rgba(0,201,167,0.2);padding:20px;border-radius:4px;text-align:center;margin-bottom:24px}
+
+/* Pregunta */
+.q-header{margin-bottom:32px}
+.q-num{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.q-texto{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#fff;line-height:1.4}
+.opciones{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+.opcion{display:flex;align-items:center;gap:16px;background:var(--ink2);border:2px solid var(--border);padding:16px 20px;cursor:pointer;border-radius:4px;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.opcion:hover{border-color:rgba(0,201,167,0.4);background:var(--ink3)}
+.opcion.selected{border-color:var(--teal);background:rgba(0,201,167,0.08)}
+.opcion-letra{width:32px;height:32px;border:1.5px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--muted);flex-shrink:0;transition:all .15s}
+.opcion.selected .opcion-letra{background:var(--teal);border-color:var(--teal);color:#000}
+.opcion-texto{font-size:14px;color:var(--muted2);line-height:1.4}
+.opcion.selected .opcion-texto{color:#fff}
+.nav-btns{display:flex;justify-content:space-between;align-items:center}
+.btn{padding:12px 28px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:2px;border:none;transition:all .2s}
+.btn-prev{background:var(--ink3);color:var(--muted2);border:1px solid var(--border)}
+.btn-prev:hover{color:#fff}
+.btn-next{background:var(--teal);color:#000}
+.btn-next:hover{opacity:.85}
+.btn-next:disabled{opacity:.4;cursor:not-allowed}
+.btn-submit{background:var(--gold);color:#000}
+
+/* Resultado */
+.resultado{text-align:center;padding:60px 0}
+.res-ico{font-size:60px;margin-bottom:20px}
+.res-titulo{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:#fff;margin-bottom:8px}
+.res-sub{color:var(--muted2);margin-bottom:32px}
+.score-circle{width:140px;height:140px;border-radius:50%;border:4px solid var(--teal);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 32px}
+.score-num{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:var(--teal)}
+.score-label{font-size:11px;color:var(--muted);letter-spacing:1px}
+.nivel-badge{display:inline-block;padding:8px 24px;border-radius:2px;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px}
+.nivel-A{background:rgba(0,201,167,0.15);border:1px solid rgba(0,201,167,0.4);color:var(--teal)}
+.nivel-B{background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);color:var(--gold)}
+.nivel-C{background:rgba(180,180,180,0.1);border:1px solid rgba(180,180,180,0.2);color:#aaa}
+.res-desc{max-width:480px;margin:0 auto 32px;color:var(--muted2);font-size:14px;line-height:1.6}
+.btns-res{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="index.html" class="logo">ICIGIFCA</a>
+  <a href="panel.html" class="back-btn">← Campus</a>
+</div>
+<div class="prog-bar-wrap"><div class="prog-bar" id="progBar"></div></div>
+<div class="container" id="app"><div style="text-align:center;padding:60px;color:var(--muted)">⏳ Cargando quiz…</div></div>
+
+<script>
+const SUPA_URL='https://ejuvegzsuxcgazmeieed.supabase.co';
+const SUPA_KEY='sb_publishable_iSYiJpecbqoVf-QCJ3AxFQ_vbdoV4t2';
+const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
+const QUIZ_ID='a1b2c3d4-0000-0000-0000-000000000001';
+let myId=null, preguntas=[], respuestas={}, qActual=0, periodoId=null, yaCompletado=false;
+
+window.addEventListener('load',async()=>{
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.replace('login.html');return;}
+  myId=session.user.id;
+
+  // Verificar si ya completó este quiz
+  const{data:previo}=await sb.from('quiz_resultados').select('id,puntaje,puntaje_maximo').eq('user_id',myId).eq('quiz_id',QUIZ_ID).maybeSingle();
+  yaCompletado=!!previo;
+
+  // Cargar periodo activo
+  const{data:periodo}=await sb.from('ranking_periodos').select('id').eq('activo',true).single();
+  periodoId=periodo?.id||null;
+
+  // Cargar quiz y preguntas
+  const{data:quiz}=await sb.from('quizzes').select('*').eq('id',QUIZ_ID).single();
+  const{data:pqs}=await sb.from('quiz_preguntas').select('*').eq('quiz_id',QUIZ_ID).order('orden');
+  preguntas=pqs||[];
+
+  mostrarIntro(quiz, previo);
+});
+
+function mostrarIntro(quiz, previo){
+  document.getElementById('progBar').style.width='0%';
+  document.getElementById('app').innerHTML=`
+    <div class="quiz-intro">
+      <div class="quiz-intro-ico">📝</div>
+      <div class="quiz-titulo">${quiz?.titulo||'Quiz'}</div>
+      <div class="quiz-desc">${quiz?.descripcion||''}</div>
+      ${previo?`<div class="ya-completado">
+        ✅ Ya completaste este quiz — obtuviste <strong>${previo.puntaje}/${previo.puntaje_maximo} puntos</strong>.<br>
+        <small style="color:var(--muted)">Puedes volver a verlo pero no se guardarán nuevas respuestas.</small>
+      </div>`:''}
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-val">${preguntas.length}</div><div class="meta-label">Preguntas</div></div>
+        <div class="meta-item"><div class="meta-val">${quiz?.puntos_maximos||40}</div><div class="meta-label">Puntos máx</div></div>
+        <div class="meta-item"><div class="meta-val">~5 min</div><div class="meta-label">Duración</div></div>
+      </div>
+      <button class="btn-start" onclick="iniciarQuiz()">${previo?'Ver de nuevo':'Iniciar quiz →'}</button>
+    </div>`;
+}
+
+function iniciarQuiz(){
+  qActual=0; respuestas={};
+  mostrarPregunta();
+}
+
+function mostrarPregunta(){
+  const p=preguntas[qActual];
+  const prog=((qActual+1)/preguntas.length*100).toFixed(0);
+  document.getElementById('progBar').style.width=prog+'%';
+  const sel=respuestas[p.id];
+  const opciones=['a','b','c','d'];
+  document.getElementById('app').innerHTML=`
+    <div class="q-header">
+      <div class="q-num">Pregunta ${qActual+1} de ${preguntas.length}</div>
+      <div class="q-texto">${p.texto}</div>
+    </div>
+    <div class="opciones">
+      ${opciones.map(o=>`
+        <div class="opcion${sel===o?' selected':''}" onclick="seleccionar('${p.id}','${o}')">
+          <div class="opcion-letra">${o.toUpperCase()}</div>
+          <div class="opcion-texto">${p['opcion_'+o]}</div>
+        </div>`).join('')}
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-prev" onclick="anterior()" ${qActual===0?'style="visibility:hidden"':''}>← Anterior</button>
+      <span style="font-size:11px;color:var(--muted)">${qActual+1}/${preguntas.length}</span>
+      ${qActual<preguntas.length-1
+        ?`<button class="btn btn-next" onclick="siguiente()" ${!sel?'disabled':''}>Siguiente →</button>`
+        :`<button class="btn btn-next btn-submit" onclick="enviar()" ${!sel?'disabled':''}>Enviar quiz ✓</button>`}
+    </div>`;
+}
+
+function seleccionar(pid, opc){
+  respuestas[pid]=opc;
+  mostrarPregunta();
+}
+function siguiente(){ if(qActual<preguntas.length-1){qActual++;mostrarPregunta();} }
+function anterior(){ if(qActual>0){qActual--;mostrarPregunta();} }
+
+async function enviar(){
+  // Calcular puntaje
+  let puntaje=0;
+  preguntas.forEach(p=>{
+    const opc=respuestas[p.id];
+    if(opc) puntaje+=p['puntos_'+opc]||0;
+  });
+  const maximo=preguntas.reduce((s,p)=>s+Math.max(p.puntos_a,p.puntos_b,p.puntos_c,p.puntos_d),0);
+
+  document.getElementById('app').innerHTML='<div style="text-align:center;padding:60px;color:var(--muted)">⏳ Guardando resultados…</div>';
+
+  // Guardar solo si no había completado antes
+  if(!yaCompletado&&periodoId){
+    await sb.from('quiz_resultados').insert({
+      user_id:myId, quiz_id:QUIZ_ID, periodo_id:periodoId,
+      puntaje, puntaje_maximo:maximo, respuestas
+    });
+    // Registrar en historial de puntos
+    await sb.from('puntos_historial').insert({
+      user_id:myId, periodo_id:periodoId,
+      tipo:'quiz', puntos:puntaje,
+      descripcion:'Quiz de Diagnóstico Clínico — Módulo 1'
+    });
+  }
+
+  mostrarResultado(puntaje, maximo);
+}
+
+function mostrarResultado(pts, max){
+  document.getElementById('progBar').style.width='100%';
+  const pct=Math.round(pts/max*100);
+  let nivel,nivelClass,desc;
+  if(pct>=85){nivel='Nivel A — Clínico Avanzado';nivelClass='nivel-A';desc='Demuestras un enfoque clínico estructurado, basado en evidencia y orientado al diagnóstico integral. Tu razonamiento es el de un especialista consolidado en ginecología regenerativa.';}
+  else if(pct>=65){nivel='Nivel B — En Desarrollo';nivelClass='nivel-B';desc='Tienes buenas bases clínicas con oportunidades de profundizar en el análisis integral del caso. Continúa con los módulos del programa para fortalecer tu enfoque.';}
+  else{nivel='Nivel C — Etapa Inicial';nivelClass='nivel-C';desc='Estás comenzando tu formación en ginecología regenerativa. Los módulos del diplomado te darán las herramientas para avanzar progresivamente.';}
+
+  document.getElementById('app').innerHTML=`
+    <div class="resultado">
+      <div class="res-ico">${pct>=85?'🏆':pct>=65?'📈':'📚'}</div>
+      <div class="res-titulo">Quiz completado</div>
+      <div class="res-sub">${yaCompletado?'Este intento no se guardó (ya tenías resultado registrado)':'Tus puntos han sido registrados en el ranking'}</div>
+      <div class="score-circle">
+        <div class="score-num">${pts}</div>
+        <div class="score-label">de ${max} pts</div>
+      </div>
+      <div class="nivel-badge ${nivelClass}">${nivel}</div>
+      <div class="res-desc">${desc}</div>
+      <div class="btns-res">
+        <button class="btn btn-start" onclick="window.location.href='ranking.html'">🏆 Ver ranking</button>
+        <button class="btn btn-prev" style="border:1px solid var(--border)" onclick="window.location.href='panel.html'">← Volver al campus</button>
+      </div>
+    </div>`;
+}
+</script>
+</body>
+</html>
