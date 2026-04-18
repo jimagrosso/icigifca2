@@ -239,7 +239,7 @@ body{background:var(--ink);color:var(--fg);font-family:'Inter',sans-serif;min-he
 .timer-bar{flex:1;height:4px;background:var(--ink3);border-radius:2px;overflow:hidden}
 .timer-fill{height:100%;background:var(--teal);border-radius:2px;transition:width .1s linear}
 .timer-fill.urgent{background:var(--red)}
-.timer-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);width:32px;text-align:right;flex-shrink:0}
+.timer-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);width:36px;text-align:right;flex-shrink:0;transition:color .5s}
 
 /* Botones */
 .btn-enviar{width:100%;background:var(--teal);color:#000;border:none;padding:14px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:6px;transition:opacity .2s;margin-bottom:12px}
@@ -418,8 +418,8 @@ function abrirActividad(id){
     </div>
 
     ${!done?`<div class="timer-wrap">
-      <div class="timer-bar"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
-      <div class="timer-txt" id="timerTxt">60s</div>
+      <div class="timer-bar"><div class="timer-fill" id="timerFill" style="width:100%;background:var(--teal)"></div></div>
+      <div class="timer-txt" id="timerTxt">3:00</div>
     </div>`:''}
 
     <div class="caso-box">
@@ -460,16 +460,20 @@ function seleccionar(opc){
 }
 
 function iniciarTimer(){
-  tiempoRestante=60;
+  tiempoRestante=180;
   timer=setInterval(()=>{
     tiempoRestante--;
     const fill=document.getElementById('timerFill');
     const txt=document.getElementById('timerTxt');
     if(!fill)return clearInterval(timer);
-    const pct=(tiempoRestante/60*100).toFixed(0);
+    const pct=(tiempoRestante/180*100).toFixed(0);
     fill.style.width=pct+'%';
-    if(tiempoRestante<=10)fill.classList.add('urgent');
-    txt.textContent=tiempoRestante+'s';
+    // Verde > 2min, Amarillo 1-2min, Rojo < 1min
+    fill.style.background = tiempoRestante > 120 ? 'var(--teal)' : tiempoRestante > 60 ? '#f5a623' : 'var(--red)';
+    const m=Math.floor(tiempoRestante/60);
+    const s=String(tiempoRestante%60).padStart(2,'0');
+    txt.textContent=m+':'+s;
+    txt.style.color = tiempoRestante > 120 ? 'var(--muted)' : tiempoRestante > 60 ? '#f5a623' : 'var(--red)';
     if(tiempoRestante<=0){clearInterval(timer);autoEnviar();}
   },1000);
 }
