@@ -130,9 +130,10 @@ function mostrarListaQuizzes(){
         <div style="font-size:12px;color:var(--muted2)">${q.descripcion||''}</div>
         ${prev?`<div style="margin-top:6px;font-size:11px;color:var(--teal)">✅ Completado — ${prev.puntaje}/${prev.puntaje_maximo} pts</div>`:''}
       </div>
-      <button class="btn-start" style="padding:10px 24px;font-size:11px;white-space:nowrap" onclick="seleccionarQuiz(${JSON.stringify(q).split('"').join("'")})">
-        ${prev?'Ver de nuevo':'Iniciar →'}
-      </button>
+      ${prev
+        ? `<div style="text-align:center"><span style="display:inline-block;background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.3);color:var(--teal);padding:8px 20px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:1px">✅ COMPLETADO</span></div>`
+        : `<button class="btn-start" style="padding:10px 24px;font-size:11px;white-space:nowrap" onclick="seleccionarQuiz(${JSON.stringify(q).split('"').join("'")})">Iniciar →</button>`
+      }
     </div>`;
   }).join('');
   document.getElementById('app').innerHTML=`
@@ -168,11 +169,23 @@ function mostrarIntro(quiz, previo){
         <div class="meta-item"><div class="meta-val">${quiz?.puntos_maximos||40}</div><div class="meta-label">Puntos máx</div></div>
         <div class="meta-item"><div class="meta-val">~5 min</div><div class="meta-label">Duración</div></div>
       </div>
-      <button class="btn-start" onclick="iniciarQuiz()">${previo?'Ver de nuevo':'Iniciar quiz →'}</button>
+      ${previo
+        ? `<div style="background:rgba(0,201,167,0.08);border:1px solid rgba(0,201,167,0.25);border-radius:8px;padding:20px 28px;margin-bottom:16px">
+            <div style="font-size:22px;margin-bottom:8px">✅</div>
+            <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--teal);margin-bottom:4px">Quiz completado</div>
+            <div style="font-size:13px;color:var(--muted2)">Obtuviste <strong style="color:#fff">${previo.puntaje}/${previo.puntaje_maximo} puntos</strong>.<br>Solo se permite un intento por quiz.</div>
+          </div>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+            <button class="btn-start" style="padding:12px 28px" onclick="window.location.href='ranking.html'">🏆 Ver ranking</button>
+            <button class="btn btn-prev" style="padding:12px 20px;border:1px solid var(--border)" onclick="${todosQuizzes.length>1?'mostrarListaQuizzes()':"window.location.href='panel.html'"}">${todosQuizzes.length>1?'← Otros quizzes':'← Campus'}</button>
+          </div>`
+        : `<button class="btn-start" onclick="iniciarQuiz()">Iniciar quiz →</button>`
+      }
     </div>`;
 }
 
 function iniciarQuiz(){
+  if(yaCompletado) return; // bloqueado
   qActual=0; respuestas={};
   mostrarPregunta();
 }
