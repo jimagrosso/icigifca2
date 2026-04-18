@@ -292,7 +292,22 @@ html,body{min-height:100%;font-family:'DM Sans',sans-serif;background:#080E0E;co
 
 <div class="toast" id="toast"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+async function registrarPuntosForo(tipo, puntos, descripcion) {
+  try {
+    const { data: periodo } = await getSb().from('ranking_periodos').select('id').eq('activo', true).single();
+    if (!periodo) return;
+    await getSb().from('puntos_historial').insert({
+      user_id: currentUser.id,
+      periodo_id: periodo.id,
+      tipo,
+      puntos,
+      descripcion
+    });
+  } catch(e) { console.log('Puntos foro error:', e); }
+}
+
+</script>
 <script>
 const SUPABASE_URL = 'https://ejuvegzsuxcgazmeieed.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_iSYiJpecbqoVf-QCJ3AxFQ_vbdoV4t2';
@@ -526,7 +541,10 @@ async function publicar() {
 
   if (error) { toast('Error al publicar. Intenta de nuevo.'); return; }
 
-  toast('✅ Publicación creada');
+  // Registrar 5 puntos por crear post
+  await registrarPuntosForo('foro_post', 5, 'Post creado en el Foro Clínico');
+
+  toast('✅ Publicación creada (+5 pts)');
   cerrarModal();
   await cargarPosts();
   await cargarStats();
