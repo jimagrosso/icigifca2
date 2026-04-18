@@ -80,8 +80,9 @@ body{background:var(--ink);color:var(--fg);font-family:'Inter',sans-serif;min-he
 const SUPA_URL='https://ejuvegzsuxcgazmeieed.supabase.co';
 const SUPA_KEY='sb_publishable_iSYiJpecbqoVf-QCJ3AxFQ_vbdoV4t2';
 const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
-const QUIZ_ID='b2c3d4e5-0000-0000-0000-000000000002';
+const PROGRAMA='maestria';
 let myId=null, preguntas=[], respuestas={}, qActual=0, periodoId=null, yaCompletado=false;
+let quizActivo=null, todosQuizzes=[], resultadosPrevios={};
 
 window.addEventListener('load',async()=>{
   const{data:{session}}=await sb.auth.getSession();
@@ -95,21 +96,61 @@ window.addEventListener('load',async()=>{
     return;
   }
 
-  // Verificar si ya completó este quiz
-  const{data:previo}=await sb.from('quiz_resultados').select('id,puntaje,puntaje_maximo').eq('user_id',myId).eq('quiz_id',QUIZ_ID).maybeSingle();
-  yaCompletado=!!previo;
-
   // Cargar periodo activo
   const{data:periodo}=await sb.from('ranking_periodos').select('id').eq('activo',true).single();
   periodoId=periodo?.id||null;
 
-  // Cargar quiz y preguntas
-  const{data:quiz}=await sb.from('quizzes').select('*').eq('id',QUIZ_ID).single();
-  const{data:pqs}=await sb.from('quiz_preguntas').select('*').eq('quiz_id',QUIZ_ID).order('orden');
-  preguntas=pqs||[];
+  // Cargar todos los quizzes del programa
+  const{data:quizzes}=await sb.from('quizzes').select('*').eq('programa',PROGRAMA).eq('activo',true).order('created_at');
+  todosQuizzes=quizzes||[];
 
-  mostrarIntro(quiz, previo);
+  // Ver cuáles ya completó
+  if(todosQuizzes.length>0){
+    const ids=todosQuizzes.map(q=>q.id);
+    const{data:previos}=await sb.from('quiz_resultados').select('quiz_id,puntaje,puntaje_maximo').eq('user_id',myId).in('quiz_id',ids);
+    (previos||[]).forEach(p=>{ resultadosPrevios[p.quiz_id]=p; });
+  }
+
+  if(todosQuizzes.length===1){
+    // Solo un quiz — ir directo
+    seleccionarQuiz(todosQuizzes[0]);
+  } else {
+    mostrarListaQuizzes();
+  }
 });
+
+function mostrarListaQuizzes(){
+  document.getElementById('progBar').style.width='0%';
+  const items=todosQuizzes.map((q,i)=>{
+    const prev=resultadosPrevios[q.id];
+    return`<div style="background:var(--ink2);border:1px solid ${prev?'rgba(0,201,167,0.3)':'var(--border)'};border-radius:4px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px">
+      <div>
+        <div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Quiz ${i+1}</div>
+        <div style="font-weight:600;color:#fff;font-size:15px;margin-bottom:4px">${q.titulo}</div>
+        <div style="font-size:12px;color:var(--muted2)">${q.descripcion||''}</div>
+        ${prev?`<div style="margin-top:6px;font-size:11px;color:var(--teal)">✅ Completado — ${prev.puntaje}/${prev.puntaje_maximo} pts</div>`:''}
+      </div>
+      <button class="btn-start" style="padding:10px 24px;font-size:11px;white-space:nowrap" onclick="seleccionarQuiz(${JSON.stringify(q).split('"').join("'")})">
+        ${prev?'Ver de nuevo':'Iniciar →'}
+      </button>
+    </div>`;
+  }).join('');
+  document.getElementById('app').innerHTML=`
+    <div style="margin-bottom:24px">
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:6px">📝 Quizzes de la Maestría</div>
+      <div style="font-size:13px;color:var(--muted2)">Selecciona un quiz para comenzar</div>
+    </div>
+    ${items}
+    <div style="margin-top:20px"><a href="panel.html" style="color:var(--muted);font-size:12px;text-decoration:none">← Volver al campus</a></div>`;
+}
+
+async function seleccionarQuiz(quiz){
+  quizActivo=typeof quiz==='string'?JSON.parse(quiz.split("'").join('"')):quiz;
+  yaCompletado=!!resultadosPrevios[quizActivo.id];
+  const{data:pqs}=await sb.from('quiz_preguntas').select('*').eq('quiz_id',quizActivo.id).order('orden');
+  preguntas=pqs||[];
+  mostrarIntro(quizActivo, resultadosPrevios[quizActivo.id]||null);
+}
 
 function mostrarIntro(quiz, previo){
   document.getElementById('progBar').style.width='0%';
@@ -184,14 +225,14 @@ async function enviar(){
   // Guardar solo si no había completado antes
   if(!yaCompletado&&periodoId){
     await sb.from('quiz_resultados').insert({
-      user_id:myId, quiz_id:QUIZ_ID, periodo_id:periodoId,
+      user_id:myId, quiz_id:quizActivo.id, periodo_id:periodoId,
       puntaje, puntaje_maximo:maximo, respuestas
     });
     // Registrar en historial de puntos
     await sb.from('puntos_historial').insert({
       user_id:myId, periodo_id:periodoId,
       tipo:'quiz', puntos:puntaje,
-      descripcion:'Quiz de Diagnóstico Clínico — Módulo 1'
+      descripcion:quizActivo.titulo
     });
   }
 
@@ -219,7 +260,7 @@ function mostrarResultado(pts, max){
       <div class="res-desc">${desc}</div>
       <div class="btns-res">
         <button class="btn btn-start" onclick="window.location.href='ranking.html'">🏆 Ver ranking</button>
-        <button class="btn btn-prev" style="border:1px solid var(--border)" onclick="window.location.href='panel.html'">← Volver al campus</button>
+        <button class="btn btn-prev" style="border:1px solid var(--border)" onclick="${todosQuizzes.length>1?'mostrarListaQuizzes()':"window.location.href='panel.html'"}">← ${todosQuizzes.length>1?'Ver todos los quizzes':'Volver al campus'}</button>
       </div>
     </div>`;
 }
