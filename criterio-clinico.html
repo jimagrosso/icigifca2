@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Criterio Clínico — ICIGIFCA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--teal:#00C9A7;--gold:#C9A84C;--ink:#080E0E;--ink2:#0D1515;--ink3:#111C1C;--border:rgba(255,255,255,0.07);--muted:#4A6060;--muted2:#8A9E9E;--fg:#E8E8E4;--red:#E05555}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--ink);color:var(--fg);font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;background:var(--ink2);border-bottom:1px solid var(--border);flex-shrink:0}
+.logo{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;letter-spacing:3px;color:#fff;text-decoration:none}
+.back-btn{display:flex;align-items:center;gap:6px;color:var(--muted2);font-size:12px;text-decoration:none;background:var(--ink3);border:1px solid var(--border);padding:7px 14px;border-radius:4px;font-weight:600;transition:color .15s}
+.back-btn:hover{color:var(--teal)}
+
+/* Header de sección */
+.sec-header{background:linear-gradient(135deg,rgba(0,201,167,0.08) 0%,transparent 60%);border-bottom:1px solid var(--border);padding:24px 32px;flex-shrink:0}
+.sec-tag{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:6px}
+.sec-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:4px}
+.sec-desc{font-size:12px;color:var(--muted2);line-height:1.5}
+.sec-meta{display:flex;gap:16px;margin-top:12px}
+.meta-chip{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);background:var(--ink3);border:1px solid var(--border);padding:4px 12px;border-radius:20px}
+
+/* Layout principal */
+.main{display:flex;flex:1;overflow:hidden}
+.sidebar{width:280px;background:var(--ink2);border-right:1px solid var(--border);overflow-y:auto;flex-shrink:0}
+.sidebar-hdr{padding:16px 20px 8px;border-bottom:1px solid var(--border)}
+.sidebar-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:2px}
+.sidebar-sub{font-size:11px;color:var(--muted2)}
+.act-item{display:flex;align-items:center;gap:12px;padding:12px 20px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s;-webkit-tap-highlight-color:transparent}
+.act-item:hover{background:var(--ink3)}
+.act-item.active{background:rgba(0,201,167,0.06);border-left:3px solid var(--teal)}
+.act-item.done{opacity:.7}
+.act-num{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--muted);flex-shrink:0}
+.act-item.done .act-num{background:var(--teal);border-color:var(--teal);color:#000}
+.act-item.active .act-num{border-color:var(--teal);color:var(--teal)}
+.act-info{flex:1;min-width:0}
+.act-tipo{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.act-name{font-size:12px;font-weight:500;color:var(--muted2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.act-item.active .act-name{color:#fff}
+.act-pts{font-size:9px;color:var(--teal);font-family:'JetBrains Mono',monospace;white-space:nowrap}
+
+/* Panel de actividad */
+.panel{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.panel-inner{max-width:620px;margin:0 auto;padding:40px 32px;width:100%}
+
+/* Estado vacío */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center;padding:60px 32px;color:var(--muted)}
+.empty-ico{font-size:48px;margin-bottom:16px;opacity:.5}
+.empty-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--muted2);margin-bottom:8px}
+.empty-sub{font-size:13px;line-height:1.5}
+
+/* Actividad */
+.act-header{margin-bottom:28px}
+.act-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:2px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-bottom:12px}
+.badge-que{background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.25);color:var(--teal)}
+.badge-detecta{background:rgba(224,85,85,0.1);border:1px solid rgba(224,85,85,0.25);color:var(--red)}
+.badge-micro{background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);color:var(--gold)}
+.caso-box{background:var(--ink2);border:1px solid var(--border);border-left:3px solid var(--teal);padding:20px 24px;margin-bottom:28px;border-radius:0 4px 4px 0}
+.caso-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:700}
+.caso-text{font-size:15px;color:#fff;line-height:1.65;font-weight:400}
+.pregunta{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:20px;line-height:1.4}
+.opciones{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.opcion{display:flex;align-items:center;gap:14px;background:var(--ink2);border:2px solid var(--border);padding:14px 18px;cursor:pointer;border-radius:6px;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.opcion:hover{border-color:rgba(0,201,167,0.4);background:var(--ink3)}
+.opcion.selected{border-color:var(--teal);background:rgba(0,201,167,0.07)}
+.opcion.done-selected{border-color:var(--teal);background:rgba(0,201,167,0.07);cursor:default}
+.opc-letra{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--muted);flex-shrink:0;transition:all .15s}
+.opcion.selected .opc-letra,.opcion.done-selected .opc-letra{background:var(--teal);border-color:var(--teal);color:#000}
+.opc-text{font-size:13px;color:var(--muted2);line-height:1.4}
+.opcion.selected .opc-text,.opcion.done-selected .opc-text{color:#fff}
+
+/* Timer */
+.timer-wrap{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.timer-bar{flex:1;height:4px;background:var(--ink3);border-radius:2px;overflow:hidden}
+.timer-fill{height:100%;background:var(--teal);border-radius:2px;transition:width .1s linear}
+.timer-fill.urgent{background:var(--red)}
+.timer-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);width:32px;text-align:right;flex-shrink:0}
+
+/* Botones */
+.btn-enviar{width:100%;background:var(--teal);color:#000;border:none;padding:14px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:6px;transition:opacity .2s;margin-bottom:12px}
+.btn-enviar:hover{opacity:.85}
+.btn-enviar:disabled{opacity:.3;cursor:not-allowed}
+.ya-hecha{background:rgba(0,201,167,0.06);border:1px solid rgba(0,201,167,0.2);border-radius:6px;padding:16px 20px;display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.ya-hecha-ico{font-size:20px;flex-shrink:0}
+.ya-hecha-txt{font-size:12px;color:var(--muted2);line-height:1.4}
+.ya-hecha-pts{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--teal);white-space:nowrap;flex-shrink:0}
+.siguiente-btn{width:100%;background:var(--ink3);border:1px solid var(--border);color:var(--muted2);padding:12px;font-size:12px;font-weight:600;cursor:pointer;border-radius:6px;transition:all .2s}
+.siguiente-btn:hover{border-color:var(--teal);color:var(--teal)}
+
+/* Progreso general */
+.prog-strip{background:var(--ink2);border-top:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:16px;flex-shrink:0}
+.prog-label{font-size:11px;color:var(--muted);white-space:nowrap}
+.prog-bar{flex:1;height:6px;background:var(--ink3);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--teal);border-radius:3px;transition:width .4s ease}
+.prog-pts{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--teal);font-weight:700;white-space:nowrap}
+
+/* Confetti banner */
+.confetti{position:fixed;top:0;left:0;right:0;background:linear-gradient(135deg,rgba(0,201,167,0.15),rgba(201,168,76,0.1));border-bottom:1px solid rgba(0,201,167,0.3);padding:12px 24px;text-align:center;font-size:13px;font-weight:600;color:var(--teal);z-index:200;display:none;animation:slideDown .3s ease}
+@keyframes slideDown{from{transform:translateY(-100%)}to{transform:translateY(0)}}
+
+/* Responsive */
+@media(max-width:760px){
+  .main{flex-direction:column}
+  .sidebar{width:100%;max-height:180px;border-right:none;border-bottom:1px solid var(--border)}
+  .panel-inner{padding:24px 16px}
+  .sec-header{padding:16px}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="index.html" class="logo">ICIGIFCA</a>
+  <a href="panel.html" class="back-btn">← Volver al campus</a>
+</div>
+
+<div class="sec-header">
+  <div class="sec-tag">🧠 Entrenamiento clínico</div>
+  <div class="sec-title">Criterio Clínico</div>
+  <div class="sec-desc">Situaciones clínicas reales. Sin respuesta correcta revelada. Solo entrena tu criterio.</div>
+  <div class="sec-meta">
+    <div class="meta-chip">⚡ 30–60 seg por actividad</div>
+    <div class="meta-chip">🏆 <span id="metaPts">5 pts</span> por actividad</div>
+    <div class="meta-chip" id="metaCompletadas">⏳ Cargando…</div>
+  </div>
+</div>
+
+<div class="confetti" id="confetti">🎯 +<span id="confettiPts">5</span> pts registrados — ¡Buen criterio clínico!</div>
+
+<div class="main">
+  <!-- Sidebar con lista de actividades -->
+  <div class="sidebar">
+    <div class="sidebar-hdr">
+      <div class="sidebar-title">Actividades</div>
+      <div class="sidebar-sub" id="sidebar-sub">Cargando…</div>
+    </div>
+    <div id="actList"></div>
+  </div>
+
+  <!-- Panel de actividad -->
+  <div class="panel">
+    <div id="panelContent" class="panel-inner">
+      <div class="empty-state">
+        <div class="empty-ico">🧠</div>
+        <div class="empty-title">Selecciona una actividad</div>
+        <div class="empty-sub">Elige una actividad de la lista para comenzar a entrenar tu criterio clínico.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="prog-strip">
+  <div class="prog-label">Progreso del periodo</div>
+  <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  <div class="prog-pts" id="progPts">0 pts</div>
+</div>
+
+<script>
+const SUPA_URL='https://ejuvegzsuxcgazmeieed.supabase.co';
+const SUPA_KEY='sb_publishable_iSYiJpecbqoVf-QCJ3AxFQ_vbdoV4t2';
+const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
+let myId=null, actividades=[], resultados={}, periodoId=null, actActiva=null, timer=null, tiempoRestante=60;
+
+const TIPOS={
+  que_harias: {label:'¿Qué harías tú?', badgeClass:'badge-que', emoji:'💭'},
+  detecta_error: {label:'Detecta el error', badgeClass:'badge-detecta', emoji:'🔍'},
+  micro_caso: {label:'Micro-caso clínico', badgeClass:'badge-micro', emoji:'📋'}
+};
+
+window.addEventListener('load', async () => {
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.replace('login.html');return;}
+  myId=session.user.id;
+
+  // Periodo activo
+  const{data:periodo}=await sb.from('ranking_periodos').select('id').eq('activo',true).single();
+  periodoId=periodo?.id||null;
+
+  // Cargar actividades
+  const{data:acts}=await sb.from('cc_actividades').select('*').eq('activo',true).order('orden');
+  actividades=acts||[];
+
+  // Cargar mis resultados
+  if(actividades.length>0){
+    const ids=actividades.map(a=>a.id);
+    const{data:res}=await sb.from('cc_resultados').select('actividad_id,opcion_elegida,puntos').eq('user_id',myId).in('actividad_id',ids);
+    (res||[]).forEach(r=>{resultados[r.actividad_id]={opcion:r.opcion_elegida,puntos:r.puntos};});
+  }
+
+  renderSidebar();
+  actualizarProgreso();
+});
+
+function renderSidebar(){
+  const total=actividades.length;
+  const hechas=Object.keys(resultados).length;
+  document.getElementById('sidebar-sub').textContent=`${hechas} de ${total} completadas`;
+  document.getElementById('metaCompletadas').textContent=`✅ ${hechas}/${total} hechas`;
+
+  document.getElementById('actList').innerHTML=actividades.map((a,i)=>{
+    const done=!!resultados[a.id];
+    const tipo=TIPOS[a.tipo]||TIPOS.que_harias;
+    return`<div class="act-item${done?' done':''}" onclick="abrirActividad('${a.id}')">
+      <div class="act-num">${done?'✓':i+1}</div>
+      <div class="act-info">
+        <div class="act-tipo">${tipo.emoji} ${tipo.label}</div>
+        <div class="act-name">${a.titulo}</div>
+      </div>
+      <div class="act-pts">${done?'+'+resultados[a.id].puntos:'+'+a.puntos} pts</div>
+    </div>`;
+  }).join('');
+}
+
+function actualizarProgreso(){
+  const totalPts=actividades.reduce((s,a)=>resultados[a.id]?s+resultados[a.id].puntos:s,0);
+  const maxPts=actividades.reduce((s,a)=>s+a.puntos,0)||1;
+  document.getElementById('progFill').style.width=(totalPts/maxPts*100).toFixed(0)+'%';
+  document.getElementById('progPts').textContent=totalPts+' pts';
+}
+
+function abrirActividad(id){
+  if(timer)clearInterval(timer);
+  actActiva=actividades.find(a=>a.id===id);
+  if(!actActiva)return;
+
+  // Marcar activa en sidebar
+  document.querySelectorAll('.act-item').forEach((el,i)=>{
+    el.classList.toggle('active', actividades[i]?.id===id);
+  });
+
+  const done=resultados[id];
+  const tipo=TIPOS[actActiva.tipo]||TIPOS.que_harias;
+
+  document.getElementById('panelContent').innerHTML=`
+    <div class="act-header">
+      <div class="act-badge ${tipo.badgeClass}">${tipo.emoji} ${tipo.label}</div>
+      <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff">${actActiva.titulo}</div>
+    </div>
+
+    ${!done?`<div class="timer-wrap">
+      <div class="timer-bar"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
+      <div class="timer-txt" id="timerTxt">60s</div>
+    </div>`:''}
+
+    <div class="caso-box">
+      <div class="caso-label">Situación clínica</div>
+      <div class="caso-text">${actActiva.caso}</div>
+    </div>
+
+    <div class="pregunta">${actActiva.tipo==='detecta_error'?'¿Cuál es el problema principal?':actActiva.tipo==='micro_caso'?'¿Cuál sería tu primer paso?':'¿Qué harías en esta situación?'}</div>
+
+    <div class="opciones">
+      ${['a','b','c','d'].map(o=>`
+        <div class="opcion${done&&done.opcion===o?' done-selected':''}" id="opc-${o}" onclick="${!done?`seleccionar('${o}')`:''}">
+          <div class="opc-letra">${o.toUpperCase()}</div>
+          <div class="opc-text">${actActiva['opcion_'+o]}</div>
+        </div>`).join('')}
+    </div>
+
+    ${done
+      ?`<div class="ya-hecha">
+          <div class="ya-hecha-ico">✅</div>
+          <div class="ya-hecha-txt">Ya registraste esta actividad.<br>Opción elegida: <strong>${done.opcion.toUpperCase()}</strong></div>
+          <div class="ya-hecha-pts">+${done.puntos} pts</div>
+        </div>
+        ${actividades.indexOf(actActiva)<actividades.length-1?`<button class="siguiente-btn" onclick="irSiguiente()">Siguiente actividad →</button>`:''}`
+      :`<button class="btn-enviar" id="btnEnviar" disabled onclick="enviarRespuesta()">Selecciona una opción</button>`
+    }`;
+
+  if(!done) iniciarTimer();
+}
+
+let seleccionActual=null;
+function seleccionar(opc){
+  seleccionActual=opc;
+  document.querySelectorAll('.opcion').forEach(el=>el.classList.remove('selected'));
+  document.getElementById('opc-'+opc).classList.add('selected');
+  const btn=document.getElementById('btnEnviar');
+  if(btn){btn.disabled=false;btn.textContent='Registrar respuesta →';}
+}
+
+function iniciarTimer(){
+  tiempoRestante=60;
+  timer=setInterval(()=>{
+    tiempoRestante--;
+    const fill=document.getElementById('timerFill');
+    const txt=document.getElementById('timerTxt');
+    if(!fill)return clearInterval(timer);
+    const pct=(tiempoRestante/60*100).toFixed(0);
+    fill.style.width=pct+'%';
+    if(tiempoRestante<=10)fill.classList.add('urgent');
+    txt.textContent=tiempoRestante+'s';
+    if(tiempoRestante<=0){clearInterval(timer);autoEnviar();}
+  },1000);
+}
+
+function autoEnviar(){
+  if(!seleccionActual){
+    // Si no eligió nada, elige una al azar para no bloquear
+    const opciones=['a','b','c','d'];
+    seleccionActual=opciones[Math.floor(Math.random()*4)];
+  }
+  enviarRespuesta();
+}
+
+async function enviarRespuesta(){
+  if(!seleccionActual||!actActiva)return;
+  if(timer)clearInterval(timer);
+
+  const btn=document.getElementById('btnEnviar');
+  if(btn){btn.disabled=true;btn.textContent='Registrando…';}
+
+  // Guardar resultado
+  const{error}=await sb.from('cc_resultados').insert({
+    user_id:myId,
+    actividad_id:actActiva.id,
+    periodo_id:periodoId,
+    opcion_elegida:seleccionActual,
+    puntos:actActiva.puntos
+  });
+
+  if(!error){
+    // Registrar en historial de puntos para ranking
+    await sb.from('puntos_historial').insert({
+      user_id:myId,
+      periodo_id:periodoId,
+      tipo:'criterio_clinico',
+      puntos:actActiva.puntos,
+      descripcion:'Criterio Clínico — '+actActiva.titulo
+    });
+    resultados[actActiva.id]={opcion:seleccionActual,puntos:actActiva.puntos};
+  }
+
+  // Mostrar confetti
+  document.getElementById('confettiPts').textContent=actActiva.puntos;
+  const c=document.getElementById('confetti');
+  c.style.display='block';
+  setTimeout(()=>{c.style.display='none';},3000);
+
+  renderSidebar();
+  actualizarProgreso();
+  seleccionActual=null;
+  abrirActividad(actActiva.id); // Re-render como completada
+}
+
+function irSiguiente(){
+  const idx=actividades.indexOf(actActiva);
+  if(idx<actividades.length-1) abrirActividad(actividades[idx+1].id);
+}
+</script>
+</body>
+</html>
