@@ -109,7 +109,7 @@ async function cargar(){
 
   const ranking=ids.map(uid=>{
     const p=perfiles?.find(x=>x.id===uid)||{};
-    return{uid,nombre:p.nombre_completo||p.email||'—',email:p.email||'',...mapa[uid]};
+    return{uid,nombre:p.nombre_completo||p.email?.split('@')[0]||'—',email:'',...mapa[uid]};
   }).sort((a,b)=>b.total-a.total);
 
   // Mis puntos
@@ -139,7 +139,7 @@ async function cargar(){
       <td><div style="display:flex;align-items:center;gap:12px">
         <div class="av">${r.nombre.charAt(0).toUpperCase()}</div>
         <div><div style="font-weight:500;color:#fff">${r.nombre}${r.uid===myId?' 👤':''}</div>
-        <div style="font-size:11px;color:var(--muted)">${r.email}</div></div></div></td>
+        </div></div></td>
       <td><div class="pts">${r.total} pts</div><div style="font-size:10px;color:var(--muted);margin-top:2px">Quiz:${r.quiz} · Foro:${r.foro}</div></td>
       <td>${r.quiz>0?'<span class="badge bq">📝 Quiz</span>':''}${r.foro>0?'<span class="badge bf">💬 Foro</span>':''}</td>
     </tr>`).join('')}</tbody></table></div>`;
