@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Quiz — ICIGIFCA</title>
+<title>Quiz Maestría — ICIGIFCA</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -80,7 +80,7 @@ body{background:var(--ink);color:var(--fg);font-family:'Inter',sans-serif;min-he
 const SUPA_URL='https://ejuvegzsuxcgazmeieed.supabase.co';
 const SUPA_KEY='sb_publishable_iSYiJpecbqoVf-QCJ3AxFQ_vbdoV4t2';
 const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
-const QUIZ_ID='a1b2c3d4-0000-0000-0000-000000000001';
+const QUIZ_ID='b2c3d4e5-0000-0000-0000-000000000002';
 let myId=null, preguntas=[], respuestas={}, qActual=0, periodoId=null, yaCompletado=false;
 
 window.addEventListener('load',async()=>{
@@ -88,10 +88,10 @@ window.addEventListener('load',async()=>{
   if(!session){window.location.replace('login.html');return;}
   myId=session.user.id;
 
-  // Verificar acceso al Diplomado
-  const{data:perfil}=await sb.from('profiles').select('modulo1,paid').eq('id',myId).single();
-  if(!perfil?.modulo1 && !perfil?.paid){
-    document.getElementById('app').innerHTML='<div style="text-align:center;padding:80px 24px;color:var(--muted2)"><div style="font-size:40px;margin-bottom:16px">🔒</div><div style="font-family:Syne,sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:8px">Acceso restringido</div><p>Este quiz es exclusivo para alumnos del Diplomado.<br>Activa tu módulo para acceder.</p><br><a href="panel.html" style="color:var(--teal)">← Volver al campus</a></div>';
+  // Verificar acceso a la Maestría
+  const{data:perfil}=await sb.from('profiles').select('mae_modulo1').eq('id',myId).single();
+  if(!perfil?.mae_modulo1){
+    document.getElementById('app').innerHTML='<div style="text-align:center;padding:80px 24px;color:var(--muted2)"><div style="font-size:40px;margin-bottom:16px">🔒</div><div style="font-family:Syne,sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:8px">Acceso restringido</div><p>Este quiz es exclusivo para alumnos de la Maestría.<br>Activa tu módulo para acceder.</p><br><a href="panel.html" style="color:var(--teal)">← Volver al campus</a></div>';
     return;
   }
 
