@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 3 — Diplomado ICIGIFCA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<script src="https://player.vimeo.com/api/player.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;font-family:'DM Sans',sans-serif;background:#080E0E;color:#E8E8E4}
+:root{
+  --teal:#00C9A7;--teal-dim:rgba(0,201,167,0.08);--teal-border:rgba(0,201,167,0.2);
+  --gold:#C9A84C;--gold-dim:rgba(201,168,76,0.08);--gold-border:rgba(201,168,76,0.25);
+  --ink:#080E0E;--ink2:#0D1515;--ink3:#141F1F;--ink4:#1A2828;
+  --border:rgba(255,255,255,0.07);
+  --muted:rgba(232,232,228,0.38);--muted2:rgba(232,232,228,0.62);
+}
+
+/* ── TOPBAR ───────────────────────────── */
+.topbar{height:56px;background:var(--ink2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:200}
+.logo{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:3px;color:#fff;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--teal)}
+.btn-back{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px;text-decoration:none;transition:color .2s}
+.btn-back:hover{color:#fff}
+.mod-badge{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);background:var(--teal-dim);border:1px solid var(--teal-border);padding:4px 12px}
+
+/* ── LAYOUT ───────────────────────────── */
+.layout{display:grid;grid-template-columns:1fr 320px;min-height:calc(100vh - 56px)}
+@media(max-width:900px){.layout{grid-template-columns:1fr;grid-template-rows:auto auto}}
+
+/* ── MAIN VIDEO AREA ──────────────────── */
+.main{padding:28px 32px;overflow-y:auto}
+@media(max-width:900px){.main{padding:20px 16px}}
+
+.clase-header{margin-bottom:20px}
+.clase-num{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+.clase-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#fff;line-height:1.25}
+.clase-desc{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.6}
+
+/* ── VIDEO WRAPPER ────────────────────── */
+.video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;background:#000;border:1px solid var(--border)}
+.video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%}
+
+/* Overlay bloqueador para evitar adelantar (capa invisible sobre el video) */
+.video-overlay{position:absolute;top:0;left:0;width:100%;height:calc(100% - 44px);z-index:10;cursor:not-allowed}
+.video-overlay.hidden{display:none}
+
+/* ── PROGRESS BAR ─────────────────────── */
+.progress-wrap{margin-top:16px}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px}
+.progress-label span{color:var(--teal);font-weight:600}
+.progress-bar{height:3px;background:var(--ink4);position:relative;overflow:hidden}
+.progress-fill{height:100%;background:var(--teal);width:0%;transition:width .5s ease}
+
+/* ── BLOQUEADO OVERLAY ────────────────── */
+.locked-overlay{position:absolute;inset:0;background:rgba(8,14,14,0.88);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:20;backdrop-filter:blur(4px)}
+.locked-overlay.hidden{display:none}
+.locked-icon{font-size:40px;opacity:.6}
+.locked-msg{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--muted2);letter-spacing:1px;text-align:center;line-height:1.5}
+.locked-sub{font-size:11px;color:var(--muted);text-align:center}
+
+/* ── COMPLETADO ───────────────────────── */
+.completado-banner{display:none;align-items:center;gap:10px;padding:12px 16px;background:rgba(0,201,167,0.08);border:1px solid var(--teal-border);margin-top:16px;font-size:12px;color:var(--teal)}
+.completado-banner.show{display:flex}
+.btn-next{margin-left:auto;padding:7px 16px;background:var(--teal);color:#080E0E;border:none;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn-next:hover{background:#00E0BC}
+
+/* ── SIDEBAR ──────────────────────────── */
+.sidebar{background:var(--ink2);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
+@media(max-width:900px){.sidebar{border-left:none;border-top:1px solid var(--border)}}
+
+.sidebar-header{padding:20px 20px 12px;border-bottom:1px solid var(--border)}
+.sidebar-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted2)}
+.sidebar-sub{font-size:11px;color:var(--muted);margin-top:4px}
+
+/* ── CLASE ITEM ───────────────────────── */
+.clase-item{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s;position:relative}
+.clase-item:hover{background:var(--ink3)}
+.clase-item.active{background:var(--teal-dim);border-left:2px solid var(--teal)}
+.clase-item.locked-item{cursor:not-allowed;opacity:.45}
+.clase-item.locked-item:hover{background:transparent}
+.clase-item.done .ci-num{background:var(--teal);color:#080E0E}
+
+.ci-num{width:32px;height:32px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--muted);flex-shrink:0;transition:all .3s}
+.clase-item.active .ci-num{border-color:var(--teal);color:var(--teal)}
+
+.ci-info{flex:1;min-width:0}
+.ci-label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.ci-title{font-size:12px;color:var(--muted2);font-weight:500;line-height:1.35}
+.clase-item.active .ci-title{color:#fff}
+.ci-duration{font-size:10px;color:var(--muted);margin-top:3px}
+
+.ci-lock{font-size:12px;flex-shrink:0;margin-top:2px}
+
+/* ── PROGRESO GENERAL ─────────────────── */
+.prog-general{padding:16px 20px;border-top:1px solid var(--border);margin-top:auto}
+.prog-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.prog-bar{height:2px;background:var(--ink4);margin-bottom:6px}
+.prog-fill{height:100%;background:var(--teal);transition:width .5s}
+.prog-text{font-size:11px;color:var(--muted2)}
+.prog-text span{color:var(--teal);font-weight:600}
+
+/* ── COMPLETADO FINAL ─────────────────── */
+.modulo-done{display:none;margin:24px 0;padding:28px;background:var(--teal-dim);border:1px solid var(--teal-border);text-align:center}
+.modulo-done.show{display:block}
+.done-icon{font-size:44px;margin-bottom:12px}
+.done-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff;margin-bottom:8px;letter-spacing:1px;text-transform:uppercase}
+.done-desc{font-size:13px;color:var(--muted2);line-height:1.6;margin-bottom:20px}
+.btn-panel{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:var(--teal);color:#080E0E;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all .2s}
+.btn-panel:hover{background:#00E0BC;box-shadow:0 0 24px rgba(0,201,167,.3)}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <a href="index.html" class="logo">ICIGI<span>IFCA</span></a>
+  <div class="mod-badge">Módulo 01 — Diplomado</div>
+  <a href="panel.html" class="btn-back">← Volver al campus</a>
+</div>
+
+<div class="layout">
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- Clase header -->
+    <div class="clase-header">
+      <div class="clase-num" id="claseNum">Clase 1 de 2</div>
+      <h1 class="clase-title" id="claseTitle">Principios Básicos de la Fotónica en Ginecología</h1>
+      <p class="clase-desc" id="claseDesc">Fundamentos de la luz láser y sus aplicaciones clínicas en ginecología regenerativa.</p>
+    </div>
+
+    <!-- Video -->
+    <div class="video-wrap" id="videoWrap">
+      <div id="vimeoPlayer"></div>
+      <!-- Overlay para bloquear adelantar (cubre la barra de progreso de Vimeo) -->
+      <div class="video-overlay" id="videoOverlay"></div>
+      <!-- Overlay de clase bloqueada -->
+      <div class="locked-overlay hidden" id="lockedOverlay">
+        <div class="locked-icon">🔒</div>
+        <div class="locked-msg">Clase bloqueada</div>
+        <div class="locked-sub">Completa la clase anterior<br>para desbloquear esta</div>
+      </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Progreso de la clase</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <!-- Banner completado -->
+    <div class="completado-banner" id="completadoBanner">
+      ✅ ¡Clase completada!
+      <button class="btn-next" id="btnNext" onclick="goNext()">Siguiente clase →</button>
+    </div>
+
+    <!-- Módulo completado -->
+    <div class="modulo-done" id="moduloDone">
+      <div class="done-icon">🎓</div>
+      <div class="done-title">¡Módulo 1 completado!</div>
+      <div class="done-desc">Has terminado todas las clases del Módulo 1 del Diplomado.<br>Tu progreso ha sido registrado.</div>
+      <a href="panel.html" class="btn-panel">← Volver al campus</a>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">Módulo 03</div>
+      <div class="sidebar-sub" id="sidebarSub">Diplomado · cargando…</div>
+    </div>
+
+    <div id="clasesList">
+      <!-- Generado dinámicamente por JS -->
+    </div>
+
+    <div class="prog-general">
+      <div class="prog-label">Progreso del módulo</div>
+      <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+      <div class="prog-text"><span id="progText">0</span> de <span id="totalClases">0</span> clases completadas</div>
+      <button onclick="resetProgreso()" style="margin-top:10px;width:100%;background:none;border:1px solid rgba(255,255,255,0.1);color:var(--muted);font-size:10px;padding:6px;cursor:pointer;border-radius:4px;letter-spacing:1px">↺ Reiniciar progreso</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ── CONFIGURACIÓN ───────────────────────────────────────
+const SUPABASE_URL = 'https://ejuvegzsuxcgazmeieed.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_iSYiJpecbqoVf-QCJ3AxFQ_vbdoV4t2';
+
+const CLASES = [
+  { id:'mod3-c1', titulo:'Clase 1', desc:'', vimeoId:'457347195', vimeoHash:'088b6b137f' },
+  { id:'mod3-c2', titulo:'Clase 2', desc:'', vimeoId:'457502166', vimeoHash:'13b8ba9cd6' },
+  { id:'mod3-c3', titulo:'Clase 3', desc:'', vimeoId:'528378596', vimeoHash:'' },
+  { id:'mod3-c4', titulo:'Clase 4', desc:'', vimeoId:'554402369', vimeoHash:'9846563cd1' },
+  { id:'mod3-c5', titulo:'Clase 5', desc:'', vimeoId:'733069397', vimeoHash:'e8b7e4d855' },
+  { id:'mod3-c6', titulo:'Clase 6', desc:'', vimeoId:'457501817', vimeoHash:'b9b5193334' },
+  { id:'mod3-c7', titulo:'Clase 7', desc:'', vimeoId:'528436246', vimeoHash:'1ada3c832e' },
+  { id:'mod3-c8', titulo:'Clase 8', desc:'', vimeoId:'459962740', vimeoHash:'b689110de6' },
+  { id:'mod3-c9', titulo:'Clase 9', desc:'', vimeoId:'449817652', vimeoHash:'31f3d420f6' },
+  { id:'mod3-c10', titulo:'Clase 10', desc:'', vimeoId:'529362664', vimeoHash:'b6fdf47af9' },
+  { id:'mod3-c11', titulo:'Clase 11', desc:'', vimeoId:'448163492', vimeoHash:'1626606083' },
+  { id:'mod3-c12', titulo:'Clase 12', desc:'', vimeoId:'447661352', vimeoHash:'05f7b44a6f' },
+  { id:'mod3-c13', titulo:'Clase 13', desc:'', vimeoId:'441793453', vimeoHash:'f63d186ade' },
+  { id:'mod3-c14', titulo:'Clase 14', desc:'', vimeoId:'439429629', vimeoHash:'b37619688e' },
+  { id:'mod3-c15', titulo:'Clase 15', desc:'', vimeoId:'441794574', vimeoHash:'5385788c8a' },
+  { id:'mod3-c16', titulo:'Clase 16', desc:'', vimeoId:'441796396', vimeoHash:'97fe4e3344' },
+  { id:'mod3-c17', titulo:'Clase 17', desc:'', vimeoId:'441796980', vimeoHash:'f4d08c4ea9' },
+  { id:'mod3-c18', titulo:'Clase 18', desc:'', vimeoId:'441797482', vimeoHash:'f4015f7dc7' },
+  { id:'mod3-c19', titulo:'Clase 19', desc:'', vimeoId:'441797999', vimeoHash:'0f0f5a4d4e' },
+  { id:'mod3-c20', titulo:'Clase 20', desc:'', vimeoId:'744435944', vimeoHash:'3ca12ad178' },
+  { id:'mod3-c21', titulo:'Clase 21', desc:'', vimeoId:'995397526', vimeoHash:'8638a2978e' },
+  { id:'mod3-c22', titulo:'Clase 22', desc:'', vimeoId:'464604255', vimeoHash:'66f8a7bd4e' },
+  { id:'mod3-c23', titulo:'Clase 23', desc:'', vimeoId:'445921725', vimeoHash:'7602205e8b' },
+  { id:'mod3-c24', titulo:'Clase 24', desc:'', vimeoId:'445272717', vimeoHash:'a0fc067610' },
+  { id:'mod3-c25', titulo:'Clase 25', desc:'', vimeoId:'445923890', vimeoHash:'3de570f7b8' },
+  { id:'mod3-c26', titulo:'Clase 26', desc:'', vimeoId:'445909172', vimeoHash:'822320ed51' },
+  { id:'mod3-c27', titulo:'Clase 27', desc:'', vimeoId:'449347545', vimeoHash:'845e30d18f' },
+  { id:'mod3-c28', titulo:'Clase 28', desc:'', vimeoId:'464603947', vimeoHash:'54fd3fa6b2' },
+  { id:'mod3-c29', titulo:'Clase 29', desc:'', vimeoId:'843684750', vimeoHash:'eeb976c09d' },
+  { id:'mod3-c30', titulo:'Clase 30', desc:'', vimeoId:'536996936', vimeoHash:'' },
+  { id:'mod3-c31', titulo:'Clase 31', desc:'', vimeoId:'911212151', vimeoHash:'33d668f316' },
+  { id:'mod3-c32', titulo:'Clase 32', desc:'', vimeoId:'463931370', vimeoHash:'3a64b20329' },
+  { id:'mod3-c33', titulo:'Clase 33', desc:'', vimeoId:'506607120', vimeoHash:'' },
+  { id:'mod3-c34', titulo:'Clase 34', desc:'', vimeoId:'751352657', vimeoHash:'' },
+  { id:'mod3-c35', titulo:'Clase 35', desc:'', vimeoId:'1050116246', vimeoHash:'1357c57e79' },
+  { id:'mod3-c36', titulo:'Clase 36', desc:'', vimeoId:'952740032', vimeoHash:'736c7d2a83' },
+  { id:'mod3-c37', titulo:'Clase 37', desc:'', vimeoId:'827853672', vimeoHash:'fbf6820736' },
+  { id:'mod3-c38', titulo:'Clase 38', desc:'', vimeoId:'520714907', vimeoHash:'e69462b814' },
+  { id:'mod3-c39', titulo:'Clase 39', desc:'', vimeoId:'443126018', vimeoHash:'0adb55ebea' },
+  { id:'mod3-c40', titulo:'Clase 40', desc:'', vimeoId:'443126566', vimeoHash:'a1536eb7f8' },
+  { id:'mod3-c41', titulo:'Clase 41', desc:'', vimeoId:'455314123', vimeoHash:'aa96b07377' },
+  { id:'mod3-c42', titulo:'Clase 42', desc:'', vimeoId:'455308879', vimeoHash:'fe600d85a2' },
+  { id:'mod3-c43', titulo:'Clase 43', desc:'', vimeoId:'455305653', vimeoHash:'73edaeca8f' },
+  { id:'mod3-c44', titulo:'Clase 44', desc:'', vimeoId:'609209735', vimeoHash:'f0436c9a25' },
+  { id:'mod3-c45', titulo:'Clase 45', desc:'', vimeoId:'949555964', vimeoHash:'d47f9425b7' },
+  { id:'mod3-c46', titulo:'Clase 46', desc:'', vimeoId:'915986301', vimeoHash:'066333d4f0' },
+  { id:'mod3-c47', titulo:'Clase 47', desc:'', vimeoId:'542405415', vimeoHash:'4a78786414' },
+  { id:'mod3-c48', titulo:'Clase 48', desc:'', vimeoId:'1009170932', vimeoHash:'3be1488e0a' },
+  { id:'mod3-c49', titulo:'Clase 49', desc:'', vimeoId:'446864969', vimeoHash:'c75c28e840' },
+  { id:'mod3-c50', titulo:'Clase 50', desc:'', vimeoId:'1100169050', vimeoHash:'966ccd4fec' },
+];
+
+// ── ESTADO ──────────────────────────────────────────────
+let currentClase = 0;
+let player = null;
+let maxWatched = 0;       // máximo segundo visto en clase actual
+let duration = 0;         // duración total del video
+let completed = [];       // clases completadas: [false, false]
+let userId = null;
+
+// ── INIT ─────────────────────────────────────────────────
+window.addEventListener('load', async () => {
+  // Verificar sesión
+  if (window.supabase) {
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) { window.location.replace('login.html'); return; }
+    userId = session.user.id;
+    // Verificar acceso: necesita modulo1 activo (el admin lo controla)
+    const { data: profile } = await sb.from('profiles').select('paid, modulo3').eq('id', userId).single();
+    const tieneAcceso = profile?.modulo3 === true || profile?.paid === true;
+    if (!tieneAcceso) { window.location.replace('panel.html'); return; }
+  }
+
+  // Construir lista de clases y cargar progreso
+  buildSidebar();
+  loadProgress();
+  loadPlayer(currentClase);
+});
+
+// ── PROGRESO LOCAL ───────────────────────────────────────
+function resetProgreso() {
+  if (!confirm('¿Reiniciar el progreso del módulo? Podrás ver todos los videos desde el inicio.')) return;
+  localStorage.removeItem('icigifca_diplomado_mod3');
+  completed = new Array(CLASES.length).fill(false);
+  currentClase = 0;
+  updateSidebar();
+  loadPlayer(0);
+}
+
+function saveProgress() {
+  localStorage.setItem('icigifca_diplomado_mod3', JSON.stringify({ completed, currentClase }));
+  updateSidebar();
+}
+
+function loadProgress() {
+  const saved = localStorage.getItem('icigifca_diplomado_mod3');
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+      const savedCompleted = data.completed || [];
+      completed = CLASES.map((_, i) => savedCompleted[i] || false);
+    } catch(e) {
+      completed = new Array(CLASES.length).fill(false);
+    }
+  } else {
+    completed = new Array(CLASES.length).fill(false);
+  }
+  // Siempre empezar en clase 1 — sin prelación
+  currentClase = 0;
+  updateSidebar();
+}
+
+// ── CARGAR PLAYER ────────────────────────────────────────
+function loadPlayer(idx) {
+  const clase = CLASES[idx];
+
+  // Actualizar header
+  document.getElementById('claseNum').textContent = `Clase ${idx + 1} de ${CLASES.length}`;
+  document.getElementById('claseTitle').textContent = clase.titulo;
+  document.getElementById('claseDesc').textContent = clase.desc;
+
+  // Reset UI
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('progressPct').textContent = '0%';
+  document.getElementById('completadoBanner').classList.remove('show');
+  document.getElementById('moduloDone').classList.remove('show');
+  document.getElementById('lockedOverlay').classList.add('hidden');
+  document.getElementById('videoOverlay').classList.remove('hidden');
+  maxWatched = 0;
+
+  // Si ya la completó
+  if (completed[idx]) {
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressPct').textContent = '100%';
+    document.getElementById('completadoBanner').classList.add('show');
+    document.getElementById('btnNext').style.display = idx < CLASES.length - 1 ? 'inline-flex' : 'none';
+  }
+
+  // Usar iframe directo — más confiable con videos privados Vimeo
+  const container = document.getElementById('vimeoPlayer');
+  const src = clase.vimeoHash
+    ? `https://player.vimeo.com/video/${clase.vimeoId}?h=${clase.vimeoHash}&badge=0&autopause=0&color=00C9A7&title=0&byline=0&portrait=0`
+    : `https://player.vimeo.com/video/${clase.vimeoId}?badge=0&autopause=0&color=00C9A7&title=0&byline=0&portrait=0`;
+
+  container.innerHTML = `<iframe
+    src="${src}"
+    style="position:absolute;top:0;left:0;width:100%;height:100%"
+    frameborder="0"
+    allow="autoplay; fullscreen; picture-in-picture"
+    allowfullscreen
+    id="vimeoIframe">
+  </iframe>`;
+
+  // Conectar SDK al iframe para detectar cuando termina
+  player = new Vimeo.Player(document.getElementById('vimeoIframe'));
+  player.ready().then(() => {
+    player.getDuration().then(d => { duration = d; });
+    player.on('timeupdate', (data) => {
+      const current = data.seconds;
+      if (current > maxWatched) maxWatched = current;
+      if (duration > 0) {
+        const pct = Math.min(100, Math.round((current / duration) * 100));
+        document.getElementById('progressFill').style.width = pct + '%';
+        document.getElementById('progressPct').textContent = pct + '%';
+      }
+    });
+    player.on('ended', () => {
+      if (!completed[idx]) { completed[idx] = true; saveProgress(); }
+      document.getElementById('progressFill').style.width = '100%';
+      document.getElementById('progressPct').textContent = '100%';
+      if (idx < CLASES.length - 1) {
+        document.getElementById('completadoBanner').classList.add('show');
+        document.getElementById('btnNext').style.display = 'inline-flex';
+      } else {
+        document.getElementById('moduloDone').classList.add('show');
+        document.getElementById('completadoBanner').classList.remove('show');
+      }
+    });
+  }).catch(() => {
+    // Si el SDK no puede conectar, el iframe igual reproduce el video
+    console.log('SDK no pudo conectar, iframe reproduce igual');
+  });
+}
+
+// ── SELECCIONAR CLASE ────────────────────────────────────
+function selectClase(idx) {
+  currentClase = idx;
+  loadPlayer(idx);
+  updateSidebar();
+}
+
+// ── SIGUIENTE CLASE ──────────────────────────────────────
+function goNext() {
+  if (currentClase < CLASES.length - 1) {
+    selectClase(currentClase + 1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+// ── ACTUALIZAR SIDEBAR ───────────────────────────────────
+function buildSidebar() {
+  // Actualizar contador
+  document.getElementById('sidebarSub').textContent = `Diplomado · Módulo 3 · ${CLASES.length} clases`;
+  document.getElementById('totalClases').textContent = CLASES.length;
+  // Generar items dinámicamente
+  const list = document.getElementById('clasesList');
+  list.innerHTML = CLASES.map((c, idx) => `
+    <div class="clase-item${idx === 0 ? ' active' : ''}" id="item-${idx}" onclick="selectClase(${idx})">
+      <div class="ci-num" id="num-${idx}">${idx + 1}</div>
+      <div class="ci-info">
+        <div class="ci-label">Clase ${idx + 1}</div>
+        <div class="ci-title">${c.titulo}</div>
+      </div>
+      <div class="ci-lock" id="lock-${idx}"></div>
+    </div>`).join('');
+}
+
+function updateSidebar() {
+  const completadas = completed.filter(Boolean).length;
+  document.getElementById('progFill').style.width = (completadas / CLASES.length * 100) + '%';
+  document.getElementById('progText').textContent = completadas;
+
+  CLASES.forEach((_, idx) => {
+    const item = document.getElementById('item-' + idx);
+    const num = document.getElementById('num-' + idx);
+    const lock = document.getElementById('lock-' + idx);
+    if (!item) return;
+
+    item.classList.remove('active', 'done', 'locked-item');
+    lock.textContent = '';
+
+    if (idx === currentClase) item.classList.add('active');
+    if (completed[idx]) {
+      item.classList.add('done');
+      num.textContent = '✓';
+    } else {
+      num.textContent = idx + 1;
+    }
+    // Sin prelación — todas las clases están disponibles
+  });
+}
+</script>
+</body>
+</html>
