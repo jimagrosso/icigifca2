@@ -286,6 +286,7 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
   </div>
   <div class="topbar-right">
     <div class="status-badge" id="statusBadge">Registrado — Acceso limitado</div>
+    <button onclick="refrescarPerfil()" title="Actualizar módulos" style="background:none;border:1px solid var(--border);color:var(--muted2);padding:6px 12px;font-size:11px;cursor:pointer;border-radius:4px;transition:all .2s" onmouseover="this.style.color='var(--teal)'" onmouseout="this.style.color='var(--muted2)'">↺ Actualizar</button>
     <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
   </div>
 </div>
@@ -597,11 +598,12 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
         <!-- MÓDULOS -->
         <div class="prog-inner active" id="mae-modulos">
           <div class="modules-grid">
-            <div class="module-card" id="modulo1CardMaestria">
+            <div class="module-card locked" id="modulo1CardMaestria">
+              <div class="module-lock" id="modulo1LockMaestria">🔒</div>
               <div class="module-num">Módulo 01</div>
               <div class="module-title">Fundamentos de Ginecología Regenerativa y Medicina Fotónica</div>
               <div class="module-desc">Bases científicas, marco ético y regulatorio, biología regenerativa aplicada, PRP, PRF, exosomas, péptidos y biomodulación tisular.</div>
-              <div id="modulo1BtnMaestria"><!-- JS --></div>
+              <div id="modulo1BtnMaestria"><button class="module-btn pay" onclick="window.location.href='pagos.html'">🔒 Módulo bloqueado</button></div>
             </div>
             <div class="module-card locked">
               <div class="module-lock">🔒</div>
@@ -1099,6 +1101,17 @@ function populateUI(u) {
   renderModulos(u);
 }
 
+async function refrescarPerfil() {
+  const sb = getSupabase();
+  const { data: profile } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+  if (!profile) return;
+  ['modulo1','modulo2','modulo3','modulo4',
+   'mae_modulo1','mae_modulo2','mae_modulo3','mae_modulo4',
+   'mae_modulo5','mae_modulo6','mae_modulo7','mae_modulo8'
+  ].forEach(k => { currentUser[k] = profile[k] === true; });
+  renderModulos(currentUser);
+}
+
 function showIncompleteProfileBanner() {
   const banner = document.getElementById('profileBanner');
   if (banner) banner.style.display = 'flex';
@@ -1185,12 +1198,12 @@ function renderModulos(u) {
       card.classList.remove('locked','preview');
       card.classList.add(acceso ? 'preview' : 'locked');
       const lockIco = card.querySelector('.module-lock');
-      if (lockIco) lockIco.style.display = acceso ? 'none' : '';
+      if (lockIco) lockIco.style.display = acceso ? 'none' : 'block';
     }
     if (btn) {
       btn.innerHTML = acceso
         ? `<button class="module-btn open" onclick="window.location.href='${m.url}'">▶ Acceder al módulo</button>`
-        : `<button class="module-btn pay" onclick="window.location.href='pagos.html'">🔒 Módulo bloqueado</button>`;
+        : `<button class="module-btn pay">🔒 Módulo bloqueado</button>`;
     }
   });
 
