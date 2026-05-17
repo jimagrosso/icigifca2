@@ -1172,6 +1172,28 @@ function renderModulos(u) {
     }
   });
 
+  // Módulos Maestría
+  const maeMods = [
+    { key:'mae_modulo1', btnId:'modulo1BtnMaestria', cardId:'modulo1CardMaestria', url:'maestria-modulo1.html', label:'Módulo 1' },
+  ];
+
+  maeMods.forEach(m => {
+    const card = document.getElementById(m.cardId);
+    const btn  = document.getElementById(m.btnId);
+    const acceso = u[m.key];
+    if (card) {
+      card.classList.remove('locked','preview');
+      card.classList.add(acceso ? 'preview' : 'locked');
+      const lockIco = card.querySelector('.module-lock');
+      if (lockIco) lockIco.style.display = acceso ? 'none' : '';
+    }
+    if (btn) {
+      btn.innerHTML = acceso
+        ? `<button class="module-btn open" onclick="window.location.href='${m.url}'">▶ Acceder al módulo</button>`
+        : `<button class="module-btn pay" onclick="window.location.href='pagos.html'">🔒 Módulo bloqueado</button>`;
+    }
+  });
+
   // Dashboard módulo 1 (acceso rápido)
   const dashBtn  = document.getElementById('dashModulo1Btn');
   const dashCard = document.getElementById('dashModulo1Card');
