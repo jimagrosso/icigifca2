@@ -466,6 +466,13 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
               <div class="module-desc">+40 casos reales con presentación, evolución y análisis crítico. Formato interactivo con discusión docente.</div>
               <div id="modulo4Btn"><button class="module-btn pay" onclick="window.location.href='pagos.html'">🔒 Módulo bloqueado</button></div>
             </div>
+            <div class="module-card locked" id="modulo5Card">
+              <div class="module-lock">🔒</div>
+              <div class="module-num">Módulo 05</div>
+              <div class="module-title">Casos clínicos avanzados y práctica guiada</div>
+              <div class="module-desc">Casos clínicos avanzados, práctica guiada y profundización en protocolos de ginecología regenerativa.</div>
+              <div id="modulo5Btn"><button class="module-btn pay" onclick="window.location.href='pagos.html'">🔒 Módulo bloqueado</button></div>
+            </div>
           </div>
         </div>
 
@@ -1041,6 +1048,7 @@ async function init() {
     modulo2:  profile?.modulo2  === true,
     modulo3:  profile?.modulo3  === true,
     modulo4:  profile?.modulo4  === true,
+    modulo5:  profile?.modulo5  === true,
     // Módulos Maestría
     mae_modulo1: profile?.mae_modulo1 === true,
     mae_modulo2: profile?.mae_modulo2 === true,
@@ -1165,6 +1173,7 @@ function renderModulos(u) {
     { key:'modulo2', btnId:'modulo2Btn', cardId:'modulo2Card', url:'diplomado-modulo2.html', label:'Módulo 2' },
     { key:'modulo3', btnId:'modulo3Btn', cardId:'modulo3Card', url:'diplomado-modulo3.html', label:'Módulo 3' },
     { key:'modulo4', btnId:'modulo4Btn', cardId:'modulo4Card', url:'diplomado-modulo4.html', label:'Módulo 4' },
+    { key:'modulo5', btnId:'modulo5Btn', cardId:'modulo5Card', url:'diplomado-modulo5.html', label:'Módulo 5' },
   ];
 
   dipMods.forEach(m => {

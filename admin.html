@@ -437,7 +437,7 @@ tr:hover td{background:rgba(255,255,255,0.015)}
       </div>
       <!-- Panel Diplomado -->
       <div id="mods-panel-dip">
-        <div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Diplomado en Ginecología Regenerativa — 4 Módulos</div>
+        <div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Diplomado en Ginecología Regenerativa — 5 Módulos</div>
         <div class="mod-grid" id="m-mods-grid-dip"></div>
         <div style="display:flex;gap:8px;margin-top:8px">
           <button class="btn btn-teal btn-sm" onclick="allMods('dip',true)">✓ Todos</button>
@@ -483,7 +483,8 @@ const MODS_DIP = {
   modulo1:'Módulo I — Bases Científicas',
   modulo2:'Módulo II — Tecnologías Regenerativas',
   modulo3:'Módulo III — Funcional y Piso Pélvico',
-  modulo4:'Módulo IV — Cirugía y Práctica Clínica'
+  modulo4:'Módulo IV — Cirugía y Práctica Clínica',
+  modulo5:'Módulo V — Casos Clínicos Avanzados'
 };
 const MODS_MAE = {
   mae_modulo1:'Módulo 1 — Fundamentos de Ginecología Regenerativa',
@@ -806,7 +807,7 @@ function abrirMods(id){
   const p=allProfiles.find(x=>x.id===id);if(!p)return;
   activeModId=id;
   activeModState={
-    modulo1:!!p.modulo1,modulo2:!!p.modulo2,modulo3:!!p.modulo3,modulo4:!!p.modulo4,
+    modulo1:!!p.modulo1,modulo2:!!p.modulo2,modulo3:!!p.modulo3,modulo4:!!p.modulo4,modulo5:!!p.modulo5,
     mae_modulo1:!!p.mae_modulo1,mae_modulo2:!!p.mae_modulo2,mae_modulo3:!!p.mae_modulo3,
     mae_modulo4:!!p.mae_modulo4,mae_modulo5:!!p.mae_modulo5,mae_modulo6:!!p.mae_modulo6,
     mae_modulo7:!!p.mae_modulo7,mae_modulo8:!!p.mae_modulo8
@@ -848,7 +849,7 @@ async function saveMods(){
   allProfiles=allProfiles.map(p=>p.id===activeModId?{...p,...activeModState}:p);
   const nD=Object.keys(MODS_DIP).filter(k=>activeModState[k]).length;
   const nM=Object.keys(MODS_MAE).filter(k=>activeModState[k]).length;
-  toast(`Guardado ✓  Diplomado: ${nD}/4 · Maestría: ${nM}/8`,'ok');
+  toast(`Guardado ✓  Diplomado: ${nD}/5 · Maestría: ${nM}/8`,'ok');
   closeM('m-mods');renderAl(allProfiles);loadDash();
 }
 
@@ -1080,7 +1081,7 @@ function stTag(p){
 }
 function modDots(p,click=false){
   const ca=click?`onclick="abrirMods('${p.id}')" style="cursor:pointer"`:'';
-  const dip=['modulo1','modulo2','modulo3','modulo4'].map((k,i)=>
+  const dip=['modulo1','modulo2','modulo3','modulo4','modulo5'].map((k,i)=>
     `<div class="mod-dot ${p[k]?'on':''}" title="DIP-0${i+1}" ${ca}>${i+1}</div>`).join('');
   const mae=['mae_modulo1','mae_modulo2','mae_modulo3','mae_modulo4','mae_modulo5','mae_modulo6','mae_modulo7','mae_modulo8'].map((k,i)=>
     `<div class="mod-dot mae ${p[k]?'on-mae':''}" title="MAE-0${i+1}" ${ca}>${i+1}</div>`).join('');
