@@ -612,6 +612,13 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
               <div class="module-desc">Bases científicas, marco ético y regulatorio, biología regenerativa aplicada, PRP, PRF, exosomas, péptidos y biomodulación tisular.</div>
               <div id="modulo1BtnMaestria"><button class="module-btn pay" onclick="window.location.href='pagos.html'">🔒 Módulo bloqueado</button></div>
             </div>
+            <div class="module-card locked" id="modulo2CardMaestria">
+              <div class="module-lock">🔒</div>
+              <div class="module-num">Módulo 02</div>
+              <div class="module-title">Tecnologías Regenerativas Avanzadas</div>
+              <div class="module-desc">Láser CO₂ fraccionado, radiofrecuencia avanzada, plasma, ozono y tecnologías emergentes en ginecología regenerativa.</div>
+              <div id="modulo2BtnMaestria"><button class="module-btn pay" onclick="window.location.href='pagos.html'">🔒 Módulo bloqueado</button></div>
+            </div>
             <div class="module-card locked">
               <div class="module-lock">🔒</div>
               <div class="module-num">Módulo 02</div>
@@ -1197,6 +1204,7 @@ function renderModulos(u) {
   // Módulos Maestría
   const maeMods = [
     { key:'mae_modulo1', btnId:'modulo1BtnMaestria', cardId:'modulo1CardMaestria', url:'maestria-modulo1.html', label:'Módulo 1' },
+    { key:'mae_modulo2', btnId:'modulo2BtnMaestria', cardId:'modulo2CardMaestria', url:'maestria-modulo2.html', label:'Módulo 2' },
   ];
 
   maeMods.forEach(m => {
