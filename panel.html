@@ -633,6 +633,13 @@ body{font-family:'Inter',sans-serif;background:#080E0E;color:#E8E8E4;display:fle
               <div class="module-desc">Evaluación funcional avanzada, diagnóstico diferencial y abordaje integral de la sexualidad femenina.</div>
               <div id="modulo4BtnMaestria"><button class="module-btn pay" onclick="window.location.href='pagos.html'">🔒 Módulo bloqueado</button></div>
             </div>
+            <div class="module-card locked" id="modulo5CardMaestria">
+              <div class="module-lock">🔒</div>
+              <div class="module-num">Módulo 05</div>
+              <div class="module-title">Cirugía Regenerativa y Estética Genital</div>
+              <div class="module-desc">Técnicas quirúrgicas regenerativas y estética genital avanzada.</div>
+              <div id="modulo5BtnMaestria"><button class="module-btn pay" onclick="window.location.href='pagos.html'">🔒 Módulo bloqueado</button></div>
+            </div>
             <div class="module-card locked">
               <div class="module-lock">🔒</div>
               <div class="module-num">Módulo 02</div>
@@ -1221,6 +1228,7 @@ function renderModulos(u) {
     { key:'mae_modulo2', btnId:'modulo2BtnMaestria', cardId:'modulo2CardMaestria', url:'maestria-modulo2.html', label:'Módulo 2' },
     { key:'mae_modulo3', btnId:'modulo3BtnMaestria', cardId:'modulo3CardMaestria', url:'maestria-modulo3.html', label:'Módulo 3' },
     { key:'mae_modulo4', btnId:'modulo4BtnMaestria', cardId:'modulo4CardMaestria', url:'maestria-modulo4.html', label:'Módulo 4' },
+    { key:'mae_modulo5', btnId:'modulo5BtnMaestria', cardId:'modulo5CardMaestria', url:'maestria-modulo5.html', label:'Módulo 5' },
   ];
 
   maeMods.forEach(m => {

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Módulo 4 — Maestría ICIGIFCA</title>
+<title>Módulo 5 — Maestría ICIGIFCA</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <script src="https://player.vimeo.com/api/player.js"></script>
 <style>
@@ -173,7 +173,7 @@ html,body{min-height:100%;font-family:'DM Sans',sans-serif;background:#080E0E;co
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-header">
-      <div class="sidebar-title">Módulo 04 — Maestría</div>
+      <div class="sidebar-title">Módulo 05 — Maestría</div>
       <div class="sidebar-sub" id="sidebarSub">Diplomado · cargando…</div>
     </div>
 
@@ -198,10 +198,7 @@ const SUPABASE_URL = 'https://ejuvegzsuxcgazmeieed.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_iSYiJpecbqoVf-QCJ3AxFQ_vbdoV4t2';
 
 const CLASES = [
-  { id:'mae4-c1', titulo:'Clase 1', desc:'', vimeoId:'1211257837', vimeoHash:'d50a3357da' },
-  { id:'mae4-c2', titulo:'Clase 2', desc:'', vimeoId:'1217474111', vimeoHash:'7a206eeacc' },
-  { id:'mae4-c3', titulo:'Clase 3', desc:'', vimeoId:'1223224062', vimeoHash:'7a5e9830e2' },
-  { id:'mae4-c4', titulo:'Clase 4', desc:'', vimeoId:'1222566006', vimeoHash:'ae6acd44ff' },
+  { id:'mae5-c1', titulo:'Clase 1', desc:'', vimeoId:'1220693574', vimeoHash:'0a677079e3' },
 ];
 
 // ── ESTADO ──────────────────────────────────────────────
@@ -221,8 +218,8 @@ window.addEventListener('load', async () => {
     if (!session) { window.location.replace('login.html'); return; }
     userId = session.user.id;
     // Verificar acceso: necesita modulo1 activo (el admin lo controla)
-    const { data: profile } = await sb.from('profiles').select('paid, mae_modulo4').eq('id', userId).single();
-    const tieneAcceso = profile?.mae_modulo4 === true || profile?.paid === true;
+    const { data: profile } = await sb.from('profiles').select('paid, mae_modulo5').eq('id', userId).single();
+    const tieneAcceso = profile?.mae_modulo5 === true || profile?.paid === true;
     if (!tieneAcceso) { window.location.replace('panel.html'); return; }
   }
 
@@ -235,7 +232,7 @@ window.addEventListener('load', async () => {
 // ── PROGRESO LOCAL ───────────────────────────────────────
 function resetProgreso() {
   if (!confirm('¿Reiniciar el progreso del módulo? Podrás ver todos los videos desde el inicio.')) return;
-  localStorage.removeItem('icigifca_maestria_mod4');
+  localStorage.removeItem('icigifca_maestria_mod5');
   completed = new Array(CLASES.length).fill(false);
   currentClase = 0;
   updateSidebar();
@@ -243,12 +240,12 @@ function resetProgreso() {
 }
 
 function saveProgress() {
-  localStorage.setItem('icigifca_maestria_mod4', JSON.stringify({ completed, currentClase }));
+  localStorage.setItem('icigifca_maestria_mod5', JSON.stringify({ completed, currentClase }));
   updateSidebar();
 }
 
 function loadProgress() {
-  const saved = localStorage.getItem('icigifca_maestria_mod4');
+  const saved = localStorage.getItem('icigifca_maestria_mod5');
   if (saved) {
     try {
       const data = JSON.parse(saved);
@@ -293,27 +290,6 @@ function loadPlayer(idx) {
 
   // Usar iframe directo — más confiable con videos privados Vimeo
   const container = document.getElementById('vimeoPlayer');
-  // Video directo (Dropbox u otro)
-  if (clase.directUrl) {
-    container.innerHTML = `<video src="${clase.directUrl}" style="position:absolute;top:0;left:0;width:100%;height:100%;background:#000" controls controlsList="nodownload" id="directVideo"></video>`;
-    player = null;
-    const vid = document.getElementById('directVideo');
-    vid.ontimeupdate = () => {
-      if (!vid.duration) return;
-      const pct = Math.min(100, Math.round(vid.currentTime/vid.duration*100));
-      document.getElementById('progressFill').style.width = pct+'%';
-      document.getElementById('progressPct').textContent = pct+'%';
-    };
-    vid.onended = () => {
-      if (!completed[idx]) { completed[idx]=true; saveProgress(); }
-      document.getElementById('progressFill').style.width='100%';
-      document.getElementById('progressPct').textContent='100%';
-      if(idx<CLASES.length-1){document.getElementById('completadoBanner').classList.add('show');document.getElementById('btnNext').style.display='inline-flex';}
-      else{document.getElementById('moduloDone').classList.add('show');document.getElementById('completadoBanner').classList.remove('show');}
-    };
-    return;
-  }
-
   const src = clase.vimeoHash
     ? `https://player.vimeo.com/video/${clase.vimeoId}?h=${clase.vimeoHash}&badge=0&autopause=0&color=00C9A7&title=0&byline=0&portrait=0`
     : `https://player.vimeo.com/video/${clase.vimeoId}?badge=0&autopause=0&color=00C9A7&title=0&byline=0&portrait=0`;
@@ -376,7 +352,7 @@ function goNext() {
 // ── ACTUALIZAR SIDEBAR ───────────────────────────────────
 function buildSidebar() {
   // Actualizar contador
-  document.getElementById('sidebarSub').textContent = `Maestría · Módulo 4 · ${CLASES.length} clases`;
+  document.getElementById('sidebarSub').textContent = `Maestría · Módulo 5 · ${CLASES.length} clases`;
   document.getElementById('totalClases').textContent = CLASES.length;
   // Generar items dinámicamente
   const list = document.getElementById('clasesList');
