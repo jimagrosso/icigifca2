@@ -297,6 +297,30 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:72px 80p
 }
 .wa-float{position:fixed;bottom:32px;right:32px;z-index:800;width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(37,211,102,0.4);text-decoration:none;transition:all .3s}
 .wa-float:hover{transform:scale(1.1);box-shadow:0 8px 32px rgba(37,211,102,0.55)}
+
+/* WhatsApp, barra móvil, legibilidad */
+:root{--muted:rgba(232,232,228,0.62);--muted2:rgba(232,232,228,0.78)}
+.aval-item{color:rgba(255,255,255,0.55) !important}
+.aval-item:hover{color:#fff !important}
+.btn-wa{background:#25D366;color:#06210F;padding:16px 36px;font-family:'Inter',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:2px;transition:all .3s}
+.btn-wa:hover{background:#3BE37B;transform:translateY(-2px)}
+.btn-wa svg{width:18px;height:18px;fill:#06210F}
+.cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.mobile-bar{display:none}
+@media(max-width:768px){
+  .hero-actions{flex-direction:column;gap:12px}
+  .hero-actions>a{width:100%;justify-content:center}
+  .wa-float{display:none}
+  .mobile-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:900;gap:10px;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:rgba(5,10,10,.94);backdrop-filter:blur(10px);border-top:1px solid var(--border);transform:translateY(110%);transition:transform .3s}
+  .mobile-bar.show{transform:translateY(0)}
+  .mobile-bar a{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;text-decoration:none;border-radius:2px}
+  .mobile-bar .mb-apply{background:var(--teal);color:var(--ink)}
+  .mobile-bar .mb-wa{background:#25D366;color:#06210F}
+  .mobile-bar svg{width:18px;height:18px;fill:#06210F}
+  body{padding-bottom:70px}
+  .avales-label,.footer-col h5{font-size:11px}
+  .btn-cta,.cta-actions .btn-wa{width:100%;justify-content:center}
+}
 </style>
 </head>
 <body>
@@ -586,7 +610,10 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:72px 80p
     <div class="cta-tag">Cohorte Limitada · Inscripciones Abiertas</div>
     <h2 class="cta-headline">Forma parte de la<br><span class="accent">nueva generación</span><br>de la especialidad.</h2>
     <p class="cta-sub">Este programa no es para todos. Es para médicos especialistas que entienden que escalar un peldaño más es una decisión estratégica de carrera.</p>
-    <a href="aplicar.html" class="btn-cta">Aplicar Ahora</a>
+    <div class="cta-actions">
+      <a href="aplicar.html" class="btn-cta">Aplicar Ahora</a>
+      <a href="https://wa.me/584145134603?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20los%20programas%20de%20ICIGIFCA" class="btn-wa" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4zM12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2z"/></svg>Hablar por WhatsApp</a>
+    </div>
   </div>
 </div>
 
@@ -614,6 +641,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:72px 80p
     <div class="footer-col">
       <h5>Contacto</h5>
       <a href="mailto:info@icigifca.net">info@icigifca.net</a>
+      <a href="https://wa.me/584145134603?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20los%20programas%20de%20ICIGIFCA" target="_blank" rel="noopener noreferrer">WhatsApp: 0414-513-4603</a>
       <a href="https://www.google.com/maps/search/?api=1&query=Barquisimeto%2C+Venezuela" target="_blank" rel="noopener noreferrer">Barquisimeto, Venezuela</a>
     </div>
   </div>
@@ -654,6 +682,14 @@ document.querySelectorAll('.nav-drop a').forEach(link=>{link.addEventListener('c
 function animateCount(el,target,suffix=''){let start=0;const dur=1800;const step=timestamp=>{if(!start)start=timestamp;const pct=Math.min((timestamp-start)/dur,1);const val=Math.floor(pct*target);el.innerHTML=val.toLocaleString()+'<span>'+suffix+'</span>';if(pct<1)requestAnimationFrame(step);};requestAnimationFrame(step);}
 const counterObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting&&!e.target.dataset.animated){e.target.dataset.animated='1';const nums=e.target.querySelectorAll('.h-stat-num,.dir-stat-num');nums.forEach(n=>{const raw=n.textContent.replace(/[^0-9]/g,'');const suf=n.querySelector('span')?n.querySelector('span').textContent:'';if(raw)animateCount(n,parseInt(raw),suf);});}});},{threshold:0.3});
 document.querySelectorAll('.hero-stats,.dir-stats').forEach(el=>counterObs.observe(el));
+</script>
+<a class="wa-float" href="https://wa.me/584145134603?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20los%20programas%20de%20ICIGIFCA" target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a ICIGIFCA"><svg width="28" height="28" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4zM12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2z"/></svg></a>
+<div class="mobile-bar" id="mobileBar">
+  <a class="mb-apply" href="aplicar.html">Aplicar ahora</a>
+  <a class="mb-wa" href="https://wa.me/584145134603?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20los%20programas%20de%20ICIGIFCA" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4zM12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2z"/></svg>WhatsApp</a>
+</div>
+<script>
+(function(){var b=document.getElementById('mobileBar');if(!b)return;function t(){b.classList.toggle('show',window.scrollY>520)}window.addEventListener('scroll',t,{passive:true});t();})();
 </script>
 </body>
 </html>
