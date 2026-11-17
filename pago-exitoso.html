@@ -29,11 +29,11 @@ p{font-size:13px;color:rgba(232,232,228,0.6);line-height:1.7;margin-bottom:28px}
 <body>
 <div class="wrap">
   <div class="icon-wrap"><span class="check">✓</span></div>
-  <h1>¡Pago exitoso!</h1>
-  <div class="modulo-badge">🔓 Módulo 1 — Desbloqueado</div>
-  <p>Tu matrícula ha sido activada. Ahora tienes acceso al <strong>Módulo 1: Introducción y Fundamentos</strong>. Serás redirigido al campus en unos segundos.</p>
+  <h1>¡Pago recibido!</h1>
+  <div class="modulo-badge">⏳ Pago recibido — En verificación</div>
+  <p>Gracias. Estamos verificando tu pago y activaremos tu acceso al <strong>Módulo 1</strong> en breve. Serás redirigido al campus en unos segundos.</p>
   <div class="spinner-wrap">
-    <div class="spinner"></div> Activando acceso...
+    <div class="spinner"></div> Registrando tu pago...
   </div>
 </div>
 
@@ -55,8 +55,8 @@ async function activarPago() {
   const proximaFecha = new Date(ahora);
   proximaFecha.setDate(proximaFecha.getDate() + 30); // próximo pago en 30 días
 
-  // 2. Marcar paid=true en profiles
-  await sb.from('profiles').update({ paid: true }).eq('id', userId);
+  // 2. La activación (paid=true) la hace el administrador tras verificar el pago.
+  //    Desde el navegador ya no se permite, para que nadie pueda activarse solo.
 
   // 3. Registrar pago en tabla payments
   const { error } = await sb.from('payments').insert({
@@ -66,7 +66,7 @@ async function activarPago() {
     fecha_pago: ahora.toISOString(),
     proxima_fecha: proximaFecha.toISOString(),
     modulo_desbloqueado: 1,
-    notas: 'Pago inicial — Módulo 1: Introducción y Fundamentos'
+    notas: 'Pago inicial — pendiente de verificación por el admin'
   });
 
   if (error) console.warn('Error registrando pago:', error.message);
